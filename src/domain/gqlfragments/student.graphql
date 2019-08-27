@@ -1,0 +1,52 @@
+fragment student on Student {
+  id
+  studentName
+  fatherName
+  fatherMiddleName
+  fatherLastName
+  motherName
+  motherMiddleName
+  motherLastName
+  aadharNo
+  dateOfBirth
+  placeOfBirth
+  religion
+  caste
+  subCaste
+  age
+  sex
+  bloodGroup
+  addressLineOne
+  addressLineTwo
+  addressLineThree
+  town
+  state
+  country
+  pincode
+  studentContactNumber
+  alternateContactNumber
+  studentEmailAddress
+  alternateEmailAddress
+  relationWithStudent
+  name
+  middleName
+  lastName
+  contactNo
+  emailAddress
+  uploadPhoto
+  admissionNo
+  rollNo
+  studentType
+  batch {
+    batch
+  }
+  section {
+    section
+  }
+  branch {
+    branchName
+  }
+  department {
+    name
+  }
+}

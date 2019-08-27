@@ -1,0 +1,74 @@
+{
+  "type": "app",
+  "name": "Library",
+  "id": "xformation-fee-panel",
+  "css": {
+    "dark": "css/dark.css",
+    "light": "css/light.css"
+  },
+  "info": {
+    "description": "fee for grafana",
+    "author": {
+      "name": "Synectiks",
+      "url": "https://xformation.com"
+    },
+    "keywords": [
+      "fee",
+      "panel"
+    ],
+    "version": "1.0",
+    "updated": "2018-10-12",
+    "logos": {
+      "small": "img/Fee.png",
+      "large": "img/Fee.png"
+    }
+  },
+  "includes": [
+    {
+      "type": "page",
+      "name": "Home",
+      "addToNav": false,
+      "defaultNav": false,
+      "component": "WelcomePage"
+    },
+    {
+      "type": "page",
+      "name": "EditStudent",
+      "addToNav": false,
+      "defaultNav": false,
+      "component": "EditStudentPage"
+    },
+    {
+      "type": "page",
+      "name": "Students",
+      "addToNav": true,
+      "defaultNav": true,
+      "component": "StudentsPage"
+    },
+    {
+      "type": "page",
+      "name": "Student",
+      "addToNav": false,
+      "defaultNav": false,
+      "component": "StudentPage"
+    },
+    {
+      "type": "page",
+      "name": "AddStudent",
+      "addToNav": true,
+      "defaultNav": false,
+      "component": "AddStudentPage"
+    },
+    {
+      "type": "page",
+      "name": "StudentsProfile",
+      "addToNav": true,
+      "defaultNav": false,
+      "component": "StudentsProfile"
+    }
+  ],
+  "dependencies": {
+    "grafanaVersion": "3.x 4.x 5.x",
+    "plugins": []
+  }
+}
