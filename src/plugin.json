@@ -1,7 +1,7 @@
 {
   "type": "app",
   "name": "Library",
-  "id": "xformation-fee-panel",
+  "id": "cms-library",
   "css": {
     "dark": "css/dark.css",
     "light": "css/light.css"
@@ -12,10 +12,7 @@
       "name": "Synectiks",
       "url": "https://xformation.com"
     },
-    "keywords": [
-      "fee",
-      "panel"
-    ],
+    "keywords": ["fee", "panel"],
     "version": "1.0",
     "updated": "2018-10-12",
     "logos": {
@@ -52,13 +49,15 @@
       "defaultNav": false,
       "component": "StudentPage"
     },
+
     {
       "type": "page",
-      "name": "AddStudent",
+      "name": "FeeSetup",
       "addToNav": true,
-      "defaultNav": false,
-      "component": "AddStudentPage"
+      "defaultNav": true,
+      "component": "FeeSetup"
     },
+
     {
       "type": "page",
       "name": "StudentsProfile",

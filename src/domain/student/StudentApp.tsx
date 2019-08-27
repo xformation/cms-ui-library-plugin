@@ -8,8 +8,8 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import {createGraphQLClient} from '../../createGraphQLClient';
 import StudentListPage from './StudentListPage';
 import StudentProfilePage from './StudentProfilePage';
-import AddStudentPage from './AddStudentPage';
 import UpdateStudentPage from './UpdateStudentPage';
+import FeeSetup from './FeeSetup';
 
 const graphQLClient = createGraphQLClient();
 
@@ -19,7 +19,7 @@ export default function init() {
       <ApolloProvider client={graphQLClient}>
         <BrowserRouter>
           <Switch>
-            <Route
+            {/* <Route
               path="/plugins/xformation-fee-panel/page/students"
               component={StudentListPage}
             />
@@ -34,6 +34,10 @@ export default function init() {
             <Route
               path="/plugins/xformation-fee-panel/page/editstudent"
               component={UpdateStudentPage}
+            /> */}
+             <Route
+              path="/plugins/cms-library/page/feesetup"
+              component={FeeSetup}
             />
           </Switch>
         </BrowserRouter>
