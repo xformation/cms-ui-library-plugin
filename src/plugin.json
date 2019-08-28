@@ -31,7 +31,7 @@
 
     {
       "type": "page",
-      "name": "FeeSetup",
+      "name": "AddBook",
       "addToNav": true,
       "defaultNav": true,
       "component": "FeeSetup"
