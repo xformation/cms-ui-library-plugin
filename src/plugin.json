@@ -1,7 +1,7 @@
 {
   "type": "app",
   "name": "Library",
-  "id": "cms-library",
+  "id": "ems-library",
   "css": {
     "dark": "css/dark.css",
     "light": "css/light.css"
@@ -28,27 +28,6 @@
       "defaultNav": false,
       "component": "WelcomePage"
     },
-    {
-      "type": "page",
-      "name": "EditStudent",
-      "addToNav": false,
-      "defaultNav": false,
-      "component": "EditStudentPage"
-    },
-    {
-      "type": "page",
-      "name": "Students",
-      "addToNav": true,
-      "defaultNav": true,
-      "component": "StudentsPage"
-    },
-    {
-      "type": "page",
-      "name": "Student",
-      "addToNav": false,
-      "defaultNav": false,
-      "component": "StudentPage"
-    },
 
     {
       "type": "page",
@@ -56,14 +35,6 @@
       "addToNav": true,
       "defaultNav": true,
       "component": "FeeSetup"
-    },
-
-    {
-      "type": "page",
-      "name": "StudentsProfile",
-      "addToNav": true,
-      "defaultNav": false,
-      "component": "StudentsProfile"
     }
   ],
   "dependencies": {

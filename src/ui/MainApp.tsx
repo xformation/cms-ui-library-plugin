@@ -6,7 +6,7 @@ import {ApolloProvider} from 'react-apollo';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import {createGraphQLClient} from '../createGraphQLClient';
-import StudentListPage from '../domain/student/StudentListPage';
+import FeeSetup from '../domain/student/FeeSetup';
 
 const graphQLClient = createGraphQLClient();
 
@@ -16,7 +16,7 @@ export default function init() {
       <ApolloProvider client={graphQLClient}>
         <BrowserRouter>
           <Switch>
-            <Route component={StudentListPage} />
+            <Route component={FeeSetup} />
           </Switch>
         </BrowserRouter>
       </ApolloProvider>,

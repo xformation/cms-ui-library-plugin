@@ -17,7 +17,7 @@ export default function init() {
         <BrowserRouter>
           <Switch>
             <Route
-              path="/plugins/cms-library/page/feesetup"
+              path="/plugins/ems-library/page/feesetup"
               component={FeeSetup}
             />
           </Switch>

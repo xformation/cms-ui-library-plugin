@@ -6,9 +6,6 @@ import {ApolloProvider} from 'react-apollo';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import {createGraphQLClient} from '../../createGraphQLClient';
-import StudentListPage from './StudentListPage';
-import StudentProfilePage from './StudentProfilePage';
-import UpdateStudentPage from './UpdateStudentPage';
 import FeeSetup from './FeeSetup';
 
 const graphQLClient = createGraphQLClient();
@@ -36,7 +33,7 @@ export default function init() {
               component={UpdateStudentPage}
             /> */}
              <Route
-              path="/plugins/cms-library/page/feesetup"
+              path="/plugins/ems-library/page/feesetup"
               component={FeeSetup}
             />
           </Switch>
