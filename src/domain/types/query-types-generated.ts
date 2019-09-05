@@ -1371,3 +1371,91 @@ export type FeeDetailsAddMutationType = {
 };
 
 /* tslint:enable */
+export type LoadExamSubjQueryCacheForAdmin = {
+  createExamFilterDataCache: {
+    branches: Array<{
+      id: number;
+      branchName: string;
+    }>;
+    departments: Array<{
+      id: number;
+      name: string;
+      branch: {
+        id: number;
+      };
+      academicyear: {
+        id: number;
+      };
+    }>;
+    batches: Array<{
+      id: number;
+      batch: string;
+      department: {
+        id: number;
+      };
+    }>;
+    academicExamSettings: Array<{
+      id: number;
+      examName: string;
+      total: number;
+      batch: {
+        id: number;
+      };
+    }>;
+    sections: Array<{
+      id: number;
+      section: string;
+      batch: {
+        id: number;
+      };
+    }>;
+    subjects: Array<{
+      id: number;
+      subjectCode: string;
+      batch: {
+        id: number;
+      };
+    }>;
+    semesters: Array<{
+      id: number;
+      description: string;
+    }>;
+  };
+};
+
+export type AddExamMutation = {
+  addAcademicExamSetting: Array<{
+    examName: String;
+    actions: String;
+    total: number;
+    passing: number;
+    subject: {
+      id: number;
+      subjectDesc: string;
+    };
+    startTime: String;
+    endTime: String;
+    examDate: Date;
+    semester: String;
+    gradeType: String;
+    batch: {
+      id: number;
+      branchName: string;
+    };
+    section: {
+      id: number;
+    };
+    branch: {
+      id: number;
+      branchName: string;
+    };
+    department: {
+      id: number;
+      name: string;
+    };
+    academicyear: {
+      id: number;
+      year: string;
+    };
+  }>;
+};
