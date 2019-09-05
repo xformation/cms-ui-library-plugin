@@ -367,12 +367,14 @@ return mutate({
 
     return (
       <section className="plugin-bg-white">
+      
         <h3 className="bg-heading p-1">
-          <i className="fa fa-university stroke-transparent mr-1" aria-hidden="true" />{' '}
-          Admin - Library Management
-          
-          
+          <i className="fa fa-university stroke-transparent" aria-hidden="true" />{' '}
+          Admin - Library Management 
         </h3>
+        
+        <div><button className="btn btn-primary mr-1" id="btnSave" name="btnSave" onClick={this.onClick}>Save</button></div>
+
         <div className="p-1">
           <form className="gf-form-group" onSubmit={this.onFormSubmit} >
             <table id="t-attendance" className="markAttendance">
