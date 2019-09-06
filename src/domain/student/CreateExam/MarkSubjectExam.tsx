@@ -157,7 +157,7 @@ class MarkExam extends React.Component<ExamPageProps, ExamState>{
 
     this.createDepartments = this.createDepartments.bind(this);
     this.createBatches = this.createBatches.bind(this);
-
+    this.createSubjects = this.createSubjects.bind(this);
     this.createGrid = this.createGrid.bind(this);
  
   }
@@ -200,7 +200,18 @@ class MarkExam extends React.Component<ExamPageProps, ExamState>{
     return batchesOptions;
   }
 
-  
+  createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
+    let subjectsOptions = [<option key={0} value="">Select Subject</option>];
+    for (let i = 0; i < subjects.length; i++) {
+      let id = subjects[i].id;
+      if (subjects[i].department.id == selectedDepartmentId && subjects[i].batch.id == selectedBatchId) {
+        subjectsOptions.push(
+          <option key={id} value={id}>{subjects[i].subjectDesc}</option>
+        );
+      }
+    }
+    return subjectsOptions;
+  }
 
   onFormSubmit = (e: any) => {
     this.setState({
@@ -232,7 +243,9 @@ class MarkExam extends React.Component<ExamPageProps, ExamState>{
           batch: {
             id: ""
           },
-          
+          subject: {
+            id: ""
+          }          
         }
       });
     } else if (name === "batch") {
@@ -242,11 +255,22 @@ class MarkExam extends React.Component<ExamPageProps, ExamState>{
           batch: {
             id: value
           },
+          subject: {
+            id: ""
+          },
          
         }
       });
-    
-    } else {
+    }else if (name === "subject") {
+        this.setState({
+          examData: {
+            ...examData,
+            subject: {
+              ...this.createSubjects,
+            }
+          }
+        });        
+    }else {
       this.setState({
         examData: {
           ...examData,
@@ -363,7 +387,7 @@ return mutate({
   }
   render() {
     const { data: { createExamFilterDataCache, refetch }, mutate } = this.props;
-    const { examData, departments, batches,  submitted } = this.state;
+    const { examData, departments, batches,subjects,  submitted } = this.state;
 
     return (
       <section className="plugin-bg-white">
@@ -383,6 +407,7 @@ return mutate({
 
                   <th>Department</th>
                   <th>Year</th>
+                  <th>Subject</th>
                    <th>Book Title</th>
                   <th>Book No</th>
                   <th>No Of Copies</th>
@@ -402,6 +427,11 @@ return mutate({
                       {this.createBatches(this.props.data.createExamFilterDataCache.batches, examData.department.id)}
                     </select>
                   </td>
+                  <td>
+                <select required name={"subject"} id="subject"  onChange={this.onChange} value={examData.subject.id} className="gf-form-input max-width-22">
+                  {this.createSubjects(this.props.data.createExamFilterDataCache.subjects, examData.department.id, examData.batch.id)}
+                </select>
+              </td>
                  <td>
                   <input type="text" id={"particularsDesc"} name={"particularsDesc"} onChange={this.onChange}  className="fwidth" />
                    {/* value={feeSetupData.particularsDesc} */}</td>
