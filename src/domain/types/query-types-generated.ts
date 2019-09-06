@@ -1459,3 +1459,22 @@ export type AddExamMutation = {
     };
   }>;
 };
+
+export type LibraryAddMutationType = {
+  addLibrary: Array<{
+    id: number;
+    bookTitle: string;
+    author: string;
+    bookNo: number;
+    noOfCopies: number;
+    additionalInfo: string;
+    uniqueNo: number;
+
+    batch: {
+      id: number;
+    };
+    subject: {
+      id: number;
+    };
+  }>;
+};
