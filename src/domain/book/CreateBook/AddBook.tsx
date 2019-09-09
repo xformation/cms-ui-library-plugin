@@ -2,9 +2,8 @@ import * as moment from 'moment';
 import * as React from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { graphql, QueryProps, MutationFunc, compose } from "react-apollo";
-// import * as AddExamMutationGql from './AddExamMutation.graphql';
 import * as LibraryAddMutation from './LibraryAddMutation.graphql';
-import { LoadExamSubjQueryCacheForAdmin,AddExamMutation, LibraryAddMutationType } from '../../types';
+import { LoadExamSubjQueryCacheForAdmin, AddExamMutation, LibraryAddMutationType } from '../../types';
 import withExamSubjDataLoader from './withExamSubjDataLoader';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -26,7 +25,6 @@ type LibraryRootProps = RouteComponentProps<{
 
 type LibraryPageProps = LibraryRootProps & {
   addLibraryMutation: MutationFunc<LibraryAddMutationType>;
-  // mutate: MutationFunc<AddExamMutation>;
 };
 
 type LibraryState = {
@@ -41,34 +39,6 @@ type LibraryState = {
   update: any
 };
 
-class SaData {
-  bookTitle: any;
-  author: any;
-  noOfCopies: any;
-  bookNo: any;
-  additionalInfo: any;
-  uniqueNo: any;
-  academicyearId: any;
-  subjectId: any;
-  departmentId: any;
-  batchId: any;
-  branchId: any;
-  constructor(bookTitle: any, author: any, noOfCopies: any, bookNo: any, additionalInfo: any, uniqueNo: any,  academicyearId: any, subjectId: any, departmentId: any, batchId: any,  branchId: any) {
-    this.bookTitle = bookTitle;
-    this.author = author;
-    this.noOfCopies = noOfCopies
-    this.bookNo = bookNo;
-    this.additionalInfo = additionalInfo;
-    this.uniqueNo = uniqueNo;
-    this.academicyearId = academicyearId;
-    this.subjectId = subjectId;;
-    this.departmentId = departmentId;
-    this.batchId = batchId;
-    this.branchId = branchId;
-   
-  }
-}
-
 class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
   constructor(props: any) {
     super(props);
@@ -77,11 +47,11 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
         bookTitle: "",
         author: "",
         branch: {
-          id: 1851   
+          id: 1851
           //1851 1001
         },
         academicYear: {
-          id: 1701           
+          id: 1701
           //1701 1051
         },
         department: {
@@ -90,11 +60,11 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
         batch: {
           id: ""
         },
-       
+
         subject: {
           id: ""
         },
-       
+
         mutateResult: [],
         filtered: [],
         selectedIds: "",
@@ -115,28 +85,16 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     this.createDepartments = this.createDepartments.bind(this);
     this.createBatches = this.createBatches.bind(this);
     this.createSubjects = this.createSubjects.bind(this);
-    // this.createGrid = this.createGrid.bind(this);
-    this.savelibrary = this.savelibrary.bind(this); 
+    this.savelibrary = this.savelibrary.bind(this);
   }
-
-   // createDepartments(departments: any) {
-    //   let departmentsOptions = [<option key={0} value="">Select department</option>];
-    //   for (let i = 0; i < departments.length; i++) {
-    //     departmentsOptions.push(
-    //       <option key={departments[i].id} value={departments[i].id}>{departments[i].name}</option>
-    //     );
-    //   }
-    //   return departmentsOptions;
-    // }
-
 
   createDepartments(departments: any) {
     let departmentsOptions = [<option key={0} value="">Select Department</option>];
     for (let i = 0; i < departments.length; i++) {
-             departmentsOptions.push(
-          <option key={departments[i].id} value={departments[i].id}>{departments[i].name}</option>
-        );
-      
+      departmentsOptions.push(
+        <option key={departments[i].id} value={departments[i].id}>{departments[i].name}</option>
+      );
+
     }
     return departmentsOptions;
   }
@@ -156,10 +114,10 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     for (let i = 0; i < batches.length; i++) {
       let id = batches[i].id;
       let dptId = "" + batches[i].department.id;
-        batchesOptions.push(
-          <option key={id} value={id}>{batches[i].batch}</option>
-        );
-      }    
+      batchesOptions.push(
+        <option key={id} value={id}>{batches[i].batch}</option>
+      );
+    }
     return batchesOptions;
   }
 
@@ -184,8 +142,7 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
 
     const { libraryData } = this.state;
     e.preventDefault();
-    
-   
+
 
     if (libraryData.department.id && libraryData.batch.id) {
       e.target.querySelector("#detailGridTable").removeAttribute("class");
@@ -209,7 +166,7 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
           },
           subject: {
             id: ""
-          }          
+          }
         }
       });
     } else if (name === "batch") {
@@ -222,19 +179,19 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
           subject: {
             id: ""
           },
-         
+
         }
       });
-    }else if (name === "subject") {
-        this.setState({
-          libraryData: {
-            ...libraryData,
-            subject: {
-              id: value
-            }
+    } else if (name === "subject") {
+      this.setState({
+        libraryData: {
+          ...libraryData,
+          subject: {
+            id: value
           }
-        });        
-    }else {
+        }
+      });
+    } else {
       this.setState({
         libraryData: {
           ...libraryData,
@@ -245,19 +202,14 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
 
   }
 
-  
-
-  
-
-  
   savelibrary(e: any) {
     const { id, value } = e.nativeEvent.target;
     const { addLibraryMutation } = this.props;
     const { libraryData } = this.state;
     e.preventDefault();
 
-//"subject"batch
-    
+    //"subject"batch
+
     let txtBt: any = document.querySelector("#batch");
     if (txtBt.value.trim() === "") {
       alert("Please select Year");
@@ -288,26 +240,8 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
       alert("Please provide some value in No Of Copies");
       return;
     }
-    // let chkUnique: any = document.querySelector("#uniqueNo");
-    // if (chkUnique.value.trim() === "") {
-    //   alert("Please provide some value in ");
-    //   return;
-    // }   
-    
-    // bookTitle: any;
-    // author: any;
-    // noOfCopies: any;
-    // bookNo: any;
-    // additionalInfo: any;
-    // uniqueNo: any;
-    // academicyearId: any;
-    // subjectId: any;
-    // departmentId: any;
-    // batchId: any;
-    // branchId: any;
 
-   
-    
+
     let addLibraryInput = {
       bookTitle: libraryData.bookTitle,
       author: libraryData.author,
@@ -317,7 +251,6 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
       uniqueNo: libraryData.uniqueNo,
       subjectId: libraryData.subject.id,
       batchId: libraryData.batch.id
-      // branchId: libraryData.branch.id,
     };
     console.log("form data : ", libraryData);
     return addLibraryMutation({
@@ -328,7 +261,6 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
       const sdt = data;
       libraryData.feeCategoryData = [];
       libraryData.feeCategoryData.push(sdt);
-      // = data.data.addFeeCategory;
       this.setState({
         libraryData: libraryData
       });
@@ -342,89 +274,81 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
       console.log('there was an error sending the add fee category mutation result', error);
       return Promise.reject(`Could not retrieve add fee category data: ${error}`);
     });
-  
+
   }
 
 
 
-
-
-
-  
   render() {
     const { data: { createExamFilterDataCache, refetch }, addLibraryMutation } = this.props;
-    const { libraryData, departments, batches,subjects,  submitted } = this.state;
+    const { libraryData, departments, batches, subjects, submitted } = this.state;
 
     return (
       <section className="plugin-bg-white">
-      
+
         <h3 className="bg-heading p-1">
           <i className="fa fa-university stroke-transparent" aria-hidden="true" />{' '}
-          Admin - Library Management 
-        </h3>
-        
+          Admin - Library Management
+          </h3>
+
         <div id="saveFeeCatDiv" className="fee-flex">
-            <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savelibrary} style={{ width: '140px' }}>Add Library</button>
-            </div>
+          <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savelibrary} style={{ width: '140px' }}>Add Library</button>
+        </div>
 
         <div className="p-1">
           <form className="gf-form-group" onSubmit={this.onFormSubmit} >
             <table id="t-attendance" className="markAttendance">
               <thead>
                 <tr>
-
-                  {/* <th>Department</th> */}
                   <th>Year</th>
                   <th>Subject</th>
-                   <th>Book Title</th>
-                   <th>Author</th>
+                  <th>Book Title</th>
+                  <th>Author</th>
                   <th>Book No</th>
                   <th>No Of Copies</th>
                   <th>Unique No</th>
-                  <th>Additional Info</th>                  
+                  <th>Additional Info</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-
-                  {/* <td>
-                    <select required name="department" id="department" onChange={this.onChange} value={libraryData.department.id} className="gf-form-input max-width-22">
-                      {this.createDepartments(this.props.data.createExamFilterDataCache.departments, libraryData.branch.id)}
-                    </select>
-                  </td> */}
-
                   <td>
                     <select required name="batch" id="batch" onChange={this.onChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
                       {this.createBatches(this.props.data.createExamFilterDataCache.batches)}
                     </select>
                   </td>
-               <td>
-                <select required name={"subject"} id="subject"  onChange={this.onChange} value={libraryData.subject.id} className="gf-form-input max-width-22">
-                  {this.createSubjects(this.props.data.createExamFilterDataCache.subjects,  libraryData.batch.id)}
-                </select>
-              </td>
-              <td>
-                  <input type="text" id={"bookTitle"} name={"bookTitle"} onChange={this.onChange}  className="fwidth" value={libraryData.bookTitle} />
-              </td>
-              <td>
-                  <input type="text" id={"author"} name={"author"} onChange={this.onChange}  className="fwidth" value={libraryData.author} />
-              </td>
-              <td>
-                  <input type="number" id={"bookNo"} name={"bookNo"} onChange={this.onChange}  className="fwidth" value={libraryData.bookNo}  />
-              </td>
-              <td>
-                  <input type="number" id={"noOfCopies"} name={"noOfCopies"} onChange={this.onChange}  className="fwidth" value={libraryData.noOfCopies}  />
-              </td>
-              <td>
-                  <input type="number" id={"uniqueNo"} name={"uniqueNo"} onChange={this.onChange}  className="fwidth" value={libraryData.uniqueNo}  />
-              </td> 
-              <td>
-                  <input type="text" id={"additionalInfo"} name={"additionalInfo"} onChange={this.onChange}  className="fwidth" value={libraryData.additionalInfo}  />
-              </td>     
-              
+                  <td>
+                    <select required name={"subject"} id="subject" onChange={this.onChange} value={libraryData.subject.id} className="gf-form-input max-width-22">    {this.createSubjects(this.props.data.createExamFilterDataCache.subjects, libraryData.batch.id)}
+                    </select>
+                  </td>
+
+                  <td>
+                    <input type="text" id={"bookTitle"} name={"bookTitle"} onChange={this.onChange} className="fwidth" value={libraryData.bookTitle} />
+                  </td>
+
+                  <td>
+                    <input type="text" id={"author"} name={"author"} onChange={this.onChange} className="fwidth" value={libraryData.author} />
+                  </td>
+
+                  <td>
+                    <input type="number" id={"bookNo"} name={"bookNo"} onChange={this.onChange} className="fwidth" value={libraryData.bookNo} />
+                  </td>
+
+                  <td>
+                    <input type="number" id={"noOfCopies"} name={"noOfCopies"} onChange={this.onChange} className="fwidth" value={libraryData.noOfCopies} />
+                  </td>
+
+                  <td>
+                    <input type="number" id={"uniqueNo"} name={"uniqueNo"} onChange={this.onChange} className="fwidth" value={libraryData.uniqueNo} />
+                  </td>
+
+                  <td>
+                    <input type="text" id={"additionalInfo"} name={"additionalInfo"} onChange={this.onChange} className="fwidth" value={libraryData.additionalInfo} />
+                  </td>
+
                 </tr>
               </tbody>
-            </table>            
+            </table>
           </form>
         </div>
       </section>
@@ -433,8 +357,8 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
 
 }
 export default withExamSubjDataLoader(
-  compose(   
-   
+  compose(
+
     graphql<LibraryAddMutationType, LibraryRootProps>(LibraryAddMutation, {
       name: "addLibraryMutation",
     })
