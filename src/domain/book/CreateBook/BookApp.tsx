@@ -7,7 +7,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import { createGraphQLClient } from "../../../createGraphQLClient";
 import '../../../css/dark.css';
-import MarkSubjectExam from "./MarkSubjectExam";
+import AddBook from "./AddBook";
 
 const graphQLClient = createGraphQLClient();
 
@@ -18,7 +18,7 @@ export default function init() {
                 <BrowserRouter>
                     <Switch>
                         {/* <Route path="/plugins/ems-attendance/page/markattendance" component={MarkAttendance} /> */}
-                        <Route path="/plugins/ems-library/page/addexam" component={MarkSubjectExam} />
+                        <Route path="/plugins/ems-library/page/addbook" component={AddBook} />
                     </Switch>
                 </BrowserRouter>
             </ApolloProvider>,

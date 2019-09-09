@@ -1,6 +1,6 @@
 import {WelcomePage} from './ui/WelcomePage';
 import {ConfigCtrl} from './ui/Config';
 import {FeeSetup} from './ui/FeeSetup';
-import {MarkExam} from './ui/MarkExam';
+import {AddBook} from './ui/AddBook';
 
-export {WelcomePage, ConfigCtrl, FeeSetup, MarkExam};
+export {WelcomePage, ConfigCtrl, FeeSetup, AddBook};

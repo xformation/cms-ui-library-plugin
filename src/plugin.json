@@ -33,15 +33,8 @@
       "type": "page",
       "name": "AddBook",
       "addToNav": true,
-      "defaultNav": true,
-      "component": "FeeSetup"
-    },
-    {
-      "type": "page",
-      "name": "AddExam",
-      "addToNav": true,
       "defaultNav": false,
-      "component": "MarkExam"
+      "component": "AddBook"
     }
   ],
   "dependencies": {

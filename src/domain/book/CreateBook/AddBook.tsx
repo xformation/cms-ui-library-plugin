@@ -119,16 +119,24 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     this.savelibrary = this.savelibrary.bind(this); 
   }
 
-  
+   // createDepartments(departments: any) {
+    //   let departmentsOptions = [<option key={0} value="">Select department</option>];
+    //   for (let i = 0; i < departments.length; i++) {
+    //     departmentsOptions.push(
+    //       <option key={departments[i].id} value={departments[i].id}>{departments[i].name}</option>
+    //     );
+    //   }
+    //   return departmentsOptions;
+    // }
 
-  createDepartments(departments: any, selectedBranchId: any) {
+
+  createDepartments(departments: any) {
     let departmentsOptions = [<option key={0} value="">Select Department</option>];
     for (let i = 0; i < departments.length; i++) {
-      if (selectedBranchId == departments[i].branch.id) {
-        departmentsOptions.push(
+             departmentsOptions.push(
           <option key={departments[i].id} value={departments[i].id}>{departments[i].name}</option>
         );
-      }
+      
     }
     return departmentsOptions;
   }
@@ -143,25 +151,24 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     return branchesOptions;
   }
 
-  createBatches(batches: any, selectedDepartmentId: any) {
+  createBatches(batches: any) {
     let batchesOptions = [<option key={0} value="">Select Year</option>];
     for (let i = 0; i < batches.length; i++) {
       let id = batches[i].id;
       let dptId = "" + batches[i].department.id;
-      if (dptId == selectedDepartmentId) {
         batchesOptions.push(
           <option key={id} value={id}>{batches[i].batch}</option>
         );
-      }
-    }
+      }    
     return batchesOptions;
   }
 
-  createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
+  createSubjects(subjects: any, selectedBatchId: any) {
     let subjectsOptions = [<option key={0} value="">Select Subject</option>];
     for (let i = 0; i < subjects.length; i++) {
       let id = subjects[i].id;
-      if (subjects[i].department.id == selectedDepartmentId && subjects[i].batch.id == selectedBatchId) {
+      let sbId = "" + subjects[i].batch.id;
+      if (sbId == selectedBatchId) {
         subjectsOptions.push(
           <option key={id} value={id}>{subjects[i].subjectDesc}</option>
         );
@@ -223,7 +230,7 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
           libraryData: {
             ...libraryData,
             subject: {
-              ...this.createSubjects,
+              id: value
             }
           }
         });        
@@ -298,6 +305,9 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     // departmentId: any;
     // batchId: any;
     // branchId: any;
+
+   
+    
     let addLibraryInput = {
       bookTitle: libraryData.bookTitle,
       author: libraryData.author,
@@ -305,8 +315,8 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
       bookNo: libraryData.bookNo,
       additionalInfo: libraryData.additionalInfo,
       uniqueNo: libraryData.uniqueNo,
-      subjectId: libraryData.subjectId,
-      batchId:libraryData.batchId,
+      subjectId: libraryData.subject.id,
+      batchId: libraryData.batch.id
       // branchId: libraryData.branch.id,
     };
     console.log("form data : ", libraryData);
@@ -385,12 +395,12 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
 
                   <td>
                     <select required name="batch" id="batch" onChange={this.onChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
-                      {this.createBatches(this.props.data.createExamFilterDataCache.batches, libraryData.department.id)}
+                      {this.createBatches(this.props.data.createExamFilterDataCache.batches)}
                     </select>
                   </td>
                <td>
                 <select required name={"subject"} id="subject"  onChange={this.onChange} value={libraryData.subject.id} className="gf-form-input max-width-22">
-                  {this.createSubjects(this.props.data.createExamFilterDataCache.subjects, libraryData.department.id, libraryData.batch.id)}
+                  {this.createSubjects(this.props.data.createExamFilterDataCache.subjects,  libraryData.batch.id)}
                 </select>
               </td>
               <td>
@@ -414,10 +424,7 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
               
                 </tr>
               </tbody>
-            </table>
- 
-
-            
+            </table>            
           </form>
         </div>
       </section>
