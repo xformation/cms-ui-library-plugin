@@ -323,12 +323,14 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
       let k = obj[x];
       retVal.push(
         <tr>
-          <td>{k.id}</td>
+          <td>{k.batch.id}</td>
+          <td>{k.subject.id}</td>
+          <td>{k.bookTitle}</td>
+          <td>{k.author}</td>
           <td>{k.bookNo}</td>
-          {/* <td>{k.description}</td>
-          <td>{k.status}</td>
-          <td>{k.strStartDate}</td>
-          <td>{k.strEndDate}</td> */}
+          <td>{k.noOfCopies}</td>
+          <td>{k.uniqueNo}</td>
+          <td>{k.additionalInfo}</td>
           {/* <td>
             <button className="btn btn-primary" onClick={e => this.editFeeCategory(k)}>Edit</button>
           </td>
