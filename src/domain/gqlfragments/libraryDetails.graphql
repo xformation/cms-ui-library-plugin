@@ -1,0 +1,6 @@
+#import "./library.graphql"
+
+
+fragment libraryDetails on Library {
+  ...library
+}

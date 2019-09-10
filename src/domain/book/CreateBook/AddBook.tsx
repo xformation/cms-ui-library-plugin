@@ -3,7 +3,7 @@ import * as React from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { graphql, QueryProps, MutationFunc, compose } from "react-apollo";
 import * as LibraryAddMutation from './LibraryAddMutation.graphql';
-import { LoadExamSubjQueryCacheForAdmin, AddExamMutation, LibraryAddMutationType } from '../../types';
+import { LoadLibraryQueryCacheForAdmin, AddExamMutation, LibraryAddMutationType } from '../../types';
 import withExamSubjDataLoader from './withExamSubjDataLoader';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -20,7 +20,7 @@ type LibraryRootProps = RouteComponentProps<{
   academicYearId: string;
   collegeId: string;
 }> & {
-  data: QueryProps & LoadExamSubjQueryCacheForAdmin;
+  data: QueryProps & LoadLibraryQueryCacheForAdmin;
 };
 
 type LibraryPageProps = LibraryRootProps & {
@@ -54,6 +54,9 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
           id: 1701
           //1701 1051
         },
+        libraries:{
+          id: ""
+        },
         department: {
           id: 1901
         },
@@ -64,7 +67,7 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
         subject: {
           id: ""
         },
-
+        librarysaveData: [],
         mutateResult: [],
         filtered: [],
         selectedIds: "",
@@ -86,6 +89,7 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     this.createBatches = this.createBatches.bind(this);
     this.createSubjects = this.createSubjects.bind(this);
     this.savelibrary = this.savelibrary.bind(this);
+    this.createLibraryAddRow = this.createLibraryAddRow.bind(this);
   }
 
   createDepartments(departments: any) {
@@ -259,8 +263,8 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
       console.log('Add library ::::: ', data);
       alert("Library added successfully!");
       const sdt = data;
-      libraryData.feeCategoryData = [];
-      libraryData.feeCategoryData.push(sdt);
+      libraryData.librarysaveData = [];
+      libraryData.librarysaveData.push(sdt);
       this.setState({
         libraryData: libraryData
       });
@@ -277,10 +281,70 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
 
   }
 
+  // createLibraryAddRow(obj: any) {
+  //   const { libraryData } = this.state;
+  //   const len = obj.length;
+  //   const retVal = [];
+  //   // let aryLength = 0;
+  //   for (let p = 0; p < len; p++) {
+  //    let v = obj[p];
+  //   // if (v.data.addLibrary === undefined || v.data.addLibrary === null) {
+  //   //   return;
+  //   // }
+  //   for (let x = 0; x < v.data.addLibrary.length; x++) {
+  //     let k = v.data.addLibrary[x];
+  //     retVal.push(
+  //       <tr>
+  //         <td>{k.id}</td>
+  //         <td>{k.bookTitle}</td>
+  //         {/* <td>{k.description}</td>
+  //         <td>{k.status}</td>
+  //         <td>{k.strStartDate}</td>
+  //         <td>{k.strEndDate}</td> */}
+          
+            
+  //           {/* <button className="btn btn-primary" onClick={e => this.editFeeCategory(k)}>Edit</button>
+  //         </td>
+  //         <td>
+  //           <button className="btn btn-primary" onClick={e => this.showDetail(e, k)}>Details</button>
+  //         </td> */}
+  //       </tr>
+  //     );
+  //       }
+  //   }
+  //   return retVal;
+  // }
+  createLibraryAddRow(obj: any) {
+    // const len = obj.length;
+    const retVal = [];
+    // for (let p = 0; p < len; p++) {
+    //   let v = obj[p];
+    for (let x = 0; x < obj.length; x++) {
+      let k = obj[x];
+      retVal.push(
+        <tr>
+          <td>{k.id}</td>
+          <td>{k.bookNo}</td>
+          {/* <td>{k.description}</td>
+          <td>{k.status}</td>
+          <td>{k.strStartDate}</td>
+          <td>{k.strEndDate}</td> */}
+          {/* <td>
+            <button className="btn btn-primary" onClick={e => this.editFeeCategory(k)}>Edit</button>
+          </td>
+          <td>
+            <button className="btn btn-primary" onClick={e => this.showDetail(e, k)}>Details</button>
+          </td> */}
+        </tr>
+      );
+    }
+    // }
+    return retVal;
+  }
 
 
   render() {
-    const { data: { createExamFilterDataCache, refetch }, addLibraryMutation } = this.props;
+    const { data: { createLibraryFilterDataCache, refetch }, addLibraryMutation } = this.props;
     const { libraryData, departments, batches, subjects, submitted } = this.state;
 
     return (
@@ -314,11 +378,11 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
                 <tr>
                   <td>
                     <select required name="batch" id="batch" onChange={this.onChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
-                      {this.createBatches(this.props.data.createExamFilterDataCache.batches)}
+                      {this.createBatches(this.props.data.createLibraryFilterDataCache.batches)}
                     </select>
                   </td>
                   <td>
-                    <select required name={"subject"} id="subject" onChange={this.onChange} value={libraryData.subject.id} className="gf-form-input max-width-22">    {this.createSubjects(this.props.data.createExamFilterDataCache.subjects, libraryData.batch.id)}
+                    <select required name={"subject"} id="subject" onChange={this.onChange} value={libraryData.subject.id} className="gf-form-input max-width-22">    {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, libraryData.batch.id)}
                     </select>
                   </td>
 
@@ -350,6 +414,39 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
               </tbody>
             </table>
           </form>
+        </div>
+        <div id="feeCatagoryGrid" className="b-1">
+          <table className="fwidth" id="feetable">
+            <thead >
+              <tr>
+                  <th>Year</th>
+                  <th>Subject</th>
+                  <th>Book Title</th>
+                  <th>Author</th>
+                  <th>Book No</th>
+                  <th>No Of Copies</th>
+                  <th>Unique No</th>
+                  <th>Additional Info</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                // libraryData.librarysaveData.length > 0 && this.state.add === true && this.state.update === false && (
+                  this.createLibraryAddRow(this.props.data.createLibraryFilterDataCache.libraries)
+               // )
+              }
+              {/* {
+                feeSetupData.librarysaveData.length > 0 && this.state.add === false && this.state.update === true && (
+                  this.createFeeCategoryUpdateRow(feeSetupData.librarysaveData)
+                )
+              } */}
+              {/* {
+                feeSetupData.librarysaveData.length === 0 && this.state.add === false && this.state.update === false && (
+                  this.createFeeCategoryRowFromCache(this.props.data.createFeeSetupDataCache.feeCategory)
+                )
+              } */}
+            </tbody>
+          </table>
         </div>
       </section>
     );

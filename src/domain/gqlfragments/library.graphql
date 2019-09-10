@@ -1,0 +1,16 @@
+fragment library on Library {
+    id
+    bookTitle
+    author
+    bookNo
+    noOfCopies
+    additionalInfo
+    uniqueNo
+    subject{
+    subjectDesc
+    }
+    batch {
+    batch
+    }
+ 
+}

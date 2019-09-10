@@ -1,6 +1,0 @@
-#import "./student.graphql"
-
-
-fragment studentDetails on Student {
-  ...student
-}

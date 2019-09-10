@@ -2,7 +2,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { graphql, QueryProps } from "react-apollo";
 import * as moment from 'moment';
 import * as LoadExamSubjQueryGql from './LoadExamSubjQuery.graphql';
-import {ReactFunctionOrComponentClass, LoadExamSubjQueryCacheForAdmin} from '../../types';
+import {ReactFunctionOrComponentClass, LoadLibraryQueryCacheForAdmin} from '../../types';
 import withLoadingHandler from '../../../components/withLoadingHandler';
 
 
@@ -14,11 +14,11 @@ type withExamSubjPageDataLoaderProps = RouteComponentProps<{
   }>;
 
 type TargetComponentProps = {
-    data: QueryProps & LoadExamSubjQueryCacheForAdmin ;
+    data: QueryProps & LoadLibraryQueryCacheForAdmin ;
 };
 
 const withExamSubjDataLoader = (TargetComponent: ReactFunctionOrComponentClass<TargetComponentProps>) => {
-    return graphql<LoadExamSubjQueryCacheForAdmin, withExamSubjPageDataLoaderProps, TargetComponentProps>(LoadExamSubjQueryGql, {
+    return graphql<LoadLibraryQueryCacheForAdmin, withExamSubjPageDataLoaderProps, TargetComponentProps>(LoadExamSubjQueryGql, {
       options: ({ match }) => ({
         variables: {
           // branchId: match.params.branchId,

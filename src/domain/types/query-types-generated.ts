@@ -774,60 +774,38 @@ export type UpdateStudentMutation = {
     };
   };
 };
-export type FeeListQuery = {
-  fees: Array<{
+export type LibraryListQuery = {
+  libraries: Array<{
     id: number;
-    feeParticularsName: number;
-    feeParticularDesc: number;
-    studentType: number;
-    gender: number;
-    amount: number;
-    feeCategory: number;
+    bookTitle: string;
+    author: string;
+    bookNo: number;
+    noOfCopies: number;
+    additionalInfo: string;
+    uniqueNo: number;
     batch: number;
-    facility: number;
-    transportRoute: number;
-    college: number;
-    department: number;
-    branch: number;
-    academicYear: number;
+    subject: number;
   }>;
 };
 
-export type FeeQueryVariables = {
-  feeId: number;
+export type LibraryQueryVariables = {
+  libraryId: number;
 };
 
-export type FeeQuery = {
-  fee: {
+export type LibraryQuery = {
+  library: {
     id: number;
-    feeParticularsName: string;
-    feeParticularDesc: string;
-    studentType: string;
-    gender: string;
-    amount: number;
-    feeCategory: {
-      feeCategory: number;
-    };
+    bookTitle: string;
+    author: string;
+    bookNo: number;
+    noOfCopies: number;
+    additionalInfo: string;
+    uniqueNo: number;
     batch: {
-      batch: any;
+      id: number;
     };
-    facility: {
-      facility: string;
-    };
-    transportRoute: {
-      transportRoute: string;
-    };
-    college: {
-      college: string;
-    };
-    department: {
-      department: string;
-    };
-    branch: {
-      branch: string;
-    };
-    academicYear: {
-      academicYear: number;
+    subject: {
+      id: number;
     };
   };
 };
@@ -865,36 +843,20 @@ export type FeeFragment = {
   };
 };
 
-export type FeeDetailsFragment = {
+export type LibraryDetailsFragment = {
   id: number;
-  feeParticularsName: string;
-  feeParticularDesc: string;
-  studentType: string;
-  gender: string;
-  amount: number;
-  feeCategory: {
-    feeCategory: number;
-  };
+  bookTitle: string;
+  author: string;
+  bookNo: number;
+  noOfCopies: number;
+  additionalInfo: string;
+  uniqueNo: number;
+
   batch: {
-    batch: any;
+    id: number;
   };
-  facility: {
-    facility: string;
-  };
-  transportRoute: {
-    transportRoute: string;
-  };
-  college: {
-    college: string;
-  };
-  department: {
-    department: string;
-  };
-  branch: {
-    branch: string;
-  };
-  academicYear: {
-    academicYear: number;
+  subject: {
+    id: number;
   };
 };
 
@@ -1371,8 +1333,8 @@ export type FeeDetailsAddMutationType = {
 };
 
 /* tslint:enable */
-export type LoadExamSubjQueryCacheForAdmin = {
-  createExamFilterDataCache: {
+export type LoadLibraryQueryCacheForAdmin = {
+  createLibraryFilterDataCache: {
     branches: Array<{
       id: number;
       branchName: string;
@@ -1419,6 +1381,24 @@ export type LoadExamSubjQueryCacheForAdmin = {
     semesters: Array<{
       id: number;
       description: string;
+    }>;
+    libraries: Array<{
+      id: number;
+      bookTitle: string;
+      author: string;
+      bookNo: number;
+      noOfCopies: number;
+      additionalInfo: string;
+      uniqueNo: number;
+      batch: {
+        id: number;
+      };
+      subject: {
+        id: number;
+      };
+      batches: {
+        id: number;
+      };
     }>;
   };
 };
