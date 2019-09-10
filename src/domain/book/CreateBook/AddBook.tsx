@@ -90,6 +90,9 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     this.createSubjects = this.createSubjects.bind(this);
     this.savelibrary = this.savelibrary.bind(this);
     this.createLibraryAddRow = this.createLibraryAddRow.bind(this);
+    this.editLibrary = this.editLibrary.bind(this);
+    this.reset = this.reset.bind(this);
+
   }
 
   createDepartments(departments: any) {
@@ -281,6 +284,71 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
 
   }
 
+
+  editLibrary(obj: any) {
+    const { libraryData } = this.state;
+    let txtCn: any = document.querySelector("#batch");
+    let txtDs: any = document.querySelector("#subject");
+    let chkSts: any = document.querySelector("#bookTitle");
+    let dtPkSt: any = document.querySelector("#author");
+    let bkNo: any = document.querySelector("#bookNo");
+    let bkNc: any = document.querySelector("#noOfCopies");
+    let adinf: any = document.querySelector("#additionalInfo");
+    let unNo: any = document.querySelector('#uniqueNo');
+    txtCn.value = obj.batch;
+    txtDs.value = obj.subject;
+    chkSts.value = obj.bookTitle;
+    dtPkSt.value = obj.author;
+    bkNo.value = obj.bookNo;
+    bkNc.value = obj.noOfCopies;
+    adinf.value = obj.additionalInfo;   
+    unNo.value = obj.uniqueNo;
+   
+   
+    libraryData.libraries.id = obj.id;
+    libraryData.bookTitle = obj.bookTitle;
+    libraryData.author = obj.author;
+    libraryData.bookNo = obj.bookNo;
+    libraryData.noOfCopies = obj.noOfCopies;
+    libraryData.additionalInfo = obj.additionalInfo;
+    libraryData.uniqueNo = obj.uniqueNo;
+        
+    this.setState({
+     
+      libraryData: libraryData
+    });
+
+  }
+
+  reset() {
+    const { libraryData } = this.state;
+    let txtCn: any = document.querySelector("#batch");
+    let txtDs: any = document.querySelector("#subject");
+    let chkSts: any = document.querySelector("#bookTitle");
+    let dtPkSt: any = document.querySelector("#author");
+    let bkNo: any = document.querySelector("#bookNo");
+    let bkNc: any = document.querySelector("#noOfCopies");
+    let adinf: any = document.querySelector("#additionalInfo");
+    let unNo: any = document.querySelector('#uniqueNo');
+    txtCn.value = "";
+    txtDs.value = "";
+    chkSts.value = "";
+    dtPkSt.value = "";
+    bkNo.value = "";
+    bkNc.value = "";
+    adinf.value = "";
+    unNo.value = "";
+    libraryData.bookTitle = "";
+    libraryData.bookNo = "";
+    libraryData.author.id = "";
+    libraryData.noOfCopies = "";
+    libraryData.uniqueNo = "";
+    libraryData.additionalInfo = "";
+       
+    this.setState({
+      libraryData: libraryData
+    });
+  }
   // createLibraryAddRow(obj: any) {
   //   const { libraryData } = this.state;
   //   const len = obj.length;
@@ -323,18 +391,18 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
       let k = obj[x];
       retVal.push(
         <tr>
-          <td>{k.batch.id}</td>
-          <td>{k.subject.id}</td>
+          <td>{k.batch.batch}</td>
+          <td>{k.subject.subjectDesc}</td>
           <td>{k.bookTitle}</td>
           <td>{k.author}</td>
           <td>{k.bookNo}</td>
           <td>{k.noOfCopies}</td>
           <td>{k.uniqueNo}</td>
           <td>{k.additionalInfo}</td>
+         <td>
+            <button className="btn btn-primary" onClick={e => this.editLibrary(k)}>Edit</button>
+          </td> 
           {/* <td>
-            <button className="btn btn-primary" onClick={e => this.editFeeCategory(k)}>Edit</button>
-          </td>
-          <td>
             <button className="btn btn-primary" onClick={e => this.showDetail(e, k)}>Details</button>
           </td> */}
         </tr>
@@ -359,6 +427,7 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
 
         <div id="saveFeeCatDiv" className="fee-flex">
           <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savelibrary} style={{ width: '140px' }}>Add Library</button>
+          <button className="btn btn-primary mr-1" id="btnReset" name="btnReset" onClick={this.reset} >Reset</button>
         </div>
 
         <div className="p-1">
