@@ -6,7 +6,7 @@ import {ApolloProvider} from 'react-apollo';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import {createGraphQLClient} from '../../createGraphQLClient';
-import FeeSetup from './AddBook';
+import AddBook from './CreateBook';
 
 const graphQLClient = createGraphQLClient();
 
@@ -34,7 +34,7 @@ export default function init() {
             /> */}
              <Route
               path="/plugins/ems-library/page/feesetup"
-              component={FeeSetup}
+              component={AddBook}
             />
           </Switch>
         </BrowserRouter>

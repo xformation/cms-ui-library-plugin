@@ -877,44 +877,34 @@ export type FeeSummaryFragment = {
   academicYear: number;
 };
 
-export type UpdateFeeInput = {
+export type UpdateLibraryInput = {
   id?: number | null;
-  feeParticularsName?: number | null;
-  feeParticularDesc?: number | null;
-  studentType?: number | null;
-  gender?: number | null;
-  amount?: number | null;
-  feeCategory?: number | null;
+  bookTitle?: number | null;
+  author?: number | null;
+  bookNo?: number | null;
+  noOfCopies?: number | null;
+  additionalInfo?: number | null;
+  uniqueNo?: number | null;
   batch?: number | null;
-  facility?: number | null;
-  transportRoute?: number | null;
-  college?: number | null;
-  department?: number | null;
-  branch?: number | null;
-  academicYear?: number | null;
+  subject?: number | null;
 };
 
-export type UpdateFeeMutationVariables = {
-  input: UpdateFeeInput;
+export type UpdateLibraryMutationVariables = {
+  input: UpdateLibraryInput;
 };
 
-export type UpdateFeeMutation = {
-  updateFee: {
-    fee: {
+export type LibraryUpdateMutation = {
+  updateLibrary: {
+    library: {
       id: number;
-      feeParticularsName: number;
-      feeParticularDesc: number;
-      studentType: number;
-      gender: number;
-      amount: number;
-      feeCategory: number;
+      bookTitle: number;
+      author: number;
+      bookNo: number;
+      noOfCopies: number;
+      additionalInfo: number;
+      uniqueNo: number;
       batch: number;
-      facility: number;
-      transportRoute: number;
-      college: number;
-      department: number;
-      branch: number;
-      academicYear: number;
+      subject: number;
     };
   };
 };
@@ -1270,26 +1260,23 @@ export type LoadFeeSetupCacheType = {
   };
 };
 
-export type FeeCategoryUpdateMutationType = {
-  updateFeeCategory: Array<{
+export type LibraryUpdateMutationType = {
+  updateLibrary: Array<{
     id: number;
-    categoryName: string;
-    description: string;
-    status: any;
-    createdBy: string;
-    createdOn: any;
-    updatedBy: string;
-    updatedOn: any;
-    startDate: any;
-    endDate: any;
-    branch: {
+    bookTitle: string;
+    author: string;
+    bookNo: any;
+    noOfCopies: any;
+    additionalInfo: any;
+    uniqueNo: any;
+    batch: {
       id: number;
-      branchName: string;
+      batch: string;
     };
-    strCreatedOn: string;
-    strUpdatedOn: string;
-    strStartDate: string;
-    strEndDate: string;
+    subject: {
+      id: number;
+      subjectDesc: string;
+    };
   }>;
 };
 
