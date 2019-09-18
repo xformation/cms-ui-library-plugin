@@ -350,44 +350,9 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
       libraryData: libraryData
     });
   }
-  // createLibraryAddRow(obj: any) {
-  //   const { libraryData } = this.state;
-  //   const len = obj.length;
-  //   const retVal = [];
-  //   // let aryLength = 0;
-  //   for (let p = 0; p < len; p++) {
-  //    let v = obj[p];
-  //   // if (v.data.addLibrary === undefined || v.data.addLibrary === null) {
-  //   //   return;
-  //   // }
-  //   for (let x = 0; x < v.data.addLibrary.length; x++) {
-  //     let k = v.data.addLibrary[x];
-  //     retVal.push(
-  //       <tr>
-  //         <td>{k.id}</td>
-  //         <td>{k.bookTitle}</td>
-  //         {/* <td>{k.description}</td>
-  //         <td>{k.status}</td>
-  //         <td>{k.strStartDate}</td>
-  //         <td>{k.strEndDate}</td> */}
-          
-            
-  //           {/* <button className="btn btn-primary" onClick={e => this.editFeeCategory(k)}>Edit</button>
-  //         </td>
-  //         <td>
-  //           <button className="btn btn-primary" onClick={e => this.showDetail(e, k)}>Details</button>
-  //         </td> */}
-  //       </tr>
-  //     );
-  //       }
-  //   }
-  //   return retVal;
-  // }
+
   createLibraryAddRow(obj: any) {
-    // const len = obj.length;
-    const retVal = [];
-    // for (let p = 0; p < len; p++) {
-    //   let v = obj[p];
+    const retVal = [];   
     for (let x = 0; x < obj.length; x++) {
       let k = obj[x];
       retVal.push(
@@ -403,9 +368,6 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
          <td>
             <button className="btn btn-primary" onClick={e => this.editLibrary(k)}>Edit</button>
           </td> 
-          {/* <td>
-            <button className="btn btn-primary" onClick={e => this.showDetail(e, k)}>Details</button>
-          </td> */}
         </tr>
       );
     }
@@ -414,7 +376,6 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
   }
 
  updateLibrary(obj: any) {
-    // const { id, value } = e.nativeEvent.target;
     const { updateLibraryMutation } = this.props;
     const { libraryData } = this.state;
 
@@ -480,7 +441,6 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
       const sdt = data;
       libraryData.librarysaveData = [];
       libraryData.librarysaveData.push(sdt);
-      // = data.data.addFeeCategory;
       this.setState({
         libraryData: libraryData
       });
@@ -500,7 +460,6 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     const len = obj.length;
     const retVal = [];
     let aryLength = 0;
-    // for (let p = 0; p < len; p++) {
     let v = obj[0];
     if (v.data.updateLibrary === undefined || v.data.updateLibrary === null) {
       return;
@@ -516,16 +475,9 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
           <td>{k.noOfCopies}</td>
           <td>{k.additionalInfo}</td>
           <td>{k.uniqueNo}</td>
-          {/* <td>
-            <button className="btn btn-primary" onClick={e => this.editFeeCategory(k)}>Edit</button>
-          </td>
-          <td>
-            <button className="btn btn-primary" onClick={e => this.showDetail(e, k)}>Details</button>
-          </td> */}
         </tr>
       );
     }
-    // }
 
 
     return retVal;

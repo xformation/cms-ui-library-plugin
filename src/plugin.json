@@ -35,6 +35,13 @@
       "addToNav": true,
       "defaultNav": false,
       "component": "AddBook"
+    },
+    {
+      "type": "page",
+      "name": "BookListPage",
+      "addToNav": true,
+      "defaultNav": false,
+      "component": "BookListPage"
     }
   ],
   "dependencies": {

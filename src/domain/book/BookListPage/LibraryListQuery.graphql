@@ -1,0 +1,18 @@
+mutation getBookList($filter:LibraryListFilterInput!){
+    getBookList(filter:$filter){
+      id
+    bookTitle
+    noOfCopies
+    bookNo
+    additionalInfo
+    uniqueNo
+    batch{
+      id
+      batch
+    }
+    subject{
+      id
+      subjectDesc
+    }
+  }
+}
