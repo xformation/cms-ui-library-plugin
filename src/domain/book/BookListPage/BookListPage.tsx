@@ -215,25 +215,44 @@ class Librarytable extends React.Component<LibraryPageProps, LibraryTableStates>
       for (let i = 0; i < length; i++) {
         const library = libraries[i];
         if(search){
-          if(library.bookTitle.indexOf(search) !== -1){
+          if(library.bookTitle.indexOf(search) !== -1 ){
             retVal.push(
-              <tr key={library.id}>
-                
+              <tr key={library.id}>                
                 <td>{library.bookTitle}</td>
-                <td>{library.bookTitle}</td>
-                <td>{library.bookTitle}</td>
+                <td>{library.author}</td>
+                <td>{library.noOfCopies}</td>
+                <td>{library.bookNo}</td>
+                <td>{library.additionalInfo}</td>
+                <td>{library.uniqueNo}</td>
                 <td>{library.batch.batch}</td>
+                <td>{library.subject.subjectDesc}</td>
               </tr>
             );
           }
-        } else{
+        else if(library.author.indexOf(search) !== -1 ){
           retVal.push(
-            <tr key={library.id}>
-             
-             <td>{library.bookTitle}</td>
+            <tr key={library.id}>                
               <td>{library.bookTitle}</td>
-              <td>{library.bookTitle}</td>
+              <td>{library.author}</td>
+              <td>{library.noOfCopies}</td>
+              <td>{library.bookNo}</td>
+              <td>{library.additionalInfo}</td>
+              <td>{library.uniqueNo}</td>
               <td>{library.batch.batch}</td>
+              <td>{library.subject.subjectDesc}</td>
+            </tr>
+          );
+        }} else{
+          retVal.push(
+            <tr key={library.id}>             
+                <td>{library.bookTitle}</td>
+                <td>{library.author}</td>
+                <td>{library.noOfCopies}</td>
+                <td>{library.bookNo}</td>
+                <td>{library.additionalInfo}</td>
+                <td>{library.uniqueNo}</td>
+                <td>{library.batch.batch}</td>
+                <td>{library.subject.subjectDesc}</td>
             </tr>
           );
         }
@@ -393,12 +412,12 @@ class Librarytable extends React.Component<LibraryPageProps, LibraryTableStates>
       <section className="customCss">
         <h3 className="bg-heading-bgStudent p-1 mb-1">
           <i className="fa fa-university stroke-transparent mr-1" aria-hidden="true" />{' '}
-          Admin - Student Management
+          Admin - Library Management
         </h3>
         <div className="container-fluid p-1 ">
           <div className="m-b-1 bg-heading-bgStudent studentListFlex">
             <div className="">
-              <h4 className="ptl-06">Student Details</h4>
+              <h4 className="ptl-06">Book Details</h4>
             </div>
             
           </div>
@@ -406,17 +425,15 @@ class Librarytable extends React.Component<LibraryPageProps, LibraryTableStates>
           <div>
             <div className="student-flex">
               
-            <td>
-                    <select required name="batch" id="batch" onChange={this.onChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
+                <td>
+                  <select required name="batch" id="batch" onChange={this.onChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
                       {this.createBatches(this.props.data.createLibraryFilterDataCache.batches)}
                     </select>
                   </td>
                   <td>
                     <select required name={"subject"} id="subject" onChange={this.onChange} value={libraryData.subject.id} className="gf-form-input max-width-22">    {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, libraryData.batch.id)}
                     </select>
-                  </td>
-
-             
+                  </td>            
              
              
               <div className="margin-bott max-width-22">
@@ -425,23 +442,20 @@ class Librarytable extends React.Component<LibraryPageProps, LibraryTableStates>
               </div>
             </div>
             <div className="m-b-1 bg-heading-bg studentSearch">
-              {/* <h4 className="ptl-06"></h4> */}
-              <button className="btn btn-primary max-width-13" id="btnFind" name="btnFind" onClick={this.onClick} style={w180}>Search Students</button>
+              <button className="btn btn-primary max-width-13" id="btnFind" name="btnFind" onClick={this.onClick} style={w180}>Search Book</button>
             </div>
 
             <table id="studentlistpage" className="striped-table fwidth bg-white">
               <thead>
-                <tr>
-                  
-                  <th>Student Name</th>
-                  <th>Roll No</th>
-                  <th>Student Id</th>
-                  <th>Department</th>
-                  <th>Year</th>
-                  <th>Section</th>
-                  <th>Gender</th>
-                  <th>Type</th>
-                  <th>Primary Contact</th>
+                <tr>                  
+                  <th>Book Title</th>
+                  <th>Author</th>
+                  <th>No Of Copies</th>
+                  <th>Book No</th>
+                  <th>Additional Info</th>
+                  <th>Unique No</th>
+                  <th>Batch</th>
+                  <th>Subject</th>
                 </tr>
               </thead>
               <tbody>

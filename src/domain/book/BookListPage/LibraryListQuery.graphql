@@ -2,6 +2,7 @@ mutation getBookList($filter:LibraryListFilterInput!){
     getBookList(filter:$filter){
       id
     bookTitle
+    author
     noOfCopies
     bookNo
     additionalInfo
