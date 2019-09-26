@@ -39,7 +39,10 @@ type LibraryState = {
   subjects: any,
   submitted: any,
   add: any,
-  update: any
+  toggle: any,
+  update: any,
+  countParticularDiv: any,
+  count: any
 };
 
 class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
@@ -78,9 +81,12 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
       departments: [],
       batches: [],
       subjects: [],
+      countParticularDiv: 0,
+      count: [],
       submitted: false,
       add: false,
-      update: false
+      update: false,
+      toggle: []
     };
 
     this.createDepartments = this.createDepartments.bind(this);
@@ -92,7 +98,9 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     this.editLibrary = this.editLibrary.bind(this);
     this.reset = this.reset.bind(this);
     this.updateLibrary = this.updateLibrary.bind(this);
-
+    this.showDetail = this.showDetail.bind(this);
+    this.back = this.back.bind(this);
+    this.createParticularDiv = this.createParticularDiv.bind(this);
   }
 
   createDepartments(departments: any) {
@@ -368,6 +376,9 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
          <td>
             <button className="btn btn-primary" onClick={e => this.editLibrary(k)}>Edit</button>
           </td> 
+          <td>
+            <button className="btn btn-primary" onClick={e => this.showDetail(e, k)}>Details</button>
+          </td>
         </tr>
       );
     }
@@ -483,6 +494,101 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     return retVal;
   }
 
+  showDetail(e: any, obj: any) {
+    let { count, countParticularDiv } = this.state;
+    countParticularDiv = 0;
+    count = [];
+    this.setState({
+      countParticularDiv,
+      count
+    });
+    let fCatGrid: any = document.querySelector("#feeCatagoryGrid");
+    fCatGrid.setAttribute("class", "hide");
+
+    let fCatDtDiv: any = document.querySelector("#feeCatDetailDiv");
+    fCatDtDiv.setAttribute("class", "b-1");
+
+    let svFCatDiv: any = document.querySelector("#saveFeeCatDiv");
+    svFCatDiv.setAttribute("class", "hide");
+
+    let bDiv: any = document.querySelector("#backDiv");
+    bDiv.setAttribute("class", "");
+    this.editLibrary(obj);
+    this.showParticularDiv(e);
+
+  }
+  toggleApplicableTo = (i: any, e: any) => {
+    let { toggle } = this.state;
+    toggle[i] = !toggle[i];
+    this.setState({
+      toggle
+    });
+  }
+
+  showParticularDiv = (e: any) => {
+    let { count } = this.state;
+    count[this.state.countParticularDiv] = 0;
+    this.setState({
+      countParticularDiv: this.state.countParticularDiv + 1,
+      count
+    });
+    let dvPrt: any = document.querySelectorAll("#feeParticularDiv");
+    for (let i = 0; i < dvPrt.length; i++) {
+      // let dvPrt : any = document.querySelector("#feeParticularDiv"+i);
+      dvPrt[i].setAttribute("class", "feeDetails");
+    }
+    // for(let i = 0; i < this.state.countParticularDiv; i++){
+    //   let dvPrt : any = document.querySelector("#feeParticularDiv"+i);
+    //   dvPrt.setAttribute("class", "feeDetails");
+    // }
+
+  }
+
+  back() {
+    let { count, countParticularDiv } = this.state;
+    countParticularDiv = 0;
+    count = [];
+    this.setState({
+      countParticularDiv,
+      count
+    });
+    let fCatGrid: any = document.querySelector("#feeCatagoryGrid");
+    fCatGrid.setAttribute("class", "b-1");
+
+    let fCatDtDiv: any = document.querySelector("#feeCatDetailDiv");
+    fCatDtDiv.setAttribute("class", "hide");
+
+    let svFCatDiv: any = document.querySelector("#saveFeeCatDiv");
+    svFCatDiv.setAttribute("class", "fee-flex");
+
+    let bDiv: any = document.querySelector("#backDiv");
+    bDiv.setAttribute("class", "hide");
+  }
+
+  createParticularDiv() {
+    const { libraryData } = this.state;
+    const retVal = [];
+
+    for (let i = 0; i < libraryData.noOfCopies; i++) {
+      retVal.push(
+        <tbody>
+          <tr>
+            <td>
+              <input type="number" id={"minMarks" + i} name="minMarks" value={libraryData.noOfCopies} onChange={this.onChange} ></input>
+            </td>
+            <td>
+              <input type="number" id={"maxMarks" + i} name="maxMarks" value={libraryData.noOfCopies} onChange={this.onChange} ></input>
+            </td>
+            <td>
+              <input type="text" id={"grades" + i} name="grades" value={libraryData.noOfCopies} onChange={this.onChange} ></input>
+            </td>
+          </tr>
+        </tbody>
+      );
+    }
+    return retVal;
+  }
+
   render() {
     const { data: { createLibraryFilterDataCache, refetch }, addLibraryMutation, updateLibraryMutation } = this.props;
     const { libraryData, departments, batches, subjects, submitted } = this.state;
@@ -494,12 +600,18 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
           <i className="fa fa-university stroke-transparent" aria-hidden="true" />{' '}
           Admin - Library Management
           </h3>
-
-        <div id="saveFeeCatDiv" className="fee-flex">
-          <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savelibrary} style={{ width: '140px' }}>Add Book</button>
-          <button className="btn btn-primary mr-1" id="btnReset" name="btnReset" onClick={this.reset} >Reset</button>
-          <button className="btn btn-primary mr-1" id="btnUpdateFeeCategory" name="btnUpdateFeeCategory" onClick={this.updateLibrary} style={{ width: '170px' }}>Update Book</button>
-        </div>
+        <div className="stroke-transparent mr-1">&nbsp;</div>
+        <div id="headerRowDiv" className="b-1 h5-fee-bg j-between">
+        <div className="m-1 fwidth">Create Books</div>
+          <div id="saveFeeCatDiv" className="fee-flex">
+            <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savelibrary} style={{ width: '140px' }}>Add Book</button>
+            <button className="btn btn-primary mr-1" id="btnReset" name="btnReset" onClick={this.reset} >Reset</button>
+            <button className="btn btn-primary mr-1" id="btnUpdateFeeCategory" name="btnUpdateFeeCategory" onClick={this.updateLibrary} style={{ width: '170px' }}>Update Book</button>
+          </div>
+          <div id="backDiv" className="hide">
+              <button className="btn btn-primary mr-1" id="btnBack" name="btnBack" onClick={this.back} style={{ padding: "13px" }}>Back</button>
+          </div>
+        </div> 
 
         <div className="p-1">
           <form className="gf-form-group" onSubmit={this.onFormSubmit} >
@@ -590,6 +702,11 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
               } */}
             </tbody>
           </table>
+        </div>
+        <div id="feeCatDetailDiv" className="hide">
+          {
+            this.createParticularDiv()
+          }
         </div>
       </section>
     );
