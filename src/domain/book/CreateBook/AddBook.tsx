@@ -602,10 +602,13 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     const { libraryData } = this.state;
     const retVal = [];
 
-    for (let i = 0; i < libraryData.noOfCopies; i++) {
+    for (let i = 1; i < libraryData.noOfCopies; i++) {
       retVal.push(
         <tbody>
           <tr>
+          <td>
+              <input type="number" id={"author" + i} name="id" value={i} onChange={this.onChange} ></input>
+            </td>
             <td>
               <input type="text" id={"author" + i} name="author" value={libraryData.author} onChange={this.onChange} ></input>
             </td>
@@ -616,10 +619,10 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
               <input type="date" id={"dueDate" + i} name="dueDate" value={libraryData.dueDate}  onChange={this.handleduedateTimeChange} ></input>
             </td>
             <td>
-              <input type="number" id={"sid" + i} name="sid" value={libraryData.noOfCopies} onChange={this.onChange} ></input>
+              <input type="number" id={"sid" + i} name="sid"  onChange={this.onChange} ></input>
             </td>
             <td>
-              <input type="text" id={"status" + i} name="status" value={libraryData.noOfCopies} onChange={this.onChange} ></input>
+              <input type="text" id={"status" + i} name="status" value={libraryData.status} onChange={this.onChange} ></input>
             </td>
             <td>
               <input type="date" id={"recDate" + i} name="recDate" value={libraryData.receivedDate} onChange={this.handleRecDateTimeChange} ></input>
@@ -687,7 +690,7 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
    this.setState({ libraryData: libraryData })
    for (let i = 0; i < libraryData.noOfCopies; i++) {
      let sd = new SaData(libraryData.isDate["issueDate" + i], libraryData.dDate["dueDate"+ i],libraryData.rDate["recDate"+ i],3,"AVAILABLE","2398","1622");
-    // let sd = new SaData(gradeData.exmMinMarks["minMarks" + i], gradeData.exmMaxMarks["maxMarks" + i], gradeData.exmgradesMarks["grades" + i], gradeData.exmgroupvalues["groupvalue" + i]);
+   
     libraryData.payLoad.push(sd);
   }
  
@@ -728,7 +731,7 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
 
 
   render() {
-    const { data: { createLibraryFilterDataCache, refetch }, addLibraryMutation, updateLibraryMutation } = this.props;
+    const { data: { createLibraryFilterDataCache, refetch }, addBook, addLibraryMutation, updateLibraryMutation } = this.props;
     const { libraryData, departments, batches, subjects, submitted } = this.state;
 
     return (
@@ -846,12 +849,13 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
             <table className="fwidth">
               <thead >
                 <tr>
+                  <th>Book No</th>
                   <th>Author Name</th>
                   <th>Isue Date</th>
                   <th>Due Date</th>
                   <th>Student Id</th>
                   <th>Student Name</th>
-                  <th>Status</th>
+                  <th>Recieved Date</th>
                 </tr>
               </thead>
               {this.createParticularDiv()}

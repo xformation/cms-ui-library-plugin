@@ -1451,8 +1451,8 @@ export type BookAddMutationType = {
     issueDate: Date;
     dueDate: Date;
     receivedDate: Date;
-    noOfCopiesAvailable: number;
-    status: string;
+    noOfCopiesAvailable: any;
+    status: any;
     student: {
       id: number;
     };
@@ -1460,4 +1460,17 @@ export type BookAddMutationType = {
       id: number;
     };
   }>;
+};
+export type AddBookInput = {
+  issueDate?: any | null;
+  dueDate?: any | null;
+  receivedDate?: any | null;
+  noOfCopiesAvailable?: number | null;
+  status?: string | null;
+  student: {
+    student?: any | null;
+  };
+  library: {
+    library?: any | null;
+  };
 };
