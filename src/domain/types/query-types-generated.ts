@@ -1445,3 +1445,19 @@ export type LibraryAddMutationType = {
     };
   }>;
 };
+export type BookAddMutationType = {
+  addBook: Array<{
+    id: number;
+    issueDate: Date;
+    dueDate: Date;
+    receivedDate: Date;
+    noOfCopiesAvailable: number;
+    status: string;
+    student: {
+      id: number;
+    };
+    library: {
+      id: number;
+    };
+  }>;
+};

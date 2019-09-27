@@ -4,7 +4,8 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import { graphql, QueryProps, MutationFunc, compose } from "react-apollo";
 import * as LibraryAddMutation from './LibraryAddMutation.graphql';
 import * as LibraryUpdateMutation from './LibraryUpdateMutation.graphql'
-import { LoadLibraryQueryCacheForAdmin, LibraryAddMutationType, LibraryUpdateMutationType } from '../../types';
+import * as BookAddMutation from './BookAddMutation.graphql'
+import { LoadLibraryQueryCacheForAdmin, LibraryAddMutationType, LibraryUpdateMutationType, BookAddMutationType } from '../../types';
 import withExamSubjDataLoader from './withExamSubjDataLoader';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -27,7 +28,7 @@ type LibraryRootProps = RouteComponentProps<{
 type LibraryPageProps = LibraryRootProps & {
   addLibraryMutation: MutationFunc<LibraryAddMutationType>;
   updateLibraryMutation: MutationFunc<LibraryUpdateMutationType>;
-
+  addBook: MutationFunc<BookAddMutationType>;
 };
 
 type LibraryState = {
@@ -44,6 +45,27 @@ type LibraryState = {
   countParticularDiv: any,
   count: any
 };
+
+class SaData {
+
+  issueDate: any;
+  dueDate: any;
+  receivedDate: any;
+  noOfCopiesAvailable: any;
+  status: any;
+  studentId: any;
+  libraryId: any;
+  constructor(issueDate: any, dueDate: any, receivedDate: any, noOfCopiesAvailable: any, status: any, studentId: any, libraryId: any) {
+    this.issueDate = issueDate;
+    this.dueDate = dueDate;
+    this.receivedDate = receivedDate;
+    this.noOfCopiesAvailable = noOfCopiesAvailable;
+    this.status = status;
+    this.studentId = studentId;
+    this.libraryId = libraryId;
+      
+  }
+}
 
 class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
   constructor(props: any) {
@@ -75,18 +97,24 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
           id: ""
         },
         librarysaveData: [],
+        bookissuedate: {},
+        rDate:{},
+        isDate: {},
+        dDate: {},
+        payLoad: [],
       },
-      branches: [],
-      academicYears: [],
-      departments: [],
-      batches: [],
-      subjects: [],
-      countParticularDiv: 0,
-      count: [],
-      submitted: false,
-      add: false,
-      update: false,
-      toggle: []
+        branches: [],
+        academicYears: [],
+        departments: [],
+        batches: [],
+        subjects: [],
+        countParticularDiv: 0,
+        count: [],
+        submitted: false,
+        add: false,
+        update: false,
+        toggle: [],
+      
     };
 
     this.createDepartments = this.createDepartments.bind(this);
@@ -101,6 +129,9 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     this.showDetail = this.showDetail.bind(this);
     this.back = this.back.bind(this);
     this.createParticularDiv = this.createParticularDiv.bind(this);
+    this.handleRecDateTimeChange =this.handleRecDateTimeChange.bind(this);
+    this.handleduedateTimeChange = this.handleduedateTimeChange.bind(this);
+    this.handleissuedateTimeChange = this.handleissuedateTimeChange.bind(this);
   }
 
   createDepartments(departments: any) {
@@ -159,7 +190,7 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     e.preventDefault();
 
 
-    if (libraryData.department.id && libraryData.batch.id) {
+    if (libraryData.student.id) {
       e.target.querySelector("#detailGridTable").removeAttribute("class");
       let btn = e.target.querySelector("button[type='submit']");
       btn.setAttribute("disabled", true);
@@ -216,6 +247,8 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     }
 
   }
+
+ 
 
   savelibrary(e: any) {
     const { id, value } = e.nativeEvent.target;
@@ -574,13 +607,22 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
         <tbody>
           <tr>
             <td>
-              <input type="number" id={"minMarks" + i} name="minMarks" value={libraryData.noOfCopies} onChange={this.onChange} ></input>
+              <input type="text" id={"author" + i} name="author" value={libraryData.author} onChange={this.onChange} ></input>
             </td>
             <td>
-              <input type="number" id={"maxMarks" + i} name="maxMarks" value={libraryData.noOfCopies} onChange={this.onChange} ></input>
+              <input type="date" id={"issueDate" + i} name="issueDate" value={libraryData.issueDate} onChange={this.handleissuedateTimeChange} ></input>
             </td>
             <td>
-              <input type="text" id={"grades" + i} name="grades" value={libraryData.noOfCopies} onChange={this.onChange} ></input>
+              <input type="date" id={"dueDate" + i} name="dueDate" value={libraryData.dueDate}  onChange={this.handleduedateTimeChange} ></input>
+            </td>
+            <td>
+              <input type="number" id={"sid" + i} name="sid" value={libraryData.noOfCopies} onChange={this.onChange} ></input>
+            </td>
+            <td>
+              <input type="text" id={"status" + i} name="status" value={libraryData.noOfCopies} onChange={this.onChange} ></input>
+            </td>
+            <td>
+              <input type="date" id={"recDate" + i} name="recDate" value={libraryData.receivedDate} onChange={this.handleRecDateTimeChange} ></input>
             </td>
           </tr>
         </tbody>
@@ -588,6 +630,102 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
     }
     return retVal;
   }
+
+  handleissuedateTimeChange = (e: any) => {
+    const { id, value } = e.nativeEvent.target;
+    const { libraryData } = this.state;
+    libraryData.isDate[id] = value;
+    this.setState({ libraryData: libraryData })
+  }
+
+  handleduedateTimeChange = (e: any) => {
+    const { id, value } = e.nativeEvent.target;
+    const { libraryData } = this.state;
+    libraryData.dDate[id] = value;
+    this.setState({ libraryData: libraryData })
+  }
+
+  handleRecDateTimeChange = (e: any) => {
+    const { id, value } = e.nativeEvent.target;
+    const { libraryData } = this.state;
+    libraryData.rDate[id] = value;
+    this.setState({ libraryData: libraryData })
+  }
+
+
+  
+  applyChange = (e: any) => {
+   
+    const { addBook } = this.props;
+    const { libraryData } = this.state;
+    e.preventDefault();
+    
+    for (let i = 0; i < libraryData.noOfCopies; i++) {
+      let exdt: any = document.querySelector("#issueDate" + i);
+      if (libraryData.isDate[exdt.id] === undefined || libraryData.isDate[exdt.id] === null || libraryData.isDate[exdt.id] === "") {
+        alert("Please select an issue date");
+
+        return;
+      }
+    }
+    for (let i = 0; i < libraryData.noOfCopies; i++) {
+      let exdt: any = document.querySelector("#dueDate" + i);
+      if (libraryData.dDate[exdt.id] === undefined || libraryData.dDate[exdt.id] === null || libraryData.dDate[exdt.id] === "") {
+        alert("Please select an due date");
+
+        return;
+      }
+    }
+    for (let i = 0; i < libraryData.noOfCopies; i++) {
+      let exdt: any = document.querySelector("#recDate" + i);
+      if (libraryData.rDate[exdt.id] === undefined || libraryData.rDate[exdt.id] === null || libraryData.rDate[exdt.id] === "") {
+        alert("Please select an recieve date");
+
+        return;
+      }
+    }
+   this.setState({ libraryData: libraryData })
+   for (let i = 0; i < libraryData.noOfCopies; i++) {
+     let sd = new SaData(libraryData.isDate["issueDate" + i], libraryData.dDate["dueDate"+ i],libraryData.rDate["recDate"+ i],3,"AVAILABLE","2398","1622");
+    // let sd = new SaData(gradeData.exmMinMarks["minMarks" + i], gradeData.exmMaxMarks["maxMarks" + i], gradeData.exmgradesMarks["grades" + i], gradeData.exmgroupvalues["groupvalue" + i]);
+    libraryData.payLoad.push(sd);
+  }
+ 
+  console.log('total IDS : ', libraryData.selectedIds);
+  let btn : any = document.querySelector("#btnSave");
+  btn.setAttribute("disabled", true);
+  return addBook({
+    variables: { input: libraryData.payLoad },
+  }).then(data => {
+    btn.removeAttribute("disabled");
+    console.log('Saved Result: ', data.data.addBook);
+    alert("Added Succesfully");
+  }).catch((error: any) => {
+    btn.removeAttribute("disabled");
+    console.log('there is some error ', error);
+    return Promise.reject(`there is some error while updating : ${error}`);
+  });
+  } 
+  
+  
+  
+
+// changeStartDate = (e: any) => {
+//   const varDt = e;
+//   console.log("start date...", varDt);
+//   this.setState({
+//     startDate: varDt
+//   });
+// }
+
+// changeEndDate = (e: any) => {
+//   const varDt = e;
+//   console.log("end date...", varDt);
+//   this.setState({
+//     endDate: varDt
+//   });
+// }
+
 
   render() {
     const { data: { createLibraryFilterDataCache, refetch }, addLibraryMutation, updateLibraryMutation } = this.props;
@@ -610,6 +748,7 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
           </div>
           <div id="backDiv" className="hide">
               <button className="btn btn-primary mr-1" id="btnBack" name="btnBack" onClick={this.back} style={{ padding: "13px" }}>Back</button>
+             <button className="btn btn-primary mr-1" id="btnSave" name="btnSave" onClick={this.applyChange}>Save</button>
           </div>
         </div> 
 
@@ -704,10 +843,25 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
           </table>
         </div>
         <div id="feeCatDetailDiv" className="hide">
+            <table className="fwidth">
+              <thead >
+                <tr>
+                  <th>Author Name</th>
+                  <th>Isue Date</th>
+                  <th>Due Date</th>
+                  <th>Student Id</th>
+                  <th>Student Name</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              {this.createParticularDiv()}
+            </table>
+          </div>
+        {/* <div id="feeCatDetailDiv" className="hide">
           {
             this.createParticularDiv()
           }
-        </div>
+        </div> */}
       </section>
     );
   }
@@ -721,7 +875,10 @@ export default withExamSubjDataLoader(
     }),
     graphql<LibraryUpdateMutationType, LibraryRootProps>(LibraryUpdateMutation, {
       name: "updateLibraryMutation"
-    })
+    }),
+    graphql<BookAddMutationType, LibraryRootProps>(BookAddMutation, {
+      name: "addBook",
+    }),
   )
     (MarkExam) as any
 );
