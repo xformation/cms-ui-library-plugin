@@ -33,7 +33,7 @@
       "type": "page",
       "name": "AddBook",
       "addToNav": true,
-      "defaultNav": false,
+      "defaultNav": true,
       "component": "AddBook"
     },
     {

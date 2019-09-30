@@ -67,7 +67,7 @@ class SaData {
   }
 }
 
-class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
+class AddBook extends React.Component<LibraryPageProps, LibraryState>{
   constructor(props: any) {
     super(props);
     this.state = {
@@ -607,25 +607,31 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
         <tbody>
           <tr>
           <td>
-              <input type="number" id={"author" + i} name="id" value={i} onChange={this.onChange} ></input>
+              <input type="number" id={"author" + i} name="id" value={i} className="w-100"  onChange={this.onChange} ></input>
             </td>
-            <td>
+            {/* <td>
               <input type="text" id={"author" + i} name="author" value={libraryData.author} onChange={this.onChange} ></input>
+            </td> */}
+            <td>
+              <input type="date" className="gf-form-input w-135" id={"issueDate" + i} name="issueDate" value={libraryData.issueDate} onChange={this.handleissuedateTimeChange} ></input>
             </td>
             <td>
-              <input type="date" id={"issueDate" + i} name="issueDate" value={libraryData.issueDate} onChange={this.handleissuedateTimeChange} ></input>
+              <input type="date" className="gf-form-input w-135" id={"dueDate" + i} name="dueDate" value={libraryData.dueDate}  onChange={this.handleduedateTimeChange} ></input>
             </td>
             <td>
-              <input type="date" id={"dueDate" + i} name="dueDate" value={libraryData.dueDate}  onChange={this.handleduedateTimeChange} ></input>
+              <input type="number" className="gf-form-input w-100" id={"sid" + i} name="sid"  onChange={this.onChange} ></input>
             </td>
             <td>
-              <input type="number" id={"sid" + i} name="sid"  onChange={this.onChange} ></input>
+              <input type="text" id={"sname" + i} name="sname"  onChange={this.onChange} ></input>
+            </td>             
+            <td>
+              <input type="date" className="gf-form-input w-135" id={"recDate" + i} name="recDate" value={libraryData.receivedDate} onChange={this.handleRecDateTimeChange} ></input>
             </td>
             <td>
               <input type="text" id={"status" + i} name="status" value={libraryData.status} onChange={this.onChange} ></input>
             </td>
             <td>
-              <input type="date" id={"recDate" + i} name="recDate" value={libraryData.receivedDate} onChange={this.handleRecDateTimeChange} ></input>
+              <button>Assign to</button>
             </td>
           </tr>
         </tbody>
@@ -710,26 +716,6 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
   });
   } 
   
-  
-  
-
-// changeStartDate = (e: any) => {
-//   const varDt = e;
-//   console.log("start date...", varDt);
-//   this.setState({
-//     startDate: varDt
-//   });
-// }
-
-// changeEndDate = (e: any) => {
-//   const varDt = e;
-//   console.log("end date...", varDt);
-//   this.setState({
-//     endDate: varDt
-//   });
-// }
-
-
   render() {
     const { data: { createLibraryFilterDataCache, refetch }, addBook, addLibraryMutation, updateLibraryMutation } = this.props;
     const { libraryData, departments, batches, subjects, submitted } = this.state;
@@ -743,7 +729,7 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
           </h3>
         <div className="stroke-transparent mr-1">&nbsp;</div>
         <div id="headerRowDiv" className="b-1 h5-fee-bg j-between">
-        <div className="m-1 fwidth">Create Books</div>
+        <div className="m-1">Create Books</div>
           <div id="saveFeeCatDiv" className="fee-flex">
             <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savelibrary} style={{ width: '140px' }}>Add Book</button>
             <button className="btn btn-primary mr-1" id="btnReset" name="btnReset" onClick={this.reset} >Reset</button>
@@ -824,6 +810,7 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
                   <th>Unique No</th>
                   <th>Additional Info</th>
                   <th>Edit</th>
+                  <th>Details</th>
               </tr>
             </thead>
             <tbody>
@@ -850,12 +837,14 @@ class MarkExam extends React.Component<LibraryPageProps, LibraryState>{
               <thead >
                 <tr>
                   <th>Book No</th>
-                  <th>Author Name</th>
+                  {/* <th>Author Name</th> */}
                   <th>Isue Date</th>
                   <th>Due Date</th>
                   <th>Student Id</th>
                   <th>Student Name</th>
                   <th>Recieved Date</th>
+                  <th>Status</th>
+                  <th>Assigned to</th>
                 </tr>
               </thead>
               {this.createParticularDiv()}
@@ -884,5 +873,5 @@ export default withExamSubjDataLoader(
       name: "addBook",
     }),
   )
-    (MarkExam) as any
+    (AddBook) as any
 );

@@ -1,7 +1,0 @@
-#import "../gqlfragments/studentDetails.graphql"
-
-query student($studentId: Long!) {
-  student(id: $studentId){
-  ...studentDetails
-  }
-}
