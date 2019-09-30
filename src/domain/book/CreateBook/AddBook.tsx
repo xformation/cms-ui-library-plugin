@@ -744,11 +744,17 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                 <td>{library.bookTitle}</td>
                 <td>{library.author}</td>
                 <td>{library.noOfCopies}</td>
-                <td>{library.bookNo}</td>
-                <td>{library.additionalInfo}</td>
+                <td>{library.bookNo}</td>              
                 <td>{library.uniqueNo}</td>
-                {/* <td>{library.batch.batch}</td>
-                <td>{library.subject.subjectDesc}</td> */}
+                <td>{library.batch.batch}</td>
+                <td>{library.subject.subjectDesc}</td>
+                <td>{library.additionalInfo}</td>
+                <td>
+                    <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Edit</button>
+                </td> 
+                <td>
+                    <button className="btn btn-primary" onClick={e => this.showDetail(e, library)}>Details</button>
+                </td>
               </tr>
             );
           }
@@ -759,10 +765,16 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
               <td>{library.author}</td>
               <td>{library.noOfCopies}</td>
               <td>{library.bookNo}</td>
-              <td>{library.additionalInfo}</td>
               <td>{library.uniqueNo}</td>
+              <td>{library.additionalInfo}</td>             
               <td>{library.batch.batch}</td>
               <td>{library.subject.subjectDesc}</td>
+              <td>
+                    <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Edit</button>
+                </td> 
+                <td>
+                    <button className="btn btn-primary" onClick={e => this.showDetail(e, library)}>Details</button>
+                </td>
             </tr>
           );
         }} else{
@@ -771,11 +783,17 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                 <td>{library.bookTitle}</td>
                 <td>{library.author}</td>
                 <td>{library.noOfCopies}</td>
-                <td>{library.bookNo}</td>
-                <td>{library.additionalInfo}</td>
                 <td>{library.uniqueNo}</td>
+                <td>{library.bookNo}</td>
+                <td>{library.additionalInfo}</td>                
                 <td>{library.batch.batch}</td>
                 <td>{library.subject.subjectDesc}</td>
+                <td>
+                    <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Edit</button>
+                </td> 
+                <td>
+                    <button className="btn btn-primary" onClick={e => this.showDetail(e, library)}>Details</button>
+                </td>
             </tr>
           );
         }
@@ -917,14 +935,14 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
           <table className="fwidth" id="feetable">
             <thead >
               <tr>
-                  <th>Year</th>
-                  <th>Subject</th>
                   <th>Book Title</th>
                   <th>Author</th>
-                  <th>Book No</th>
                   <th>No Of Copies</th>
+                  <th>Book No</th>                  
                   <th>Unique No</th>
                   <th>Additional Info</th>
+                  <th>Year</th>
+                  <th>Subject</th>
                   <th>Edit</th>
                   <th>Details</th>
               </tr>
