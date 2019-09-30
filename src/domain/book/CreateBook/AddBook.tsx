@@ -5,9 +5,11 @@ import { graphql, QueryProps, MutationFunc, compose } from "react-apollo";
 import * as LibraryAddMutation from './LibraryAddMutation.graphql';
 import * as LibraryUpdateMutation from './LibraryUpdateMutation.graphql'
 import * as BookAddMutation from './BookAddMutation.graphql'
-import { LoadLibraryQueryCacheForAdmin, LibraryAddMutationType, LibraryUpdateMutationType, BookAddMutationType } from '../../types';
+import { LoadLibraryQueryCacheForAdmin, LibraryAddMutationType, LibraryUpdateMutationType, BookAddMutationType, LibraryListQuery } from '../../types';
 import withExamSubjDataLoader from './withExamSubjDataLoader';
 import "react-datepicker/dist/react-datepicker.css";
+import * as LibraryListQueryGql from './LibraryListQuery.graphql';
+
 
 
 const w180 = {
@@ -29,6 +31,8 @@ type LibraryPageProps = LibraryRootProps & {
   addLibraryMutation: MutationFunc<LibraryAddMutationType>;
   updateLibraryMutation: MutationFunc<LibraryUpdateMutationType>;
   addBook: MutationFunc<BookAddMutationType>;
+  mutate: MutationFunc<LibraryListQuery>;
+
 };
 
 type LibraryState = {
@@ -43,7 +47,8 @@ type LibraryState = {
   toggle: any,
   update: any,
   countParticularDiv: any,
-  count: any
+  count: any,
+  search: any
 };
 
 class SaData {
@@ -102,6 +107,8 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         isDate: {},
         dDate: {},
         payLoad: [],
+        mutateResult: [],
+        search: ""
       },
         branches: [],
         academicYears: [],
@@ -114,6 +121,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         add: false,
         update: false,
         toggle: [],
+        search: ''
       
     };
 
@@ -121,7 +129,8 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     this.createBatches = this.createBatches.bind(this);
     this.createSubjects = this.createSubjects.bind(this);
     this.savelibrary = this.savelibrary.bind(this);
-    this.createLibraryAddRow = this.createLibraryAddRow.bind(this);
+    // this.createLibraryAddRow = this.createLibraryAddRow.bind(this);
+    this.createLibraryRows = this.createLibraryRows.bind(this)
     this.createLibraryUpdateRow = this.createLibraryUpdateRow.bind(this);
     this.editLibrary = this.editLibrary.bind(this);
     this.reset = this.reset.bind(this);
@@ -392,32 +401,32 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     });
   }
 
-  createLibraryAddRow(obj: any) {
-    const retVal = [];   
-    for (let x = 0; x < obj.length; x++) {
-      let k = obj[x];
-      retVal.push(
-        <tr>
-          <td>{k.batch.batch}</td>
-          <td>{k.subject.subjectDesc}</td>
-          <td>{k.bookTitle}</td>
-          <td>{k.author}</td>
-          <td>{k.bookNo}</td>
-          <td>{k.noOfCopies}</td>
-          <td>{k.uniqueNo}</td>
-          <td>{k.additionalInfo}</td>
-         <td>
-            <button className="btn btn-primary" onClick={e => this.editLibrary(k)}>Edit</button>
-          </td> 
-          <td>
-            <button className="btn btn-primary" onClick={e => this.showDetail(e, k)}>Details</button>
-          </td>
-        </tr>
-      );
-    }
-    // }
-    return retVal;
-  }
+  // createLibraryAddRow(obj: any) {
+  //   const retVal = [];   
+  //   for (let x = 0; x < obj.length; x++) {
+  //     let k = obj[x];
+  //     retVal.push(
+  //       <tr>
+  //         <td>{k.batch.batch}</td>
+  //         <td>{k.subject.subjectDesc}</td>
+  //         <td>{k.bookTitle}</td>
+  //         <td>{k.author}</td>
+  //         <td>{k.bookNo}</td>
+  //         <td>{k.noOfCopies}</td>
+  //         <td>{k.uniqueNo}</td>
+  //         <td>{k.additionalInfo}</td>
+  //        <td>
+  //           <button className="btn btn-primary" onClick={e => this.editLibrary(k)}>Edit</button>
+  //         </td> 
+  //         <td>
+  //           <button className="btn btn-primary" onClick={e => this.showDetail(e, k)}>Details</button>
+  //         </td>
+  //       </tr>
+  //     );
+  //   }
+  //   // }
+  //   return retVal;
+  // }
 
  updateLibrary(obj: any) {
     const { updateLibraryMutation } = this.props;
@@ -535,7 +544,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       countParticularDiv,
       count
     });
-    let fCatGrid: any = document.querySelector("#feeCatagoryGrid");
+    let fCatGrid: any = document.querySelector("#listGrid");
     fCatGrid.setAttribute("class", "hide");
 
     let fCatDtDiv: any = document.querySelector("#feeCatDetailDiv");
@@ -585,7 +594,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       countParticularDiv,
       count
     });
-    let fCatGrid: any = document.querySelector("#feeCatagoryGrid");
+    let fCatGrid: any = document.querySelector("#listGrid");
     fCatGrid.setAttribute("class", "b-1");
 
     let fCatDtDiv: any = document.querySelector("#feeCatDetailDiv");
@@ -715,9 +724,101 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     return Promise.reject(`there is some error while updating : ${error}`);
   });
   } 
-  
+
+
+  createLibraryRows(objAry: any) {
+    let { search } = this.state.libraryData;
+    search = search.trim();
+    const mutateResLength = objAry.length;
+    const retVal = [];
+    for (let x = 0; x < mutateResLength; x++) {
+      const tempObj = objAry[x];
+      const libraries = tempObj.data.getBookList;
+      const length = libraries.length;
+      for (let i = 0; i < length; i++) {
+        const library = libraries[i];
+        if(search){
+          if(library.bookTitle.indexOf(search) !== -1 ){
+            retVal.push(
+              <tr key={library.id}>                
+                <td>{library.bookTitle}</td>
+                <td>{library.author}</td>
+                <td>{library.noOfCopies}</td>
+                <td>{library.bookNo}</td>
+                <td>{library.additionalInfo}</td>
+                <td>{library.uniqueNo}</td>
+                {/* <td>{library.batch.batch}</td>
+                <td>{library.subject.subjectDesc}</td> */}
+              </tr>
+            );
+          }
+        else if(library.author.indexOf(search) !== -1 ){
+          retVal.push(
+            <tr key={library.id}>                
+              <td>{library.bookTitle}</td>
+              <td>{library.author}</td>
+              <td>{library.noOfCopies}</td>
+              <td>{library.bookNo}</td>
+              <td>{library.additionalInfo}</td>
+              <td>{library.uniqueNo}</td>
+              <td>{library.batch.batch}</td>
+              <td>{library.subject.subjectDesc}</td>
+            </tr>
+          );
+        }} else{
+          retVal.push(
+            <tr key={library.id}>             
+                <td>{library.bookTitle}</td>
+                <td>{library.author}</td>
+                <td>{library.noOfCopies}</td>
+                <td>{library.bookNo}</td>
+                <td>{library.additionalInfo}</td>
+                <td>{library.uniqueNo}</td>
+                <td>{library.batch.batch}</td>
+                <td>{library.subject.subjectDesc}</td>
+            </tr>
+          );
+        }
+      }
+    }
+
+    return retVal;
+  }
+
+  onClick = (e: any) => {
+    const { name, value } = e.nativeEvent.target;
+    const { mutate } = this.props;
+    const { libraryData } = this.state;
+    e.preventDefault();
+
+    let libraryFilterInputObject = {
+      
+      batchId: libraryData.batch.id,
+      
+      subjectId: libraryData.subject.id
+    };
+
+
+    return mutate({
+      variables: { filter: libraryFilterInputObject },
+    }).then(data => {
+      const sdt = data;
+      libraryData.mutateResult = [];
+      libraryData.mutateResult.push(sdt);
+      this.setState({
+        libraryData: libraryData
+      });
+      console.log('Student filter mutation result ::::: ', libraryData.mutateResult);
+    }).catch((error: any) => {
+      console.log('there was an error sending the query result', error);
+      return Promise.reject(`Could not retrieve student data: ${error}`);
+    });
+
+  }
+
+
   render() {
-    const { data: { createLibraryFilterDataCache, refetch }, addBook, addLibraryMutation, updateLibraryMutation } = this.props;
+    const { data: { createLibraryFilterDataCache, refetch }, mutate, addBook, addLibraryMutation, updateLibraryMutation } = this.props;
     const { libraryData, departments, batches, subjects, submitted } = this.state;
 
     return (
@@ -797,7 +898,22 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
             </table>
           </form>
         </div>
-        <div id="feeCatagoryGrid" className="b-1">
+        <div className="student-flex">          
+               
+            <select required name="batch" id="batch" onChange={this.onChange} value=  {libraryData.batch.id} className="gf-form-input max-width-22">
+                        {this.createBatches(this.props.data.createLibraryFilterDataCache.batches)}
+            </select>
+            <select required name={"subject"} id="subject" onChange={this.onChange} value=    {libraryData.subject.id} className="gf-form-input max-width-22">                {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, libraryData.batch.id)}
+            </select>    
+            <div className="margin-bott max-width-22">
+                  <label htmlFor="">Search</label>
+                  <input type="text" name="search" value={libraryData.search} onChange={this.onChange} />
+          </div>
+      </div>
+        <div className="m-b-1 bg-heading-bg studentSearch">
+              <button className="btn btn-primary max-width-13" id="btnFind" name="btnFind" onClick={this.onClick} style={w180}>Search Book</button>
+        </div>
+        <div id="listGrid" className="b-1">
           <table className="fwidth" id="feetable">
             <thead >
               <tr>
@@ -813,12 +929,15 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                   <th>Details</th>
               </tr>
             </thead>
-            <tbody>
-              {
-                // libraryData.librarysaveData.length > 0 && this.state.add === true && this.state.update === false && (
+            <tbody>           
+                {
+                  this.createLibraryRows(this.state.libraryData.mutateResult)
+                }             
+              {/* {
+               
                   this.createLibraryAddRow(this.props.data.createLibraryFilterDataCache.libraries)
-               // )
-              }
+              
+              } */}
               {
                 libraryData.librarysaveData.length > 0 && this.state.add === false && this.state.update === true && (
                   this.createLibraryUpdateRow(libraryData.librarysaveData)
@@ -837,7 +956,6 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
               <thead >
                 <tr>
                   <th>Book No</th>
-                  {/* <th>Author Name</th> */}
                   <th>Isue Date</th>
                   <th>Due Date</th>
                   <th>Student Id</th>
@@ -872,6 +990,9 @@ export default withExamSubjDataLoader(
     graphql<BookAddMutationType, LibraryRootProps>(BookAddMutation, {
       name: "addBook",
     }),
+    graphql<LibraryListQuery, LibraryRootProps>(LibraryListQueryGql, {
+      name: "mutate"
+    })
   )
     (AddBook) as any
 );

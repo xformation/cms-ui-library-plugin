@@ -82,17 +82,8 @@ class Librarytable extends React.Component<LibraryPageProps, LibraryTableStates>
     this.createBranches = this.createBranches.bind(this);
     this.createDepartments = this.createDepartments.bind(this);
     this.createBatches = this.createBatches.bind(this);
-    // this.createSections = this.createSections.bind(this);
-    // this.createStudentTypes = this.createStudentTypes.bind(this);
-    // this.createGenders = this.createGenders.bind(this);
-
-    // this.checkAllStudents = this.checkAllStudents.bind(this);
     this.onClickCheckbox = this.onClickCheckbox.bind(this);
-    // this.createStudentRows = this.createStudentRows.bind(this);
-    // this.createNoRecordMessage = this.createNoRecordMessage.bind(this);
-    // this.exportStudents = this.exportStudents.bind(this);
-    // this.convertArrayOfObjectsToCSV = this.convertArrayOfObjectsToCSV.bind(this);
-    // this.download = this.download.bind(this);
+    
   }
 
   createBranches(branches: any) {
@@ -143,22 +134,6 @@ class Librarytable extends React.Component<LibraryPageProps, LibraryTableStates>
     return subjectsOptions;
   }
 
-  
-  
-  // checkAllStudents(e: any) {
-  //   const { studentData } = this.state;
-  //   const mutateResLength = studentData.mutateResult.length;
-  //   let chkAll = e.nativeEvent.target.checked;
-  //   let els = document.querySelectorAll("input[type=checkbox]");
-
-  //   var empty = [].filter.call(els, function (el: any) {
-  //     if (chkAll) {
-  //       el.checked = true;
-  //     } else {
-  //       el.checked = false;
-  //     }
-  //   });
-  // }
 
   onClickCheckbox(index: any, e: any) {
     // const { target } = e;
@@ -166,42 +141,7 @@ class Librarytable extends React.Component<LibraryPageProps, LibraryTableStates>
     let chkBox: any = document.querySelector("#" + id);
     chkBox.checked = e.nativeEvent.target.checked;
   }
-  // createNoRecordMessage(objAry: any) {
-  //   const mutateResLength = objAry.length;
-  //   const retVal = [];
-  //   for (let x = 0; x < mutateResLength; x++) {
-  //     const tempObj = objAry[x];
-  //     const students = tempObj.data.getStudentList;
-  //     const length = students.length;
-  //     if (length === 0) {
-  //       retVal.push(
-  //         <h4 className="ptl-06">No Record Found</h4>
-  //       );
-  //     }
-  //   }
-  //   return retVal;
-  // }
-
-  // searchHandlers(e: any) {
-  //   this.setState({ search: e.nativeEvent.target.value })
-  // }
-
-  // searchBar(objAry: any) {
-  //   const { search } = this.state;
-  //   const mutateResLength = objAry.length;
-  //   const retVal = [];
-  //   for (let x = 0; x < mutateResLength; x++) {
-  //     const tempObj = objAry[x];
-  //     const students = tempObj.data.getStudentList;
-  //     const length = students.length;
-  //     // for (let i = 0; i < length; i++) {
-  //     //   const student = students[i];
-  //     if (search !== "" && students.studentName.toLowerCase.indexOf(search.toLowerCase()) === -1) {
-  //       return null
-  //     }
-  //     // }
-  //   }
-  // }
+  
 
   createLibraryRows(objAry: any) {
     let { search } = this.state.libraryData;
@@ -262,85 +202,7 @@ class Librarytable extends React.Component<LibraryPageProps, LibraryTableStates>
     return retVal;
   }
 
-  // exportStudents(objAry: any) {
-  //   const studentsToExport = [];
-  //   const mutateResLength = objAry.length;
-  //   let fileType: any = document.querySelector("#fileType");
-  //   if (fileType.value == "") {
-  //     alert("Please select a file type to export");
-  //     return;
-  //   }
-  //   for (let x = 0; x < mutateResLength; x++) {
-  //     const tempObj = objAry[x];
-  //     const students = tempObj.data.getStudentList;
-  //     const length = students.length;
-  //     for (let i = 0; i < length; i++) {
-  //       const student = students[i];
-  //       let chkBox: any = document.querySelector("#chk" + student.id);
-  //       if (chkBox.checked) {
-  //         studentsToExport.push(student);
-  //       }
-  //     }
-  //   }
-  //   if (studentsToExport.length > 0) {
-  //     var csvContent = this.convertArrayOfObjectsToCSV(studentsToExport);
-  //     this.download(csvContent, "studentlist.csv", "text/csv;encoding:utf-8");
-  //   } else {
-  //     alert("Please select records to export");
-  //   }
-  // }
-
-  // convertArrayOfObjectsToCSV(data: any) {
-  //   var result: any, ctr: any, keys: any, columnDelimiter: any, lineDelimiter: any;
-
-  //   data = data || null;
-  //   if (data == null || !data.length) {
-  //     return null;
-  //   }
-
-  //   columnDelimiter = ',';
-  //   lineDelimiter = '\n';
-
-  //   keys = Object.keys(data[0]);
-
-  //   result = '';
-  //   result += keys.join(columnDelimiter);
-  //   result += lineDelimiter;
-
-  //   data.forEach(function (item: any) {
-  //     ctr = 0;
-  //     keys.forEach(function (key: any) {
-  //       if (ctr > 0) result += columnDelimiter;
-
-  //       result += item[key];
-  //       ctr++;
-  //     });
-  //     result += lineDelimiter;
-  //   });
-
-  //   return result;
-  // }
-
-  // download(content: any, fileName: any, mimeType: any) {
-  //   var a = document.createElement('a');
-  //   mimeType = mimeType || 'application/octet-stream';
-
-  //   if (navigator.msSaveBlob) { // IE10
-  //     navigator.msSaveBlob(new Blob([content], {
-  //       type: mimeType
-  //     }), fileName);
-  //   } else if (URL && 'download' in a) { //html5 A[download]
-  //     a.href = URL.createObjectURL(new Blob([content], {
-  //       type: mimeType
-  //     }));
-  //     a.setAttribute('download', fileName);
-  //     document.body.appendChild(a);
-  //     a.click();
-  //     document.body.removeChild(a);
-  //   } else {
-  //     location.href = 'data:application/octet-stream,' + encodeURIComponent(content); // only this mime type is supported
-  //   }
-  // }
+  
 
 
   onChange = (e: any) => {
@@ -423,23 +285,18 @@ class Librarytable extends React.Component<LibraryPageProps, LibraryTableStates>
           </div>
 
           <div>
-            <div className="student-flex">
+        <div className="student-flex">
               
-                <td>
-                  <select required name="batch" id="batch" onChange={this.onChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
+               
+            <select required name="batch" id="batch" onChange={this.onChange} value=  {libraryData.batch.id} className="gf-form-input max-width-22">
                       {this.createBatches(this.props.data.createLibraryFilterDataCache.batches)}
-                    </select>
-                  </td>
-                  <td>
-                    <select required name={"subject"} id="subject" onChange={this.onChange} value={libraryData.subject.id} className="gf-form-input max-width-22">    {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, libraryData.batch.id)}
-                    </select>
-                  </td>            
-             
-             
-              <div className="margin-bott max-width-22">
+            </select>
+            <select required name={"subject"} id="subject" onChange={this.onChange} value=    {libraryData.subject.id} className="gf-form-input max-width-22">                {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, libraryData.batch.id)}
+            </select>    
+            <div className="margin-bott max-width-22">
                 <label htmlFor="">Search</label>
                 <input type="text" name="search" value={libraryData.search} onChange={this.onChange} />
-              </div>
+            </div>
             </div>
             <div className="m-b-1 bg-heading-bg studentSearch">
               <button className="btn btn-primary max-width-13" id="btnFind" name="btnFind" onClick={this.onClick} style={w180}>Search Book</button>
@@ -468,7 +325,7 @@ class Librarytable extends React.Component<LibraryPageProps, LibraryTableStates>
             {/* {
               this.createNoRecordMessage(this.state.libraryData.mutateResult)
             } */}
-          </div>
+        </div>
         </div>
       </section>
 
