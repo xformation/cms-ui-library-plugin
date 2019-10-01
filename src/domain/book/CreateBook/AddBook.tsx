@@ -611,12 +611,12 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     const { libraryData } = this.state;
     const retVal = [];
 
-    for (let i = 1; i < libraryData.noOfCopies; i++) {
+    for (let i = 0; i < libraryData.noOfCopies; i++) {
       retVal.push(
         <tbody>
           <tr>
           <td>
-              <input type="number" id={"author" + i} name="id" value={i} className="w-100"  onChange={this.onChange} ></input>
+              <input type="number" id={"author" + i} name="id" value={i+1} className="w-100"  onChange={this.onChange} ></input>
             </td>
             {/* <td>
               <input type="text" id={"author" + i} name="author" value={libraryData.author} onChange={this.onChange} ></input>
