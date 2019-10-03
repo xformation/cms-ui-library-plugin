@@ -22,6 +22,6 @@ export default function init() {
                     </Switch>
                 </BrowserRouter>
             </ApolloProvider>,
-            document.getElementById("mountMarkExam"));
+            document.getElementById("mountMarkLibrary"));
     }, 100);
 }

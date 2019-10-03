@@ -137,6 +137,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     this.updateLibrary = this.updateLibrary.bind(this);
     this.showDetail = this.showDetail.bind(this);
     this.back = this.back.bind(this);
+    // this.onSubChange = this.onSubChange.bind(this);
     this.createParticularDiv = this.createParticularDiv.bind(this);
     this.handleRecDateTimeChange =this.handleRecDateTimeChange.bind(this);
     this.handleduedateTimeChange = this.handleduedateTimeChange.bind(this);
@@ -257,7 +258,33 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
 
   }
 
- 
+//  onSubHandleChange = (e: any) => {
+//   const { name, value } = e.nativeEvent.target;
+//   const { libraryData } = this.state;
+//   if (name === "status") {
+//         let auth: any = document.querySelector("#author");
+//         let dt: any = document.querySelector("#issueDate");
+//         let dd: any = document.querySelector("#dueDate");
+//         let si: any = document.querySelector("#sid");
+//         let sn: any = document.querySelector("#sname");
+//         let rd: any = document.querySelector("#recDate");
+//         let els = document.querySelectorAll("input[type=checkbox]");
+  
+//         // const delim = "#~#";
+//         var empty = [].filter.call(els, function (el: any) {
+//           let txt: any = document.querySelector("#t" + el);
+//           let txtIds: any;
+//           if (el.checked) {
+//             auth.setAttribute("disabled", true);
+//             dt.setAttribute("disabled", true);
+//             dd.setAttribute("disabled", true);
+//             si.setAttribute("disabled", true);
+//             sn.setAttribute("disabled", true);
+//             rd.setAttribute("disabled", true);
+//           }});
+//         }
+//       }      
+                
 
   savelibrary(e: any) {
     const { id, value } = e.nativeEvent.target;
@@ -555,6 +582,13 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
 
     let bDiv: any = document.querySelector("#backDiv");
     bDiv.setAttribute("class", "");
+
+    let sDiv: any = document.querySelector("#searchbutton");
+    sDiv.setAttribute("class", "hide");
+
+    let btsbDiv: any = document.querySelector("#btsbsearch");
+    btsbDiv.setAttribute("class", "hide");
+
     this.editLibrary(obj);
     this.showParticularDiv(e);
 
@@ -604,9 +638,36 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     svFCatDiv.setAttribute("class", "fee-flex");
 
     let bDiv: any = document.querySelector("#backDiv");
-    bDiv.setAttribute("class", "hide");
+    bDiv.setAttribute("class", "hide"); 
+    
+    let btsbDiv: any = document.querySelector("#btsbsearch");
+    btsbDiv.setAttribute("class", "student-flex");
+
   }
 
+
+ 
+  //for status
+//   statusFunctn(data: any){
+//     const { libraryData } = this.state;
+//     let auth: any = document.querySelector("#author");
+//     let dt: any = document.querySelector("#issueDate");
+//     let dd: any = document.querySelector("#dueDate");
+//     let si: any = document.querySelector("#sid");
+//     let sn: any = document.querySelector("#sname");
+//     let rd: any = document.querySelector("#recDate");
+
+//     let els = document.querySelectorAll("input[type=checkbox]");
+//     const delim = "#~#";
+//     var empty = [].filter.call(els, function (el: any) {
+//     let txt: any = document.querySelector("#t" + el.id);
+//     if (el.checked) {
+//       auth.setAttribute("disabled", true);
+
+//     }
+    
+//   }
+// }
   createParticularDiv() {
     const { libraryData } = this.state;
     const retVal = [];
@@ -616,12 +677,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         <tbody>
           <tr>
           <td>
-              <input type="number" id={"author" + i} name="id" value={i+1} className="w-100"  onChange={this.onChange} ></input>
+              <input type="number" id={"idd" + i} name="id" value={i+1} className="w-100"  onChange={this.onChange} ></input>
             </td>
-            {/* <td>
-              <input type="text" id={"author" + i} name="author" value={libraryData.author} onChange={this.onChange} ></input>
-            </td> */}
-            <td>
+          <td>
               <input type="date" className="gf-form-input w-135" id={"issueDate" + i} name="issueDate" value={libraryData.issueDate} onChange={this.handleissuedateTimeChange} ></input>
             </td>
             <td>
@@ -637,7 +695,14 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
               <input type="date" className="gf-form-input w-135" id={"recDate" + i} name="recDate" value={libraryData.receivedDate} onChange={this.handleRecDateTimeChange} ></input>
             </td>
             <td>
-              <input type="text" id={"status" + i} name="status" value={libraryData.status} onChange={this.onChange} ></input>
+            <div>
+                <select className="gf-form-input w-135" name="status" id="status" onChange={this.onChange}
+                >
+                  <option value="">Select</option>
+                  <option value="AVAILABLE">Rec</option>
+                  <option value="RESERVED">NRec</option>
+                </select>
+              </div>
             </td>
             <td>
               <button>Assign to</button>
@@ -916,19 +981,19 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
             </table>
           </form>
         </div>
-        <div className="student-flex">          
+        <div id= "btsbsearch" className="student-flex">          
                
             <select required name="batch" id="batch" onChange={this.onChange} value=  {libraryData.batch.id} className="gf-form-input max-width-22">
                         {this.createBatches(this.props.data.createLibraryFilterDataCache.batches)}
             </select>
             <select required name={"subject"} id="subject" onChange={this.onChange} value=    {libraryData.subject.id} className="gf-form-input max-width-22">                {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, libraryData.batch.id)}
             </select>    
-            <div className="margin-bott max-width-22">
+            <div  className="margin-bott max-width-22">
                   <label htmlFor="">Search</label>
                   <input type="text" name="search" value={libraryData.search} onChange={this.onChange} />
           </div>
       </div>
-        <div className="m-b-1 bg-heading-bg studentSearch">
+        <div id = "searchbutton" className="m-b-1 bg-heading-bg studentSearch">
               <button className="btn btn-primary max-width-13" id="btnFind" name="btnFind" onClick={this.onClick} style={w180}>Search Book</button>
         </div>
         <div id="listGrid" className="b-1">
