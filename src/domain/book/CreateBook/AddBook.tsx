@@ -42,6 +42,7 @@ type LibraryState = {
   departments: any,
   batches: any,
   subjects: any,
+  students: any,
   submitted: any,
   add: any,
   toggle: any,
@@ -101,6 +102,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         subject: {
           id: ""
         },
+        student: {
+          id: ""
+        },
         librarysaveData: [],
         bookissuedate: {},
         rDate:{},
@@ -115,6 +119,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         departments: [],
         batches: [],
         subjects: [],
+        students: [],
         countParticularDiv: 0,
         count: [],
         submitted: false,
@@ -142,6 +147,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     this.handleRecDateTimeChange =this.handleRecDateTimeChange.bind(this);
     this.handleduedateTimeChange = this.handleduedateTimeChange.bind(this);
     this.handleissuedateTimeChange = this.handleissuedateTimeChange.bind(this);
+    this.assigntobutton = this.assigntobutton.bind(this);
   }
 
   createDepartments(departments: any) {
@@ -189,6 +195,26 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       }
     }
     return subjectsOptions;
+  }
+
+  createStudents(students: any, selectedBatchId: any, selecteDepartmentId: any) {
+    let studentsOptions = [<option key={0} value="">Select Student</option>];
+    for (let i = 0; i < students.length; i++) {
+      let id = students[i].id;
+      let sbId = "" + students[i].batch.id;
+      if (sbId == selectedBatchId) {
+        studentsOptions.push(
+          <option key={id} value={id}>{students[i].batch}</option>
+        );
+      }
+      let btId = "" + students[i].department.id;
+      if (btId == selecteDepartmentId) {
+        studentsOptions.push(
+          <option key={id} value={id}>{students[i].description}</option>
+        );
+      }
+    }
+    return studentsOptions;
   }
 
   onFormSubmit = (e: any) => {
@@ -372,8 +398,8 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let bkNc: any = document.querySelector("#noOfCopies");
     let adinf: any = document.querySelector("#additionalInfo");
     let unNo: any = document.querySelector('#uniqueNo');
-    txtCn.value = obj.batch;
-    txtDs.value = obj.subject;
+    txtCn.value = obj.batch.id;
+    txtDs.value = obj.subject.id;
     chkSts.value = obj.bookTitle;
     dtPkSt.value = obj.author;
     bkNo.value = obj.bookNo;
@@ -389,6 +415,8 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     libraryData.noOfCopies = obj.noOfCopies;
     libraryData.additionalInfo = obj.additionalInfo;
     libraryData.uniqueNo = obj.uniqueNo;
+    libraryData.batch.id = obj.batch.id;
+    libraryData.subject.id = obj.subject.id;
         
     this.setState({
      
@@ -582,12 +610,16 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
 
     let bDiv: any = document.querySelector("#backDiv");
     bDiv.setAttribute("class", "");
-
+//lll
     let sDiv: any = document.querySelector("#searchbutton");
     sDiv.setAttribute("class", "hide");
 
     let btsbDiv: any = document.querySelector("#btsbsearch");
     btsbDiv.setAttribute("class", "hide");
+
+    let stb: any = document.querySelector("#studentsbutton");
+    stb.setAttribute("class", "hide");
+   
 
     this.editLibrary(obj);
     this.showParticularDiv(e);
@@ -610,9 +642,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     });
     let dvPrt: any = document.querySelectorAll("#feeParticularDiv");
     for (let i = 0; i < dvPrt.length; i++) {
-      // let dvPrt : any = document.querySelector("#feeParticularDiv"+i);
       dvPrt[i].setAttribute("class", "feeDetails");
     }
+    
     // for(let i = 0; i < this.state.countParticularDiv; i++){
     //   let dvPrt : any = document.querySelector("#feeParticularDiv"+i);
     //   dvPrt.setAttribute("class", "feeDetails");
@@ -645,7 +677,20 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
 
   }
 
+  assigntobutton() {
+    let { count, countParticularDiv } = this.state;
+    countParticularDiv = 0;
+    count = [];
+    this.setState({
+      countParticularDiv,
+      count
+    });
+    
+    
+    let btsbDiv: any = document.querySelector("#studentsbutton");
+    btsbDiv.setAttribute("class", "");
 
+  }
  
   //for status
 //   statusFunctn(data: any){
@@ -668,6 +713,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     
 //   }
 // }
+
   createParticularDiv() {
     const { libraryData } = this.state;
     const retVal = [];
@@ -704,8 +750,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                 </select>
               </div>
             </td>
+           
             <td>
-              <button>Assign to</button>
+            <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.assigntobutton} style={{ width: '140px' }}>Assign To</button>
             </td>
           </tr>
         </tbody>
@@ -996,6 +1043,25 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         <div id = "searchbutton" className="m-b-1 bg-heading-bg studentSearch">
               <button className="btn btn-primary max-width-13" id="btnFind" name="btnFind" onClick={this.onClick} style={w180}>Search Book</button>
         </div>
+        <div id = "studentsbutton" className="hide">
+          <div className="m-1 col-md-5 feeSelect">
+                <div>
+                  <label htmlFor="">Batches</label>
+                  <select required name="batch" id="batch" onChange={this.onChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
+                      {this.createBatches(this.props.data.createLibraryFilterDataCache.batches)}
+                    </select>
+                </div>
+                <div>
+                  <label htmlFor="">Department</label>
+                  <select required name="department" id="department" className="gf-form-input max-width-8">
+                    {this.createDepartments(this.props.data.createLibraryFilterDataCache.departments)}
+                  </select>
+                </div>
+                
+        
+          </div>              
+        </div>
+
         <div id="listGrid" className="b-1">
           <table className="fwidth" id="feetable">
             <thead >

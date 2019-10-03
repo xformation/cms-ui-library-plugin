@@ -1387,6 +1387,19 @@ export type LoadLibraryQueryCacheForAdmin = {
         id: number;
       };
     }>;
+    student: Array<{
+      id: number;
+      studentName: string;
+      batch: {
+        id: number;
+      };
+      department: {
+        id: number;
+      };
+      section: {
+        id: number;
+      };
+    }>;
   };
 };
 

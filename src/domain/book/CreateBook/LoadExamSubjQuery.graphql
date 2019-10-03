@@ -6,7 +6,8 @@ query createLibraryFilterDataCache($collegeId:String!, $academicYearId:String!){
      batches{ id, batch,department{id}},
      sections{id, section, batch{id}},
 subjects{id,subjectType,subjectCode,subjectDesc,department{id}, batch{id}},     semesters{ id, description}
-libraries{id, bookTitle, author,bookNo,noOfCopies,additionalInfo,uniqueNo,batch{id,batch},subject{id, subjectDesc}
+libraries{id, bookTitle, author,bookNo,noOfCopies,additionalInfo,uniqueNo,batch{id,batch},subject{id, subjectDesc},
     }
+    students{id,batch{id,batch},department{id,description},studentName, section{id,section}}
   }
 }
