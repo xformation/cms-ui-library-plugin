@@ -42,6 +42,7 @@ type LibraryState = {
   departments: any,
   batches: any,
   subjects: any,
+  sections: any
   students: any,
   submitted: any,
   add: any,
@@ -105,6 +106,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         student: {
           id: ""
         },
+        section: {
+          id: ""
+        },
         librarysaveData: [],
         bookissuedate: {},
         rDate:{},
@@ -119,6 +123,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         departments: [],
         batches: [],
         subjects: [],
+        sections: [],
         students: [],
         countParticularDiv: 0,
         count: [],
@@ -216,6 +221,22 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     }
     return studentsOptions;
   }
+  
+  createSections(sections: any, selectedBatchId: any) {
+    let sectionsOptions = [<option key={0} value="">Select Section</option>];
+    for (let i = 0; i < sections.length; i++) {
+      let id = sections[i].id;
+      let sbthId = "" + sections[i].batch.id;
+      if (sbthId == selectedBatchId) {
+        sectionsOptions.push(
+          <option key={id} value={id}>{sections[i].section}</option>
+        );
+      }
+    }
+    return sectionsOptions;
+  }
+
+
 
   onFormSubmit = (e: any) => {
     this.setState({
@@ -1057,7 +1078,12 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                     {this.createDepartments(this.props.data.createLibraryFilterDataCache.departments)}
                   </select>
                 </div>
-                
+                <div>
+                  <label htmlFor="">Section</label>
+                  <select required name="section" id="section" onChange={this.onChange} value={libraryData.section.id} className="gf-form-input max-width-22">
+                      {this.createSections(this.props.data.createLibraryFilterDataCache.sections, libraryData.batch.id)}
+                    </select> 
+                </div>
         
           </div>              
         </div>
