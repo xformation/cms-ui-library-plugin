@@ -202,27 +202,6 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
   return subjectsOptions;
 }
 
-
-
-  createStudents(students: any, selectedBatchId: any, selecteDepartmentId: any) {
-    let studentsOptions = [<option key={0} value="">Select Student</option>];
-    for (let i = 0; i < students.length; i++) {
-      let id = students[i].id;
-      let sbId = "" + students[i].batch.id;
-      if (sbId == selectedBatchId) {
-        studentsOptions.push(
-          <option key={id} value={id}>{students[i].batch}</option>
-        );
-      }
-      let btId = "" + students[i].department.id;
-      if (btId == selecteDepartmentId) {
-        studentsOptions.push(
-          <option key={id} value={id}>{students[i].description}</option>
-        );
-      }
-    }
-    return studentsOptions;
-  }
   
   createSections(sections: any, selectedBatchId: any) {
     let sectionsOptions = [<option key={0} value="">Select Section</option>];
@@ -237,7 +216,31 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     }
     return sectionsOptions;
   }
-
+  createStudents(students: any, selectedBatchId: any, selecteDepartmentId: any, selectedSectionId: any) {
+    let studentsOptions = [<option key={0} value="">Select Student</option>];
+    for (let i = 0; i < students.length; i++) {
+      let id = students[i].id;
+      let sbId = "" + students[i].batch.id;
+      if (sbId == selectedBatchId) {
+        studentsOptions.push(
+          <option key={id} value={id}>{students[i].studentName}</option>
+        );
+      }
+      let btId = "" + students[i].department.id;
+      if (btId == selecteDepartmentId) {
+        studentsOptions.push(
+          <option key={id} value={id}>{students[i].studentName}</option>
+        );
+      }
+      let scId = "" + students[i].section.id;
+      if (scId == selectedSectionId) {
+        studentsOptions.push(
+          <option key={id} value={id}>{students[i].studentName}</option>
+        );
+      }
+    }
+    return studentsOptions;
+  }
 
 
   onFormSubmit = (e: any) => {
@@ -1063,7 +1066,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
               <tbody>
                 <tr>
                 <td>
-                  <select required name="department" id="department" onChange={this.onSubChange}  className="gf-form-input max-width-8">
+                  <select required name="department" id="department" onChange={this.onChange}  className="gf-form-input max-width-8">
                     {this.createDepartments(this.props.data.createLibraryFilterDataCache.departments,libraryData.branch.id)}
                   </select>               
                   </td>
@@ -1124,24 +1127,33 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
         </div>
         <div id = "studentsbutton" className="hide">
           <div className="m-1 col-md-5 feeSelect">
-                <div>
-                  <label htmlFor="">Batches</label>
-                  <select required name="batch" id="batch" onChange={this.onSubChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
-                      {this.createBatches(this.props.data.createLibraryFilterDataCache.batches, libraryData.department.id)}
-                    </select>
-                </div>
-                <div>
+              <div>
                   <label htmlFor="">Department</label>
                   <select required name="department" id="department" onChange={this.onSubChange}  className="gf-form-input max-width-8">
                     {this.createDepartments(this.props.data.createLibraryFilterDataCache.departments,libraryData.branch.id)}
                   </select>
                 </div>
+                
+                <div>
+                  <label htmlFor="">Select Year</label>
+                  <select required name="batch" id="batch" onChange={this.onSubChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
+                      {this.createBatches(this.props.data.createLibraryFilterDataCache.batches, libraryData.department.id)}
+                    </select>
+                </div>
+                
                 <div>
                   <label htmlFor="">Section</label>
                     <select required name="section" id="section" onChange={this.onSubChange} value={libraryData.section.id} className="gf-form-input max-width-22">
                       {this.createSections(this.props.data.createLibraryFilterDataCache.sections, libraryData.batch.id)}
                     </select>
                 </div>
+                <div>
+                  <label htmlFor="">Student</label>
+                    <select required name="student" id="student" onChange={this.onSubChange} value={libraryData.student.id} className="gf-form-input max-width-22">
+                      {this.createStudents(this.props.data.createLibraryFilterDataCache.students, libraryData.batch.id, libraryData.department.id, libraryData.section.id)}
+                    </select>
+                </div>
+                
         
           </div>              
         </div>

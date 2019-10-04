@@ -1387,7 +1387,7 @@ export type LoadLibraryQueryCacheForAdmin = {
         id: number;
       };
     }>;
-    student: Array<{
+    students: Array<{
       id: number;
       studentName: string;
       batch: {
