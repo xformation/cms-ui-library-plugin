@@ -94,7 +94,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         },
        
         department: {
-          id: 1901
+          id: ""
         },
         batch: {
           id: ""
@@ -155,52 +155,54 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     this.assigntobutton = this.assigntobutton.bind(this);
   }
 
-  createDepartments(departments: any) {
+  createDepartments(departments: any, selectedBranchId: any) {
     let departmentsOptions = [<option key={0} value="">Select Department</option>];
     for (let i = 0; i < departments.length; i++) {
-      departmentsOptions.push(
+    if (selectedBranchId == departments[i].branch.id ) {
+        departmentsOptions.push(
         <option key={departments[i].id} value={departments[i].id}>{departments[i].name}</option>
-      );
-
+        );
+    }
     }
     return departmentsOptions;
-  }
+}
 
-  createBranches(branches: any) {
-    let branchesOptions = [<option key={0} value="">Select Branch</option>];
-    for (let i = 0; i < branches.length; i++) {
+createBranches(branches: any) {
+  let branchesOptions = [<option key={0} value="">Select Branch</option>];
+  for (let i = 0; i < branches.length; i++) {
       branchesOptions.push(
-        <option key={branches[i].id} value={branches[i].id}>{branches[i].branchName}</option>
+          <option key={branches[i].id} value={branches[i].id}>{branches[i].branchName}</option>
       );
-    }
-    return branchesOptions;
   }
-
-  createBatches(batches: any) {
-    let batchesOptions = [<option key={0} value="">Select Year</option>];
-    for (let i = 0; i < batches.length; i++) {
-      let id = batches[i].id;
-      let dptId = "" + batches[i].department.id;
+  return branchesOptions;
+}
+createBatches(batches: any, selectedDepartmentId: any) {
+  let batchesOptions = [<option key={0} value="">Select Year</option>];
+  for (let i = 0; i < batches.length; i++) {
+    let id = batches[i].id;
+    let dptId = "" + batches[i].department.id;
+    if (dptId == selectedDepartmentId){
       batchesOptions.push(
         <option key={id} value={id}>{batches[i].batch}</option>
       );
     }
-    return batchesOptions;
   }
-
-  createSubjects(subjects: any, selectedBatchId: any) {
-    let subjectsOptions = [<option key={0} value="">Select Subject</option>];
-    for (let i = 0; i < subjects.length; i++) {
-      let id = subjects[i].id;
-      let sbId = "" + subjects[i].batch.id;
-      if (sbId == selectedBatchId) {
-        subjectsOptions.push(
-          <option key={id} value={id}>{subjects[i].subjectDesc}</option>
-        );
-      }
+  return batchesOptions;
+}
+createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
+  let subjectsOptions = [<option key={0} value="">Select Subject</option>];
+  for (let i = 0; i < subjects.length; i++) {
+    let id = subjects[i].id;
+    if (subjects[i].department.id == selectedDepartmentId && subjects[i].batch.id == selectedBatchId) {
+      subjectsOptions.push(
+        <option key={id} value={id}>{subjects[i].subjectDesc}</option>
+      );
     }
-    return subjectsOptions;
   }
+  return subjectsOptions;
+}
+
+
 
   createStudents(students: any, selectedBatchId: any, selecteDepartmentId: any) {
     let studentsOptions = [<option key={0} value="">Select Student</option>];
@@ -305,32 +307,74 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
 
   }
 
-//  onSubHandleChange = (e: any) => {
-//   const { name, value } = e.nativeEvent.target;
-//   const { libraryData } = this.state;
-//   if (name === "status") {
-//         let auth: any = document.querySelector("#author");
-//         let dt: any = document.querySelector("#issueDate");
-//         let dd: any = document.querySelector("#dueDate");
-//         let si: any = document.querySelector("#sid");
-//         let sn: any = document.querySelector("#sname");
-//         let rd: any = document.querySelector("#recDate");
-//         let els = document.querySelectorAll("input[type=checkbox]");
-  
-//         // const delim = "#~#";
-//         var empty = [].filter.call(els, function (el: any) {
-//           let txt: any = document.querySelector("#t" + el);
-//           let txtIds: any;
-//           if (el.checked) {
-//             auth.setAttribute("disabled", true);
-//             dt.setAttribute("disabled", true);
-//             dd.setAttribute("disabled", true);
-//             si.setAttribute("disabled", true);
-//             sn.setAttribute("disabled", true);
-//             rd.setAttribute("disabled", true);
-//           }});
-//         }
-//       }      
+  onSubChange = (e: any) => {
+    const { id, name, value } = e.nativeEvent.target;
+    const { libraryData } = this.state;
+    if (name === "department") {
+      this.setState({
+        libraryData: {
+          ...libraryData,
+          department: {
+            id: value
+          },
+          batch: {
+            id: ""
+          },
+          section: {
+            id: ""
+          },
+          student:{
+            id: ""
+          }
+        }
+      });
+    } else if (name === "batch") {
+      this.setState({
+        libraryData: {
+          ...libraryData,
+          batch: {
+            id: value
+          },
+          section: {
+            id: ""
+          },
+          student:{
+            id: ""
+          }
+
+        }
+      });
+    } else if (name === "section") {
+      this.setState({
+        libraryData: {
+          ...libraryData,
+          section: {
+            id: value
+          },
+          student:{
+            id:""
+          }
+        }
+      });
+    } else if (name === "student") {
+      this.setState({
+        libraryData: {
+          ...libraryData,
+          student: {
+            id: value
+          }
+        }
+      });
+    }else {
+      this.setState({
+        libraryData: {
+          ...libraryData,
+          [name]: value
+        }
+      });
+    }
+
+  }     
                 
 
   savelibrary(e: any) {
@@ -379,7 +423,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       noOfCopies: libraryData.noOfCopies,
       bookNo: libraryData.bookNo,
       additionalInfo: libraryData.additionalInfo,
-      uniqueNo: libraryData.uniqueNo,
+      uniqueNo: 2,
       subjectId: libraryData.subject.id,
       batchId: libraryData.batch.id
     };
@@ -418,7 +462,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let bkNo: any = document.querySelector("#bookNo");
     let bkNc: any = document.querySelector("#noOfCopies");
     let adinf: any = document.querySelector("#additionalInfo");
-    let unNo: any = document.querySelector('#uniqueNo');
+    // let unNo: any = document.querySelector('#uniqueNo');
     txtCn.value = obj.batch.id;
     txtDs.value = obj.subject.id;
     chkSts.value = obj.bookTitle;
@@ -426,7 +470,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     bkNo.value = obj.bookNo;
     bkNc.value = obj.noOfCopies;
     adinf.value = obj.additionalInfo;   
-    unNo.value = obj.uniqueNo;
+    // unNo.value = obj.uniqueNo;
    
    
     libraryData.libraries.id = obj.id;
@@ -435,7 +479,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     libraryData.bookNo = obj.bookNo;
     libraryData.noOfCopies = obj.noOfCopies;
     libraryData.additionalInfo = obj.additionalInfo;
-    libraryData.uniqueNo = obj.uniqueNo;
+    // libraryData.uniqueNo = obj.uniqueNo;
     libraryData.batch.id = obj.batch.id;
     libraryData.subject.id = obj.subject.id;
         
@@ -455,7 +499,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let bkNo: any = document.querySelector("#bookNo");
     let bkNc: any = document.querySelector("#noOfCopies");
     let adinf: any = document.querySelector("#additionalInfo");
-    let unNo: any = document.querySelector('#uniqueNo');
+    // let unNo: any = document.querySelector('#uniqueNo');
     txtCn.value = "";
     txtDs.value = "";
     chkSts.value = "";
@@ -463,7 +507,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     bkNo.value = "";
     bkNc.value = "";
     adinf.value = "";
-    unNo.value = "";
+    // unNo.value = "";
     libraryData.bookTitle = "";
     libraryData.bookNo = "";
     libraryData.author.id = "";
@@ -540,11 +584,11 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       return;
     }
 
-    let uniqueNo: any = document.querySelector("#uniqueNo");
-    if (uniqueNo.value.trim() === "") {
-      alert("Please provide some value in uniqueNo");
-      return;
-    }
+    // let uniqueNo: any = document.querySelector("#uniqueNo");
+    // if (uniqueNo.value.trim() === "") {
+    //   alert("Please provide some value in uniqueNo");
+    //   return;
+    // }
     if (libraryData.libraries.id === "") {
       alert("This record has no id. It can be added as a new record.");
       return;
@@ -558,7 +602,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       bookNo: libraryData.bookNo,
       noOfCopies: libraryData.noOfCopies,
       additionalInfo: libraryData.additionalInfo,
-      uniqueNo: libraryData.uniqueNo,
+      uniqueNo: 2,
 
     };
     console.log("form data : ", libraryData);
@@ -603,7 +647,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
           <td>{k.bookNo}</td>
           <td>{k.noOfCopies}</td>
           <td>{k.additionalInfo}</td>
-          <td>{k.uniqueNo}</td>
+          {/* <td>{k.uniqueNo}</td> */}
         </tr>
       );
     }
@@ -885,7 +929,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                 <td>{library.author}</td>
                 <td>{library.noOfCopies}</td>
                 <td>{library.bookNo}</td>              
-                <td>{library.uniqueNo}</td>
+                {/* <td>{library.uniqueNo}</td> */}
                 <td>{library.batch.batch}</td>
                 <td>{library.subject.subjectDesc}</td>
                 <td>{library.additionalInfo}</td>
@@ -905,7 +949,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
               <td>{library.author}</td>
               <td>{library.noOfCopies}</td>
               <td>{library.bookNo}</td>
-              <td>{library.uniqueNo}</td>
+              {/* <td>{library.uniqueNo}</td> */}
               <td>{library.additionalInfo}</td>             
               <td>{library.batch.batch}</td>
               <td>{library.subject.subjectDesc}</td>
@@ -923,7 +967,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                 <td>{library.bookTitle}</td>
                 <td>{library.author}</td>
                 <td>{library.noOfCopies}</td>
-                <td>{library.uniqueNo}</td>
+                {/* <td>{library.uniqueNo}</td> */}
                 <td>{library.bookNo}</td>
                 <td>{library.additionalInfo}</td>                
                 <td>{library.batch.batch}</td>
@@ -977,7 +1021,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
 
   render() {
     const { data: { createLibraryFilterDataCache, refetch }, mutate, addBook, addLibraryMutation, updateLibraryMutation } = this.props;
-    const { libraryData, departments, batches, subjects, submitted } = this.state;
+    const { libraryData, departments, batches, subjects,students,sections, submitted } = this.state;
 
     return (
       <section className="plugin-bg-white">
@@ -1005,26 +1049,33 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
             <table id="t-attendance" className="markAttendance">
               <thead>
                 <tr>
+                  <th>Department</th>
                   <th>Year</th>
                   <th>Subject</th>
                   <th>Book Title</th>
                   <th>Author</th>
                   <th>Book No</th>
                   <th>No Of Copies</th>
-                  <th>Unique No</th>
+                  {/* <th>Unique No</th> */}
                   <th>Additional Info</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>
-                    <select required name="batch" id="batch" onChange={this.onChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
-                      {this.createBatches(this.props.data.createLibraryFilterDataCache.batches)}
-                    </select>
+                <td>
+                  <select required name="department" id="department" onChange={this.onSubChange}  className="gf-form-input max-width-8">
+                    {this.createDepartments(this.props.data.createLibraryFilterDataCache.departments,libraryData.branch.id)}
+                  </select>               
                   </td>
                   <td>
-                    <select required name={"subject"} id="subject" onChange={this.onChange} value={libraryData.subject.id} className="gf-form-input max-width-22">    {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, libraryData.batch.id)}
-                    </select>
+                    <select required name="batch" id="batch" onChange={this.onChange} value=  {libraryData.batch.id} className="gf-form-input max-width-22">
+                        {this.createBatches(this.props.data.createLibraryFilterDataCache.batches, libraryData.department.id)}
+                      </select>
+                  </td>
+                  <td>
+                  <select required name="subject" id="subject" onChange={this.onChange} value={libraryData.subject.subjectDesc} className="gf-form-input max-width-22">
+                      {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, libraryData.department.id,libraryData.batch.id)}
+                </select>
                   </td>
 
                   <td>
@@ -1043,9 +1094,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                     <input type="number" id={"noOfCopies"} name={"noOfCopies"} onChange={this.onChange} className="fwidth" value={libraryData.noOfCopies} />
                   </td>
 
-                  <td>
+                  {/* <td>
                     <input type="number" id={"uniqueNo"} name={"uniqueNo"} onChange={this.onChange} className="fwidth" value={libraryData.uniqueNo} />
-                  </td>
+                  </td> */}
 
                   <td>
                     <input type="text" id={"additionalInfo"} name={"additionalInfo"} onChange={this.onChange} className="fwidth" value={libraryData.additionalInfo} />
@@ -1059,9 +1110,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         <div id= "btsbsearch" className="student-flex">          
                
             <select required name="batch" id="batch" onChange={this.onChange} value=  {libraryData.batch.id} className="gf-form-input max-width-22">
-                        {this.createBatches(this.props.data.createLibraryFilterDataCache.batches)}
+                        {this.createBatches(this.props.data.createLibraryFilterDataCache.batches,libraryData.department.id)}
             </select>
-            <select required name={"subject"} id="subject" onChange={this.onChange} value=    {libraryData.subject.id} className="gf-form-input max-width-22">                {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, libraryData.batch.id)}
+            <select required name={"subject"} id="subject" onChange={this.onChange} value=    {libraryData.subject.id} className="gf-form-input max-width-22">                {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, libraryData.department.id,libraryData.batch.id)}
             </select>    
             <div  className="margin-bott max-width-22">
                   <label htmlFor="">Search</label>
@@ -1075,21 +1126,21 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
           <div className="m-1 col-md-5 feeSelect">
                 <div>
                   <label htmlFor="">Batches</label>
-                  <select required name="batch" id="batch" onChange={this.onChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
-                      {this.createBatches(this.props.data.createLibraryFilterDataCache.batches)}
+                  <select required name="batch" id="batch" onChange={this.onSubChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
+                      {this.createBatches(this.props.data.createLibraryFilterDataCache.batches, libraryData.department.id)}
                     </select>
                 </div>
                 <div>
                   <label htmlFor="">Department</label>
-                  <select required name="department" id="department" className="gf-form-input max-width-8">
-                    {this.createDepartments(this.props.data.createLibraryFilterDataCache.departments)}
+                  <select required name="department" id="department" onChange={this.onSubChange}  className="gf-form-input max-width-8">
+                    {this.createDepartments(this.props.data.createLibraryFilterDataCache.departments,libraryData.branch.id)}
                   </select>
                 </div>
                 <div>
                   <label htmlFor="">Section</label>
-                  <select required name="section" id="section" onChange={this.onChange} value={libraryData.section.id} className="gf-form-input max-width-22">
+                    <select required name="section" id="section" onChange={this.onSubChange} value={libraryData.section.id} className="gf-form-input max-width-22">
                       {this.createSections(this.props.data.createLibraryFilterDataCache.sections, libraryData.batch.id)}
-                    </select> 
+                    </select>
                 </div>
         
           </div>              
@@ -1103,7 +1154,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                   <th>Author</th>
                   <th>No Of Copies</th>
                   <th>Book No</th>                  
-                  <th>Unique No</th>
+                  {/* <th>Unique No</th> */}
                   <th>Additional Info</th>
                   <th>Year</th>
                   <th>Subject</th>
