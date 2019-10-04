@@ -673,7 +673,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let fCatDtDiv: any = document.querySelector("#feeCatDetailDiv");
     fCatDtDiv.setAttribute("class", "b-1");
 
-
+    let fCatDiv: any = document.querySelector("#t-main");
+    fCatDiv.setAttribute("class", "hide");
 
     let svFCatDiv: any = document.querySelector("#saveFeeCatDiv");
     svFCatDiv.setAttribute("class", "hide");
@@ -689,7 +690,30 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
     let stb: any = document.querySelector("#studentsbutton");
     stb.setAttribute("class", "hide");
-   
+
+    let auth: any = document.querySelector("#author");
+    auth.setAttribute("disabled", true);
+
+    let dt: any = document.querySelector("#bookTitle");
+    dt.setAttribute("disabled", true);
+
+    let dd: any = document.querySelector("#bookNo");
+    dd.setAttribute("disabled", true);
+
+    let si: any = document.querySelector("#noOfCopies");
+    si.setAttribute("disabled", true);
+
+    let sn: any = document.querySelector("#additionalInfo");
+    sn.setAttribute("disabled", true);
+
+    let rd: any = document.querySelector("#subject");
+    rd.setAttribute("disabled", true);
+
+    let ssn: any = document.querySelector("#batch");
+    ssn.setAttribute("disabled", true);
+
+    let rad: any = document.querySelector("#department");
+    rad.setAttribute("disabled", true);
 
     this.editLibrary(obj);
     this.showParticularDiv(e);
@@ -736,6 +760,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let fCatDtDiv: any = document.querySelector("#feeCatDetailDiv");
     fCatDtDiv.setAttribute("class", "hide");
 
+   
+
     let stDtDiv: any = document.querySelector("#studentsbutton");
     stDtDiv.setAttribute("class", "hide");
 
@@ -768,26 +794,19 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
   }
  
   //for status
-//   statusFunctn(data: any){
-//     const { libraryData } = this.state;
-//     let auth: any = document.querySelector("#author");
-//     let dt: any = document.querySelector("#issueDate");
-//     let dd: any = document.querySelector("#dueDate");
-//     let si: any = document.querySelector("#sid");
-//     let sn: any = document.querySelector("#sname");
-//     let rd: any = document.querySelector("#recDate");
+  statusFunctn(data: any){
+    const { libraryData } = this.state;
+    let auth: any = document.querySelector("#author");
+    auth.setAttribute("disabled", true);
+    let dt: any = document.querySelector("#issueDate");
+    let dd: any = document.querySelector("#dueDate");
+    let si: any = document.querySelector("#sid");
+    let sn: any = document.querySelector("#sname");
+    let rd: any = document.querySelector("#recDate");
 
-//     let els = document.querySelectorAll("input[type=checkbox]");
-//     const delim = "#~#";
-//     var empty = [].filter.call(els, function (el: any) {
-//     let txt: any = document.querySelector("#t" + el.id);
-//     if (el.checked) {
-//       auth.setAttribute("disabled", true);
-
-//     }
-    
-//   }
-// }
+   
+ 
+}
 
   createParticularDiv() {
     const { libraryData } = this.state;
@@ -1047,9 +1066,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           </div>
         </div> 
 
-        <div className="p-1">
+        <div id="t-main" className="p-1">
           <form className="gf-form-group" onSubmit={this.onFormSubmit} >
-            <table id="t-attendance" className="markAttendance">
+            <table id="t-mai" className="markAttendance">
               <thead>
                 <tr>
                   <th>Department</th>
@@ -1084,7 +1103,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                   <td>
                     <input type="text" id={"bookTitle"} name={"bookTitle"} onChange={this.onChange} className="fwidth" value={libraryData.bookTitle} />
                   </td>
-
+                  
                   <td>
                     <input type="text" id={"author"} name={"author"} onChange={this.onChange} className="fwidth" value={libraryData.author} />
                   </td>
