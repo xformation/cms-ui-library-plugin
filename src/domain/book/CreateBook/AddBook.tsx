@@ -626,6 +626,8 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let fCatDtDiv: any = document.querySelector("#feeCatDetailDiv");
     fCatDtDiv.setAttribute("class", "b-1");
 
+
+
     let svFCatDiv: any = document.querySelector("#saveFeeCatDiv");
     svFCatDiv.setAttribute("class", "hide");
 
@@ -687,6 +689,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let fCatDtDiv: any = document.querySelector("#feeCatDetailDiv");
     fCatDtDiv.setAttribute("class", "hide");
 
+    let stDtDiv: any = document.querySelector("#studentsbutton");
+    stDtDiv.setAttribute("class", "hide");
+
     let svFCatDiv: any = document.querySelector("#saveFeeCatDiv");
     svFCatDiv.setAttribute("class", "fee-flex");
 
@@ -696,6 +701,8 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let btsbDiv: any = document.querySelector("#btsbsearch");
     btsbDiv.setAttribute("class", "student-flex");
 
+    let btbDiv: any = document.querySelector("#searchbutton");
+    btbDiv.setAttribute("class", "m-b-1");
   }
 
   assigntobutton() {
