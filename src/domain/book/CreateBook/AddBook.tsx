@@ -10,6 +10,7 @@ import withExamSubjDataLoader from './withExamSubjDataLoader';
 import "react-datepicker/dist/react-datepicker.css";
 import * as LibraryListQueryGql from './LibraryListQuery.graphql';
 import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 
 
@@ -499,6 +500,12 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       return;
     }
 
+    let chkStatus: any = document.querySelector("#status");
+    let status = "DEACTIVE";
+    if (chkStatus.checked) {
+      status = "ACTIVE";
+    }
+
     let issDate = null;
     if (this.state.issueDate !== undefined || this.state.issueDate !== null || this.state.issueDate !== "") {
       issDate = moment(this.state.issueDate, "YYYY-MM-DD");
@@ -550,7 +557,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       issueDate: issDate,
       dueDate: ddDate,
       receivedDate: rcDate,
-      status: libraryData.status,
+      status: status,
       noOfCopiesAvailable: 6,
      studentId: libraryData.student.id,
      libraryId: libraryData.libraries.id
@@ -785,6 +792,11 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let sDiv: any = document.querySelector("#searchbutton");
     sDiv.setAttribute("class", "hide");
 
+    // <div id="detailbox" className="b-1">
+
+     let stDiv: any = document.querySelector("#detailbox");
+    stDiv.setAttribute("class", "b-1");
+
     let btsbDiv: any = document.querySelector("#btsbsearch");
     btsbDiv.setAttribute("class", "hide");
 
@@ -871,6 +883,13 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
     let bDiv: any = document.querySelector("#backDiv");
     bDiv.setAttribute("class", "hide"); 
+
+    let sDiv: any = document.querySelector("#detailbox");
+    sDiv.setAttribute("class", "hide"); 
+     // <div id="detailbox" className="b-1">
+
+     let stDiv: any = document.querySelector("#detailbox");
+    stDiv.setAttribute("class", "hide");
     
     let btsbDiv: any = document.querySelector("#btsbsearch");
     btsbDiv.setAttribute("class", "student-flex");
@@ -937,23 +956,22 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
               <DatePicker selected={this.state.dueDate} className="gf-form-input w-135" id={"dueDate" + i} name="dueDate" value={libraryData.dueDate} onChange={this.changeDueDate}/>
             </td>
             <td>
-              <input type="number" className="gf-form-input w-100" id={"sid" + i} name="sid"  onChange={this.onChange} ></input>
+              <input type="number" className="gf-form-input w-100" id={"sid" + i} value={libraryData.student.id} name="sid"  onChange={this.onChange} ></input>
             </td>
             <td>
-              <input type="text" id={"sname" + i} name="sname"  onChange={this.onChange} ></input>
+              <input type="text" id={"sname" + i} name="sname" value={libraryData.studentName} onChange={this.onChange} ></input>
             </td>             
             <td>
               <DatePicker selected={this.state.receivedDate} className="gf-form-input w-135" id={"receivedDate" + i} name="receivedDate" value={libraryData.receivedDate} onChange={this.changereceivedDate} />
             </td>
             <td>
             <div>
-                <select className="gf-form-input w-135" name="status" id="status" onChange={this.onChange}
-                >
-                  <option value="">Select</option>
-                  <option value="AVAILABLE">Rec</option>
-                  <option value="RESERVED">NRec</option>
-                </select>
-              </div>
+              <label htmlFor="">Status</label>
+              <label className="switch">
+                {' '}
+                <input type="checkbox" id="status" name="status"  /> <span className="slider" />{' '}
+              </label>
+            </div>
             </td>
            
             <td>
@@ -1188,6 +1206,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
             </table>
           </form>
         </div>
+        <div id="searchbox" className="b-1">
         <div id= "btsbsearch" className="student-flex">          
                
             <select required name="batch" id="batch" onChange={this.onChange} value=  {libraryData.batch.id} className="gf-form-input max-width-22">
@@ -1202,6 +1221,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       </div>
         <div id = "searchbutton" className="m-b-1 bg-heading-bg studentSearch">
               <button className="btn btn-primary max-width-13" id="btnFind" name="btnFind" onClick={this.onClick} style={w180}>Search Book</button>
+        </div>
         </div>
         <div id = "studentsbutton" className="hide">
           <div className="m-1 col-md-5 feeSelect">
@@ -1274,6 +1294,46 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
             </tbody>
           </table>
         </div>
+        <div id="detailbox" className="b-1">
+        <div className="row">
+                <div className="col-xs-12 col-sm-4 m-b-1">
+                  <span className="profile-label">
+                    Book Name:
+                  </span>
+                  <span>{libraryData.bookTitle}</span>
+                </div>
+                <div className="col-xs-12 col-sm-4 m-b-1">
+                  <span className="profile-label">
+                    Book No:
+          </span>
+                  <span>{libraryData.bookNo}</span>
+                </div>
+                <div className="col-xs-12 col-sm-4 m-b-1">
+                  <span className="profile-label">
+                    Author Name:
+          </span>
+                  <span>{libraryData.author}</span>
+                </div>
+                {/* <div className="col-xs-12 col-sm-4 m-b-1">
+                  <span className="profile-label">
+                    Subject:
+          </span>
+                  <span>{libraryData.subject.subject}</span>
+                </div> */}
+                <div className="col-xs-12 col-sm-4 m-b-1">
+                  {/* <span className="profile-label">
+                    Department: */}
+          {/* </span>
+                  <span>{student.department.name}</span>
+                </div>
+                <div className="col-xs-12 col-sm-4 m-b-1">
+                  <span className="profile-label">
+                    Section:
+          </span>
+                  <span>{student.section.section}</span> */}
+                </div>
+              </div>
+              </div>
         <div id="feeCatDetailDiv" className="hide">
             <table className="fwidth">
               <thead >

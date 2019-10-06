@@ -1361,6 +1361,7 @@ export type LoadLibraryQueryCacheForAdmin = {
     subjects: Array<{
       id: number;
       subjectCode: string;
+      subjectDesc: string;
       batch: {
         id: number;
       };
