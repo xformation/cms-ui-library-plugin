@@ -501,9 +501,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     }
 
     let chkStatus: any = document.querySelector("#status");
-    let status = "DEACTIVE";
+    let status = "AVAILABLE";
     if (chkStatus.checked) {
-      status = "ACTIVE";
+      status = "RESERVED";
     }
 
     let issDate = null;
