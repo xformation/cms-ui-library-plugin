@@ -937,52 +937,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
   })
 }
 
-  createParticularDiv() {
-    const { libraryData } = this.state;
-    const retVal = [];
-
-    for (let i = 0; i < libraryData.noOfCopies; i++) {
-      retVal.push(
-        <tbody>
-          <tr>
-          <td>
-              <input type="number" id={"idd" + i} name="id" value={i+1} className="w-100"  onChange={this.onChange} ></input>
-            </td>
-          <td>
-          {/* <DatePicker selected={this.state.startDate} value={this.state.startDate} onChange={this.changeStartDate} id="dtPickerSt" name="dtPickerSt" /> */}
-              <DatePicker selected={this.state.issueDate} className="gf-form-input w-135" id={"issueDate" + i} name="issueDate"  onChange={this.changeIssueDate} value={libraryData.issueDate}  />
-            </td>
-            <td>
-              <DatePicker selected={this.state.dueDate} className="gf-form-input w-135" id={"dueDate" + i} name="dueDate" value={libraryData.dueDate} onChange={this.changeDueDate}/>
-            </td>
-            <td>
-              <input type="number" className="gf-form-input w-100" id={"sid" + i} value={libraryData.student.id} name="sid"  onChange={this.onChange} ></input>
-            </td>
-            <td>
-              <input type="text" id={"sname" + i} name="sname" value={libraryData.studentName} onChange={this.onChange} ></input>
-            </td>             
-            <td>
-              <DatePicker selected={this.state.receivedDate} className="gf-form-input w-135" id={"receivedDate" + i} name="receivedDate" value={libraryData.receivedDate} onChange={this.changereceivedDate} />
-            </td>
-            <td>
-            <div>
-              <label htmlFor="">Status</label>
-              <label className="switch">
-                {' '}
-                <input type="checkbox" id="status" name="status"  /> <span className="slider" />{' '}
-              </label>
-            </div>
-            </td>
-           
-            <td>
-            <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.assigntobutton} style={{ width: '140px' }}>Assign To</button>
-            </td>
-          </tr>
-        </tbody>
-      );
-    }
-    return retVal;
-  }
+ 
 
   // handleissuedateTimeChange = (e: any) => {
   //   const { id, value } = e.nativeEvent.target;
@@ -1139,7 +1094,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           </div>
           <div id="backDiv" className="hide">
               <button className="btn btn-primary mr-1" id="btnBack" name="btnBack" onClick={this.back} style={{ padding: "13px" }}>Back</button>
-              <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savebook} style={{ width: '140px' }}>Add Book</button>
+              <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savebook} style={{ width: '140px' }}>Save</button>
           </div>
         </div> 
 
@@ -1148,7 +1103,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
             <table id="t-mai" className="markAttendance">
               <thead>
                 <tr>
-                  <th>Department</th>
+                  {/* <th>Department</th> */}
                   <th>Year</th>
                   <th>Subject</th>
                   <th>Book Title</th>
@@ -1161,19 +1116,19 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
               </thead>
               <tbody>
                 <tr>
-                <td>
+                {/* <td>
                   <select required name="department" id="department" onChange={this.onChange}  className="gf-form-input max-width-8">
                     {this.createDepartments(this.props.data.createLibraryFilterDataCache.departments,libraryData.branch.id)}
                   </select>               
-                  </td>
+                  </td> */}
                   <td>
                     <select required name="batch" id="batch" onChange={this.onChange} value=  {libraryData.batch.id} className="gf-form-input max-width-22">
-                        {this.createBatches(this.props.data.createLibraryFilterDataCache.batches, libraryData.department.id)}
+                        {this.createBatches(this.props.data.createLibraryFilterDataCache.batches, 1901)}
                       </select>
                   </td>
                   <td>
                   <select required name="subject" id="subject" onChange={this.onChange} value={libraryData.subject.subjectDesc} className="gf-form-input max-width-22">
-                      {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, libraryData.department.id,libraryData.batch.id)}
+                      {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, 1901,libraryData.batch.id)}
                 </select>
                   </td>
 
@@ -1210,9 +1165,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
         <div id= "btsbsearch" className="student-flex">          
                
             <select required name="batch" id="batch" onChange={this.onChange} value=  {libraryData.batch.id} className="gf-form-input max-width-22">
-                        {this.createBatches(this.props.data.createLibraryFilterDataCache.batches,libraryData.department.id)}
+                        {this.createBatches(this.props.data.createLibraryFilterDataCache.batches,1901)}
             </select>
-            <select required name={"subject"} id="subject" onChange={this.onChange} value=    {libraryData.subject.id} className="gf-form-input max-width-22">                {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, libraryData.department.id,libraryData.batch.id)}
+            <select required name={"subject"} id="subject" onChange={this.onChange} value=    {libraryData.subject.id} className="gf-form-input max-width-22">                {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, 1901,libraryData.batch.id)}
             </select>    
             <div  className="margin-bott max-width-22">
                   <label htmlFor="">Search</label>
@@ -1247,7 +1202,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                 </div>
                 <div>
                   <label htmlFor="">Student</label>
-                    <select required name="student" id="student" onChange={this.onSubChange} value={libraryData.student.id} className="gf-form-input max-width-22">
+                    <select required name="student" id="student" onChange={this.onSubChange} value={libraryData.student.studentName} className="gf-form-input max-width-22">
                       {this.createStudents(this.props.data.createLibraryFilterDataCache.students, libraryData.batch.id, libraryData.department.id, libraryData.section.id)}
                     </select>
                 </div>
@@ -1311,27 +1266,11 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                 <div className="col-xs-12 col-sm-4 m-b-1">
                   <span className="profile-label">
                     Author Name:
-          </span>
+                  </span>
                   <span>{libraryData.author}</span>
                 </div>
-                {/* <div className="col-xs-12 col-sm-4 m-b-1">
-                  <span className="profile-label">
-                    Subject:
-          </span>
-                  <span>{libraryData.subject.subject}</span>
-                </div> */}
-                <div className="col-xs-12 col-sm-4 m-b-1">
-                  {/* <span className="profile-label">
-                    Department: */}
-          {/* </span>
-                  <span>{student.department.name}</span>
-                </div>
-                <div className="col-xs-12 col-sm-4 m-b-1">
-                  <span className="profile-label">
-                    Section:
-          </span>
-                  <span>{student.section.section}</span> */}
-                </div>
+          
+          
               </div>
               </div>
         <div id="feeCatDetailDiv" className="hide">
@@ -1351,15 +1290,55 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
               {this.createParticularDiv()}
             </table>
           </div>
-        {/* <div id="feeCatDetailDiv" className="hide">
-          {
-            this.createParticularDiv()
-          }
-        </div> */}
+      
       </section>
     );
   }
+  createParticularDiv() {
+    const { libraryData } = this.state;
+    const retVal = [];
 
+    for (let i = 0; i < libraryData.noOfCopies; i++) {
+      retVal.push(
+        <tbody>
+          <tr>
+          <td>
+              <input type="number" id={"idd" + i} name="id" value={i+1} className="w-100"  onChange={this.onChange} ></input>
+            </td>
+          <td>
+              <DatePicker selected={this.state.issueDate} className="gf-form-input w-135" id={"issueDate" + i} name="issueDate"  onChange={this.changeIssueDate} value={libraryData.issueDate}  />
+            </td>
+            <td>
+              <DatePicker selected={this.state.dueDate} className="gf-form-input w-135" id={"dueDate" + i} name="dueDate" value={libraryData.dueDate} onChange={this.changeDueDate}/>
+            </td>
+            <td>
+              <input type="number" className="gf-form-input w-100" id={"sid" + i} value={libraryData.student.id} name="sid"  onChange={this.onChange} ></input>
+            </td>
+            <td>
+              <input type="text" id={"sname" + i} name="sname" value={libraryData.studentName} onChange={this.onChange} ></input>
+            </td>             
+            <td>
+              <DatePicker selected={this.state.receivedDate} className="gf-form-input w-135" id={"receivedDate" + i} name="receivedDate" value={libraryData.receivedDate} onChange={this.changereceivedDate} />
+            </td>
+            <td>
+            <div>
+              <label htmlFor="">Status</label>
+              <label className="switch">
+                {' '}
+                <input type="checkbox" id="status" name="status"  /> <span className="slider" />{' '}
+              </label>
+            </div>
+            </td>
+           
+            <td>
+            <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.assigntobutton} style={{ width: '140px' }}>Assign To</button>
+            </td>
+          </tr>
+        </tbody>
+      );
+    }
+    return retVal;
+  }
 }
 export default withExamSubjDataLoader(
   compose(
