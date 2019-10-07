@@ -158,6 +158,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     this.updateLibrary = this.updateLibrary.bind(this);
     this.showDetail = this.showDetail.bind(this);
     this.back = this.back.bind(this);
+    this.create = this.create.bind(this);
     // this.onSubChange = this.onSubChange.bind(this);
     this.createParticularDiv = this.createParticularDiv.bind(this);
     // this.handlereceivedDateTimeChange =this.handlereceivedDateTimeChange.bind(this);
@@ -803,8 +804,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let stb: any = document.querySelector("#studentsbutton");
     stb.setAttribute("class", "hide");
 
-    // let auth: any = document.querySelector("#author");
-    // auth.setAttribute("disabled", true);
+    let dt: any = document.querySelector("#smdt");
+    dt.setAttribute("class", "");
 
     // let dt: any = document.querySelector("#bookTitle");
     // dt.setAttribute("disabled", true);
@@ -857,7 +858,22 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     // }
 
   }
+  create(){
+    let { count, countParticularDiv } = this.state;
+    countParticularDiv = 0;
+    count = [];
+    this.setState({
+      countParticularDiv,
+      count
+    });
 
+     let fCatGrid: any = document.querySelector("#saveFeeCatDiv");
+     fCatGrid.setAttribute("class", "");
+
+     let crdiv: any = document.querySelector("#t-main");
+     crdiv.setAttribute("class", "");
+  }
+  
   back() {
     let { count, countParticularDiv } = this.state;
     countParticularDiv = 0;
@@ -873,13 +889,13 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     fCatDtDiv.setAttribute("class", "hide");
 
     let fCatDiv: any = document.querySelector("#t-main");
-    fCatDiv.setAttribute("class", "");
+    fCatDiv.setAttribute("class", "hide");
 
     let stDtDiv: any = document.querySelector("#studentsbutton");
     stDtDiv.setAttribute("class", "hide");
 
     let svFCatDiv: any = document.querySelector("#saveFeeCatDiv");
-    svFCatDiv.setAttribute("class", "fee-flex");
+    svFCatDiv.setAttribute("class", "hide");
 
     let bDiv: any = document.querySelector("#backDiv");
     bDiv.setAttribute("class", "hide"); 
@@ -896,6 +912,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
     let btbDiv: any = document.querySelector("#searchbutton");
     btbDiv.setAttribute("class", "m-b-1");
+
+  
   }
 
   assigntobutton() {
@@ -1085,20 +1103,35 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           Admin - Library Management
           </h3>
         <div className="stroke-transparent mr-1">&nbsp;</div>
-        <div id="headerRowDiv" className="b-1 h5-fee-bg j-between">
-        <div className="m-1">Create Books</div>
-          <div id="saveFeeCatDiv" className="fee-flex">
-            <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savelibrary} style={{ width: '140px' }}>Add Book</button>
-            <button className="btn btn-primary mr-1" id="btnReset" name="btnReset" onClick={this.reset} >Reset</button>
-            <button className="btn btn-primary mr-1" id="btnUpdateFeeCategory" name="btnUpdateFeeCategory" onClick={this.updateLibrary} style={{ width: '170px' }}>Update Book</button>
-          </div>
-          <div id="backDiv" className="hide">
-              <button className="btn btn-primary mr-1" id="btnBack" name="btnBack" onClick={this.back} style={{ padding: "13px" }}>Back</button>
-              <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savebook} style={{ width: '140px' }}>Save</button>
-          </div>
+          <div id="headerRowDiv" className="b-1 h5-fee-bg j-between">
+            <div className="m-1">Create Books</div>
+
+              <div id="saveFeeCatDiv" className="hide">
+
+                  <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savelibrary} style={{ width: '140px' }}>Save</button>
+
+                  <button className="btn btn-primary mr-1" id="btnReset" name="btnReset" onClick={this.reset} >Reset</button>
+
+                  <button className="btn btn-primary mr-1" id="btnUpdateFeeCategory" name="btnUpdateFeeCategory" onClick={this.updateLibrary} style={{ width: '170px' }}>Update</button>
+
+              </div>
+
+              <div id="backDiv" className="hide">
+
+                  <button className="btn btn-primary mr-1" id="btnBack" name="btnBack" onClick={this.back} style={{ padding: "13px" }}>Back</button>
+
+                  <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savebook} style={{ width: '140px' }}>Save</button>
+
+              </div>
+
+              <div id="crDiv" className="">
+
+                <button className="btn btn-primary mr-1" id="btnBack" name="btnBack" onClick={this.create} style={{ padding: "13px" }}>Create New Book</button>
+                
+              </div>
         </div> 
 
-        <div id="t-main" className="p-1">
+        <div id="t-main" className="hide">
           <form className="gf-form-group" onSubmit={this.onFormSubmit} >
             <table id="t-mai" className="markAttendance">
               <thead>
@@ -1250,7 +1283,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           </table>
         </div>
         <div id="detailbox" className="b-1">
-        <div className="row">
+          <div id= "smdt" className="hide">
                 <div className="col-xs-12 col-sm-4 m-b-1">
                   <span className="profile-label">
                     Book Name:
@@ -1260,7 +1293,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                 <div className="col-xs-12 col-sm-4 m-b-1">
                   <span className="profile-label">
                     Book No:
-          </span>
+                    </span>
                   <span>{libraryData.bookNo}</span>
                 </div>
                 <div className="col-xs-12 col-sm-4 m-b-1">
