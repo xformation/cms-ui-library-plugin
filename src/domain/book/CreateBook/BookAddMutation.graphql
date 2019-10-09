@@ -1,18 +1,11 @@
-mutation addBook($input: AddBookInput!) {
+mutation addBook($input: [AddBookInput!]!) {
   addBook(input: $input) {
     book {
       id
-      issueDate
-      dueDate
-      receivedDate
-      noOfCopiesAvailable
-      status
-      student {
-        id
-      }
+      
       library {
         id
       }
     }
-  }
+  } 
 }

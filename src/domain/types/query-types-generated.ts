@@ -1462,11 +1462,6 @@ export type LibraryAddMutationType = {
 export type BookAddMutationType = {
   addBook: Array<{
     id: number;
-    issueDate: Date;
-    dueDate: Date;
-    receivedDate: Date;
-    noOfCopiesAvailable: any;
-    status: any;
     student: {
       id: number;
     };

@@ -60,19 +60,11 @@ type LibraryState = {
 
 class SaData {
 
-  issueDate: any;
-  dueDate: any;
-  receivedDate: any;
-  noOfCopiesAvailable: any;
-  status: any;
+ 
   studentId: any;
   libraryId: any;
-  constructor(issueDate: any, dueDate: any, receivedDate: any, noOfCopiesAvailable: any, status: any, studentId: any, libraryId: any) {
-    this.issueDate = issueDate;
-    this.dueDate = dueDate;
-    this.receivedDate = receivedDate;
-    this.noOfCopiesAvailable = noOfCopiesAvailable;
-    this.status = status;
+  constructor( studentId: any, libraryId: any) {
+    
     this.studentId = studentId;
     this.libraryId = libraryId;
       
@@ -121,7 +113,8 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         dDate: {},
         payLoad: [],
         mutateResult: [],
-        search: ""
+        search: "",
+        selectedIds: ""
       },
         branches: [],
         academicYears: [],
@@ -475,37 +468,24 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     const { libraryData } = this.state;
     e.preventDefault();
     
-    // for (let i = 0; i < libraryData.noOfCopies; i++) {
-    //   let exdt: any = document.querySelector("#issueDate" + i);
-    //   if (libraryData.isDate[exdt.id] === undefined || libraryData.isDate[exdt.id] === null || libraryData.isDate[exdt.id] === "") {
-    //     alert("Please select an issue date");
-
-    //     return;
-    //   }
-    // }
-    // let txtBt: any = document.querySelector("#issueDate");
-    // if (txtBt.value.trim() === "") {
-    //   alert("Please select Issue Date");
+    // if (this.state.dueDate === undefined || this.state.dueDate === null || this.state.dueDate === "") {
+    //   alert("Please provide Due date");
     //   return;
     // }
-    if (this.state.dueDate === undefined || this.state.dueDate === null || this.state.dueDate === "") {
-      alert("Please provide Due date");
-      return;
-    }
-    if (this.state.issueDate === undefined || this.state.issueDate === null || this.state.issueDate === "") {
-      alert("Please provide issue date");
-      return;
-    }
-    if (this.state.receivedDate === undefined || this.state.receivedDate === null || this.state.receivedDate === "") {
-      alert("Please provide Rec date");
-      return;
-    }
+    // if (this.state.issueDate === undefined || this.state.issueDate === null || this.state.issueDate === "") {
+    //   alert("Please provide issue date");
+    //   return;
+    // }
+    // if (this.state.receivedDate === undefined || this.state.receivedDate === null || this.state.receivedDate === "") {
+    //   alert("Please provide Rec date");
+    //   return;
+    // }
 
-    let chkStatus: any = document.querySelector("#status");
-    let status = "AVAILABLE";
-    if (chkStatus.checked) {
-      status = "RESERVED";
-    }
+    // let chkStatus: any = document.querySelector("#status");
+    // let status = "AVAILABLE";
+    // if (chkStatus.checked) {
+    //   status = "RESERVED";
+    // }
 
     let issDate = null;
     if (this.state.issueDate !== undefined || this.state.issueDate !== null || this.state.issueDate !== "") {
@@ -524,69 +504,39 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
         return;
       }
     }
-    // for (let i = 0; i < libraryData.noOfCopies; i++) {
-    //   let exdt: any = document.querySelector("#dueDate" + i);
-    //   if (libraryData.dDate[exdt.id] === undefined || libraryData.dDate[exdt.id] === null || libraryData.dDate[exdt.id] === "") {
-    //     alert("Please select an due date");
-
-    //     return;
-    //   }
-    // }
-
-    // let ddt: any = document.querySelector("#dueDate");
-    // if (ddt.value.trim() === "") {
-    //   alert("Please select Due Date");
-    //   return;
-    // }
-
-    // for (let i = 0; i < libraryData.noOfCopies; i++) {
-    //   let exdt: any = document.querySelector("#receivedDate" + i);
-    //   if (libraryData.rDate[exdt.id] === undefined || libraryData.rDate[exdt.id] === null || libraryData.rDate[exdt.id] === "") {
-    //     alert("Please select an recieve date");
-
-    //     return;
-    //   }
-    // }
-
-    // let rcdt: any = document.querySelector("#receivedDate");
-    // if (rcdt.value.trim() === "") {
-    //   alert("Please select Rec Date");
-    //   return;
-    // }
-
-    let addBookInput = {
-      issueDate: issDate,
-      dueDate: ddDate,
-      receivedDate: rcDate,
-      status: status,
-      noOfCopiesAvailable: 6,
-     studentId: libraryData.student.id,
-     libraryId: libraryData.libraries.id
-    };
-    console.log("form data : ", libraryData);
-    return addBookMutation({
-      variables: { input: addBookInput }
-    }).then(data => {
-      console.log('Add Book ::::: ', data);
-      alert("Book added successfully!");
-      const sdt = data;
-      libraryData.librarysaveData = [];
-      libraryData.librarysaveData.push(sdt);
-      this.setState({
-        libraryData: libraryData
-      });
-      this.setState({
-        add: true,
-        update: false
-      });
-
-    }).catch((error: any) => {
-      alert("Due to some error Book could not be added");
-      console.log('there was an error sending the add Book mutation result', error);
-      return Promise.reject(`Could not retrieve add Book data: ${error}`);
-    });
-
-  }
+    
+    for(let i=0; i<libraryData.noOfCopies; i++) {    
+      let sd  = new SaData(
+       
+     
+        2051,
+        libraryData.libraries.id,
+       
+        );
+        libraryData.payLoad.push(sd);
+   }
+  
+   this.setState({libraryData:libraryData})
+  
+  console.log('total IDS : ', libraryData.selectedIds);
+  // let btn : any = document.querySelector("#btnSave");
+  // btn.setAttribute("disabled", true);
+  return addBookMutation({
+    variables: { input: libraryData.payLoad },
+  }).then(data => {
+    // btn.removeAttribute("disabled");
+    console.log('Saved Result: ', data.data.addBook);
+    alert("Added Succesfully");
+  }).catch((error: any) => {
+    // btn.removeAttribute("disabled");
+    console.log('there is some error ', error);
+    return Promise.reject(`there is some error while updating : ${error}`);
+  });
+  } 
+  
+    
+     
+    
 
   editLibrary(obj: any) {
     const { libraryData } = this.state;
