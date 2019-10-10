@@ -542,7 +542,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       }
     }
     
-    for(let i=0; i<=libraryData.noOfCopies; i++) {    
+    for(let i=0; i<=this.state.noOfCopiesAvailable; i++) {    
       let sd  = new SaData(
        
      
@@ -880,6 +880,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let cpDiv: any = document.querySelector("#bookcopiesdiv");
     cpDiv.setAttribute("class", "");
 
+    let bl: any = document.querySelector("#booklist");
+    bl.setAttribute("class", "");
+
     // let dt: any = document.querySelector("#bookTitle");
     // dt.setAttribute("disabled", true);
 
@@ -948,6 +951,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
      let cpDiv: any = document.querySelector("#bookcopiesdiv");
      cpDiv.setAttribute("class", "hide");
+
+     let bl: any = document.querySelector("#booklist");
+    bl.setAttribute("class", "hide");
   }
   
   back() {
@@ -991,6 +997,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
     let cpDiv: any = document.querySelector("#bookcopiesdiv");
     cpDiv.setAttribute("class", "hide");
+
+    let bl: any = document.querySelector("#booklist");
+    bl.setAttribute("class", "hide");
   
   }
 
@@ -1235,36 +1244,36 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
   }
 
 
-  onClickbook = (e: any) => {
-    const { name, value } = e.nativeEvent.target;
-    const { mutatebook } = this.props;
-    const { libraryData } = this.state;
-    e.preventDefault();
+  // onClickbook = (e: any) => {
+  //   const { name, value } = e.nativeEvent.target;
+  //   const { mutatebook } = this.props;
+  //   const { libraryData } = this.state;
+  //   e.preventDefault();
 
-    let libraryFilterInputObject = {
+  //   let libraryFilterInputObject = {
       
-      batchId: libraryData.batch.id,
+  //     batchId: libraryData.batch.id,
       
-      subjectId: libraryData.subject.id
-    };
+  //     subjectId: libraryData.subject.id
+  //   };
 
 
-    return mutatebook({
-      variables: { filter: libraryFilterInputObject },
-    }).then(data => {
-      const sdt = data;
-      libraryData.mutateResult = [];
-      libraryData.mutateResult.push(sdt);
-      this.setState({
-        libraryData: libraryData
-      });
-      console.log('Student filter mutation result ::::: ', libraryData.mutateResult);
-    }).catch((error: any) => {
-      console.log('there was an error sending the query result', error);
-      return Promise.reject(`Could not retrieve student data: ${error}`);
-    });
+  //   return mutatebook({
+  //     variables: { filter: libraryFilterInputObject },
+  //   }).then(data => {
+  //     const sdt = data;
+  //     libraryData.mutateResult = [];
+  //     libraryData.mutateResult.push(sdt);
+  //     this.setState({
+  //       libraryData: libraryData
+  //     });
+  //     console.log('Student filter mutation result ::::: ', libraryData.mutateResult);
+  //   }).catch((error: any) => {
+  //     console.log('there was an error sending the query result', error);
+  //     return Promise.reject(`Could not retrieve student data: ${error}`);
+  //   });
 
-  }
+  // }
 
   increaseExamValue() {
     if (this.state.noOfCopiesAvailable < 5) {
@@ -1291,13 +1300,12 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       let k = obj[x];
       retVal.push(
         <tr>
-          <td>{k.id}</td>
-          {/* <td>{k.student.Id}</td> */}
-          {/* <td>{k.categoryName}</td>
-          <td>{k.description}</td>
+         <td>{k.id}</td>
+          <td>{k.issueDate}</td>
+          <td>{k.dueDate}</td>
+          <td>{k.student.studentName}</td>
+          <td>{k.receivedDate}</td>
           <td>{k.status}</td>
-          <td>{k.strStartDate}</td>
-          <td>{k.strEndDate}</td> */}
           {/* <td>
             <button className="btn btn-primary" onClick={e => this.editFeeCategory(k)}>Edit</button>
           </td>
@@ -1321,17 +1329,12 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       retVal.push(
         <tr>
           <td>{k.id}</td>
-          {/* <td>{k.categoryName}</td>
-          <td>{k.description}</td>
+          <td>{k.issueDate}</td>
+          <td>{k.dueDate}</td>
+          <td>{k.student.id}</td>
+          <td>{k.receivedDate}</td>
           <td>{k.status}</td>
-          <td>{k.strStartDate}</td>
-          <td>{k.strEndDate}</td> */}
-          {/* <td>
-            <button className="btn btn-primary" onClick={e => this.editFeeCategory(k)}>Edit</button>
-          </td>
-          <td>
-            <button className="btn btn-primary" onClick={e => this.showDetail(e, k)}>Details</button>
-          </td> */}
+          
         </tr>
       );
     }
@@ -1353,12 +1356,12 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       retVal.push(
         <tr>
           <td>{k.id}</td>
-          {/* <td>{k.student.studentName}</td> */}
-          {/* <td>{k.author}</td>
-          <td>{k.bookNo}</td>
-          <td>{k.noOfCopies}</td>
-          <td>{k.additionalInfo}</td> */}
-          {/* <td>{k.uniqueNo}</td> */}
+          <td>{k.issueDate}</td>
+          <td>{k.dueDate}</td>
+          <td>{k.student.id}</td>
+          <td>{k.receivedDate}</td>
+          <td>{k.status}</td>
+         
         </tr>
       );
     }
@@ -1492,9 +1495,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
         <div id = "searchbutton" className="m-b-1 bg-heading-bg studentSearch">
               <button className="btn btn-primary max-width-13" id="btnFind" name="btnFind" onClick={this.onClick} style={w180}>Search Book</button>
         </div>
-        <div id = "searchbutton" className="m-b-1 bg-heading-bg studentSearch">
+        {/* <div id = "searchbutton" className="m-b-1 bg-heading-bg studentSearch">
               <button className="btn btn-primary max-width-13" id="btnFind" name="btnFind" onClick={this.onClickbook} style={w180}>Search Bookkk</button>
-        </div>
+        </div> */}
         </div>
         
 
@@ -1624,7 +1627,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
             </table>
            
           </div>
-      
+      <div id= "booklist" className="hide">
+      Books Details
           <div id="bookGrid" className="b-1">
           <table className="fwidth" id="booktable">
             <thead >
@@ -1654,7 +1658,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
              </tbody>
           </table>
         </div>
-              
+        </div>   
       </section>
     );
   }
