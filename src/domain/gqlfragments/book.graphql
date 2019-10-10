@@ -1,0 +1,11 @@
+fragment book on Book {
+    id
+   
+    student{
+      id
+    }
+    library{
+      id
+    }
+ 
+}

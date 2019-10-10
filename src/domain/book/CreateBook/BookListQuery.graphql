@@ -1,0 +1,16 @@
+query books{
+ 
+  books{
+    id
+   
+    student{
+      id
+    }
+    library{
+      id
+    }
+  }
+      
+        
+  }
+

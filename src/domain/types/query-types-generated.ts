@@ -1,3 +1,5 @@
+import {number} from 'prop-types';
+
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
@@ -1401,6 +1403,17 @@ export type LoadLibraryQueryCacheForAdmin = {
         id: number;
       };
     }>;
+
+    books: Array<{
+      id: number;
+
+      student: {
+        id: number;
+      };
+      library: {
+        id: number;
+      };
+    }>;
   };
 };
 
@@ -1511,5 +1524,42 @@ export type BookUpdateMutationType = {
       student: number;
       library: number;
     };
+  };
+};
+
+export type BookListQuery = {
+  books: Array<{
+    id: number;
+
+    student: number;
+    library: number;
+  }>;
+};
+
+export type BookQueryVariables = {
+  bookId: number;
+};
+
+export type BookQuery = {
+  book: {
+    id: number;
+
+    student: {
+      id: number;
+    };
+    library: {
+      id: number;
+    };
+  };
+};
+
+export type BookDetailsFragment = {
+  id: number;
+
+  student: {
+    id: number;
+  };
+  library: {
+    id: number;
   };
 };

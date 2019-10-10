@@ -6,10 +6,11 @@ import * as LibraryAddMutation from './LibraryAddMutation.graphql';
 import * as LibraryUpdateMutation from './LibraryUpdateMutation.graphql';
 import * as BookAddMutation from './BookAddMutation.graphql';
 import * as BookUpdateMutation from './BookUpdateMutation.graphql';
-import { LoadLibraryQueryCacheForAdmin, LibraryAddMutationType, LibraryUpdateMutationType, BookAddMutationType, LibraryListQuery, BookUpdateMutationType } from '../../types';
+import { LoadLibraryQueryCacheForAdmin, LibraryAddMutationType, LibraryUpdateMutationType, BookAddMutationType, LibraryListQuery, BookListQuery, BookUpdateMutationType } from '../../types';
 import withExamSubjDataLoader from './withExamSubjDataLoader';
 import "react-datepicker/dist/react-datepicker.css";
 import * as LibraryListQueryGql from './LibraryListQuery.graphql';
+import * as BookListQueryGql from './BookListQuery.graphql';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -35,6 +36,7 @@ type LibraryPageProps = LibraryRootProps & {
   updateLibraryMutation: MutationFunc<LibraryUpdateMutationType>;
   addBookMutation: MutationFunc<BookAddMutationType>;
   mutate: MutationFunc<LibraryListQuery>;
+  mutatebook: MutationFunc<BookListQuery>;
   updateBookMutation: MutationFunc<BookUpdateMutationType>;
 
 };
@@ -48,6 +50,7 @@ type LibraryState = {
   subjects: any,
   sections: any
   students: any,
+  books: any;
   submitted: any,
   add: any,
   toggle: any,
@@ -90,7 +93,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         libraries: {
           id: ""
         },
-        books:{
+        book:{
           id: ""
         },
         academicYear: {
@@ -132,6 +135,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         subjects: [],
         sections: [],
         students: [],
+        books: [],
         countParticularDiv: 0,
         count: [],
         submitted: false,
@@ -156,6 +160,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     this.isDatesOverlap = this.isDatesOverlap.bind(this);
     this.createLibraryRows = this.createLibraryRows.bind(this)
     this.createLibraryUpdateRow = this.createLibraryUpdateRow.bind(this);
+    this.createBookUpdateRow = this.createBookUpdateRow.bind(this);
     this.editLibrary = this.editLibrary.bind(this);
     this.reset = this.reset.bind(this);
     this.updateLibrary = this.updateLibrary.bind(this);
@@ -171,6 +176,8 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     this.changeDueDate = this.changeDueDate.bind(this);
     this.changeIssueDate = this.changeIssueDate.bind(this);
     this.changereceivedDate = this.changereceivedDate.bind(this);
+    this.createBookRows = this.createBookRows.bind(this);
+    this.createBookAddRow = this.createBookAddRow.bind(this);
   }
 
   createDepartments(departments: any, selectedBranchId: any) {
@@ -1060,7 +1067,64 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
 
   
- 
+  createBookRows(objAry: any) {
+    let { search } = this.state.libraryData;
+    search = search.trim();
+    const mutateResLength = objAry.length;
+    const retVal = [];
+    for (let x = 0; x < mutateResLength; x++) {
+      const tempObj = objAry[x];
+      const libraries = tempObj.data.books;
+      const length = libraries.length;
+      for (let i = 0; i < length; i++) {
+        const library = libraries[i];
+        if(search){
+          if(library.bookTitle.indexOf(search) !== -1 ){
+            retVal.push(
+              <tr key={library.id}>                
+                {/* <td>{library.bookTitle}</td>
+                <td>{library.author}</td>
+                <td>{library.noOfCopies}</td>
+                <td>{library.bookNo}</td>              
+                {/* <td>{library.uniqueNo}</td> */}
+                <td>{library.batch.batch}</td>
+                <td>{library.subject.subjectDesc}</td>
+                <td>{library.additionalInfo}</td> */}
+                <td>
+                    <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Edit</button>
+                </td> 
+                <td>
+                    <button className="btn btn-primary" onClick={e => this.showDetail(e, library)}>Details</button>
+                </td>
+              </tr>
+            );
+          }}
+         else{
+          retVal.push(
+            <tr key={library.id}>             
+                <td>{library.id}</td>
+                {/* <td>{library.author}</td>
+                <td>{library.noOfCopies}</td>
+                {/* <td>{library.uniqueNo}</td> */}
+                <td>{library.bookNo}</td>
+                <td>{library.additionalInfo}</td>                
+                <td>{library.batch.batch}</td>
+                <td>{library.subject.subjectDesc}</td> */}
+                <td>
+                    <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Edit</button>
+                </td> 
+                <td>
+                    <button className="btn btn-primary" onClick={e => this.showDetail(e, library)}>Details</button>
+                </td>
+            </tr>
+          );
+        }
+      }
+    
+  }
+    return retVal;
+  }
+
 
   createLibraryRows(objAry: any) {
     let { search } = this.state.libraryData;
@@ -1170,6 +1234,38 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
   }
 
+
+  onClickbook = (e: any) => {
+    const { name, value } = e.nativeEvent.target;
+    const { mutatebook } = this.props;
+    const { libraryData } = this.state;
+    e.preventDefault();
+
+    let libraryFilterInputObject = {
+      
+      batchId: libraryData.batch.id,
+      
+      subjectId: libraryData.subject.id
+    };
+
+
+    return mutatebook({
+      variables: { filter: libraryFilterInputObject },
+    }).then(data => {
+      const sdt = data;
+      libraryData.mutateResult = [];
+      libraryData.mutateResult.push(sdt);
+      this.setState({
+        libraryData: libraryData
+      });
+      console.log('Student filter mutation result ::::: ', libraryData.mutateResult);
+    }).catch((error: any) => {
+      console.log('there was an error sending the query result', error);
+      return Promise.reject(`Could not retrieve student data: ${error}`);
+    });
+
+  }
+
   increaseExamValue() {
     if (this.state.noOfCopiesAvailable < 5) {
       this.setState({ noOfCopiesAvailable: this.state.noOfCopiesAvailable + 1 })
@@ -1182,9 +1278,99 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     }
   }
 
+
+  createBookAddRow(obj: any) {
+    const { libraryData } = this.state;
+   
+    const retVal = [];
+    // let aryLength = 0;
+    // for (let p = 0; p < len; p++) {
+    
+    
+    for (let x = 0; x < obj.length; x++) {
+      let k = obj[x];
+      retVal.push(
+        <tr>
+          <td>{k.id}</td>
+          {/* <td>{k.student.Id}</td> */}
+          {/* <td>{k.categoryName}</td>
+          <td>{k.description}</td>
+          <td>{k.status}</td>
+          <td>{k.strStartDate}</td>
+          <td>{k.strEndDate}</td> */}
+          {/* <td>
+            <button className="btn btn-primary" onClick={e => this.editFeeCategory(k)}>Edit</button>
+          </td>
+          <td>
+            <button className="btn btn-primary" onClick={e => this.showDetail(e, k)}>Details</button>
+          </td> */}
+        </tr>
+      );
+    }
+    // }
+    return retVal;
+  } 
+   
+ createBookRowFromCache(obj: any) {
+    // const len = obj.length;
+    const retVal = [];
+    // for (let p = 0; p < len; p++) {
+    //   let v = obj[p];
+    for (let x = 0; x < obj.length; x++) {
+      let k = obj[x];
+      retVal.push(
+        <tr>
+          <td>{k.id}</td>
+          {/* <td>{k.categoryName}</td>
+          <td>{k.description}</td>
+          <td>{k.status}</td>
+          <td>{k.strStartDate}</td>
+          <td>{k.strEndDate}</td> */}
+          {/* <td>
+            <button className="btn btn-primary" onClick={e => this.editFeeCategory(k)}>Edit</button>
+          </td>
+          <td>
+            <button className="btn btn-primary" onClick={e => this.showDetail(e, k)}>Details</button>
+          </td> */}
+        </tr>
+      );
+    }
+    // }
+    return retVal;
+  }
+
+  createBookUpdateRow(obj: any) {
+    const { libraryData } = this.state;
+    const len = obj.length;
+    const retVal = [];
+    let aryLength = 0;
+    let v = obj[0];
+    if (v.data.updateBook === undefined || v.data.updateBook === null) {
+      return;
+    }
+    for (let x = 0; x < obj.length; x++) {
+      let k = obj[x];
+      retVal.push(
+        <tr>
+          <td>{k.id}</td>
+          {/* <td>{k.student.studentName}</td> */}
+          {/* <td>{k.author}</td>
+          <td>{k.bookNo}</td>
+          <td>{k.noOfCopies}</td>
+          <td>{k.additionalInfo}</td> */}
+          {/* <td>{k.uniqueNo}</td> */}
+        </tr>
+      );
+    }
+
+
+    return retVal;
+  }
+
+
   render() {
-    const { data: { createLibraryFilterDataCache, refetch }, mutate, addBookMutation, addLibraryMutation, updateLibraryMutation } = this.props;
-    const { libraryData, departments, batches, subjects,students,sections, submitted } = this.state;
+    const { data: { createLibraryFilterDataCache, refetch }, mutate,mutatebook, addBookMutation, addLibraryMutation, updateLibraryMutation , updateBookMutation} = this.props;
+    const { libraryData, departments, batches, subjects,students,sections,books, submitted } = this.state;
 
     return (
       <section className="plugin-bg-white">
@@ -1305,6 +1491,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       </div>
         <div id = "searchbutton" className="m-b-1 bg-heading-bg studentSearch">
               <button className="btn btn-primary max-width-13" id="btnFind" name="btnFind" onClick={this.onClick} style={w180}>Search Book</button>
+        </div>
+        <div id = "searchbutton" className="m-b-1 bg-heading-bg studentSearch">
+              <button className="btn btn-primary max-width-13" id="btnFind" name="btnFind" onClick={this.onClickbook} style={w180}>Search Bookkk</button>
         </div>
         </div>
         
@@ -1436,6 +1625,36 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
            
           </div>
       
+          <div id="bookGrid" className="b-1">
+          <table className="fwidth" id="booktable">
+            <thead >
+              <tr>
+                <th>Book Id</th>
+                <th>Isue Date</th>
+                <th>Due Date</th>
+                <th>Student Id</th>
+                <th>Recieved Date</th>
+                <th>Status</th>
+                {/* <th>Edit</th>
+                <th>Details</th> */}
+              </tr>
+            </thead>
+            <tbody>
+              {
+               
+                  this.createBookAddRow(this.props.data.createLibraryFilterDataCache.books)
+                
+               
+              }
+              {
+                libraryData.librarysaveData.length > 0 && this.state.add === false && this.state.update === true && (
+                  this.createBookUpdateRow(libraryData.librarysaveData)
+                )
+              }
+             </tbody>
+          </table>
+        </div>
+              
       </section>
     );
   }
@@ -1504,6 +1723,9 @@ export default withExamSubjDataLoader(
     }),
     graphql<LibraryListQuery, LibraryRootProps>(LibraryListQueryGql, {
       name: "mutate"
+    }),
+    graphql<BookListQuery, LibraryRootProps>(BookListQueryGql, {
+      name: "mutatebook"
     })
   )
     (AddBook) as any
