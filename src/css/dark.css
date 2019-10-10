@@ -1842,10 +1842,10 @@ td {
 /* Fee Setup */
 
 /* Width section*/
-.w-100 {
-  width: 100px !important;
+.w-80 {
+  width: 80px !important;
 }
 
-.w-135 {
-  width: 135px !important;
+.w-125 {
+  width: 125px !important;
 }

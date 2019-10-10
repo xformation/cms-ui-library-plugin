@@ -1483,3 +1483,33 @@ export type AddBookInput = {
     library?: any | null;
   };
 };
+
+export type UpdateBookInput = {
+  id?: number | null;
+  issueDate?: any | null;
+  dueDate?: any | null;
+  // receivedDate?: any | null;
+  noOfCopiesAvailable?: number | null;
+  status?: string | null;
+  student?: number | null;
+  library?: number | null;
+};
+
+export type UpdateBookMutationVariables = {
+  input: UpdateBookInput;
+};
+
+export type BookUpdateMutationType = {
+  updateBook: {
+    book: {
+      id: number;
+      issueDate: any;
+      dueDate: any;
+      // receivedDate: any;
+      noOfCopiesAvailable: number;
+      status: string;
+      student: number;
+      library: number;
+    };
+  };
+};
