@@ -1409,8 +1409,10 @@ export type LoadLibraryQueryCacheForAdmin = {
       strDueDate: string;
       strIssueDate: string;
       strRecDate: string;
+      status: string;
       student: {
         id: number;
+        studentName: any;
       };
       library: {
         id: number;
@@ -1486,6 +1488,7 @@ export type BookAddMutationType = {
     status: string;
     student: {
       id: number;
+      studentName: any;
     };
     library: {
       id: number;
@@ -1514,7 +1517,7 @@ export type UpdateBookInput = {
   id?: number | null;
   issueDate?: any | null;
   dueDate?: any | null;
-  // receivedDate?: any | null;
+  receivedDate?: any | null;
   noOfCopiesAvailable?: number | null;
   status?: string | null;
   student?: number | null;
@@ -1530,10 +1533,10 @@ export type BookUpdateMutationType = {
     id: number;
     issueDate: any;
     dueDate: any;
-    // receivedDate: any;
+    receivedDate: any;
     noOfCopiesAvailable: number;
     status: any;
-    student: {id: number};
+    student: {id: number; studentName: any};
     library: {id: number};
     strIssueDate: string;
     strDueDate: string;

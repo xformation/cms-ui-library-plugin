@@ -1,6 +1,6 @@
 mutation updateBook($input: UpdateBookInput!) {
    updateBook(input: $input) {
-    book {
+   
       id,
       issueDate,
       dueDate,
@@ -15,8 +15,8 @@ mutation updateBook($input: UpdateBookInput!) {
       },
       strIssueDate,
       strDueDate,
-      strRecDate
-    }
+      strRecDate,
+    
     }
   }
 

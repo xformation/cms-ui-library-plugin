@@ -9,6 +9,6 @@ subjects{id,subjectType,subjectCode,subjectDesc,department{id}, batch{id}},     
 libraries{id, bookTitle, author,bookNo,noOfCopies,additionalInfo,uniqueNo,batch{id,batch},subject{id, subjectDesc},
     }
     students{id,batch{id,batch},department{id,description},studentName, section{id,section}}
-    books{id, strDueDate, strIssueDate, strRecDate, student{id},library{ id }}
+    books{id, status, strDueDate, strIssueDate, strRecDate, student{id, studentName},library{ id }}
   }
 }

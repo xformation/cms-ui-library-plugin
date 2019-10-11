@@ -1049,47 +1049,61 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
 
   //imp........................................
+  
   editBook(obj: any) {
     const { libraryData } = this.state;
-    
+    // let txtCn: any = document.querySelector("#categoryName");
+    // let txtDs: any = document.querySelector("#description");
     let chkSts: any = document.querySelector("#status");
-    let dtPkSt: any = document.querySelector("#dtPickerSt");
-    let dtPkNd: any = document.querySelector("#dtPickerNd");
-    
+    let dtPkSt: any = document.querySelector("#dtPickeris");
+    let dtPkNd: any = document.querySelector("#dtPickerdd");
+    let dtPkRc: any = document.querySelector("#dtPickerrc");
+     
+    // txtCn.value = obj.categoryName;
+    // txtDs.value = obj.description;
     if (obj.status === "RESERVED") {
       chkSts.checked = true;
     } else {
       chkSts.checked = false;
     }
     let stDate = "";
-    if(obj.strIssueDate !== null && obj.strIssueDate !== "") {
-      stDate = moment(obj.strIssueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
+    if(obj.strDueDate !== null && obj.strDueDate !== "") {
+      stDate = moment(obj.strDueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
     }
     let ndDate = "";
-    if(obj.strDueDate !== null && obj.strDueDate !== "") {
-      ndDate = moment(obj.strDueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
+    if(obj.strIssueDate !== null && obj.strIssueDate !== "") {
+      ndDate = moment(obj.strIssueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
+    }
+    let rcDate = "";
+    if(obj.strRecDate !== null && obj.strRecDate !== "") {
+      rcDate = moment(obj.strRecDate, "DD-MM-YYYY").format("DD/MM/YYYY");
     }
     dtPkSt.value = stDate;
     dtPkNd.value = ndDate;
+    dtPkRc.value = rcDate;
     libraryData.books.id = obj.id;
-    libraryData.noOfCopiesAvailable= obj.noOfCopiesAvailable;
-    libraryData.status = obj.status;
+    libraryData.student.id = obj.student.id;
+    libraryData.noOfCopiesAvailable = 3;
     let nStDt: any;
     let nEnDt: any;
+    let nRcDt: any;
     if(stDate !== ""){
       nStDt = moment(stDate, "DD/MM/YYYY");
     }
     if(ndDate !== ""){
       nEnDt = moment(ndDate, "DD/MM/YYYY");
     }
+    if(rcDate !== ""){
+      nRcDt = moment(ndDate, "DD/MM/YYYY");
+    }
     this.setState({
       issueDate: nStDt,
       dueDate: nEnDt,
+      receivedDate: nRcDt,
       libraryData: libraryData
     });
 
   }
-
 
   changeDueDate = (e: any) => {
     const varDt = e;
@@ -1173,8 +1187,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
         status: status,
         issueDate: stDate,
         dueDate: enDate,
-        // receivedDate: rcDate,
-        receivedDate: "1111-11-01T18:00:00.000Z",
+        receivedDate: rcDate,        
         studentId: libraryData.student.id,
         libraryId: libraryData.libraries.id,
         
@@ -1426,12 +1439,12 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
          <td>{k.id}</td>
           <td>{k.strDueDate}</td>
           <td>{k.strIssueDate}</td>
-          <td>{k.student.studentName}</td>
+          <td>{k.student.id}</td>
           <td>{k.strRecDate}</td>
           <td>{k.status}</td>
-          {/* <td>
+          <td>
                     <button className="btn btn-primary" onClick={e => this.editBook(k)}>Edit</button>
-                </td>  */}
+                </td> 
           <td>
           
             <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={e => this.assigntobutton(e, k)} style={{ width: '140px' }}>Assign To</button>
@@ -1465,6 +1478,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <td>{k.strRecDate}</td>
           <td>{k.status}</td>
           <td>
+            <button className="btn btn-primary" onClick={e => this.editBook(k)}>Edit</button>
+          </td>
+          <td>
           
           <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={e => this.assigntobutton(e, k)} style={{ width: '140px' }}>Assign To</button>
           </td>
@@ -1495,7 +1511,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <td>{k.student.id}</td>
           <td>{k.strRecDate}</td>
           <td>{k.status}</td>
-         
+          <td>
+            <button className="btn btn-primary" onClick={e => this.editBook(k)}>Edit</button>
+          </td>
         </tr>
       );
     }
@@ -1725,7 +1743,10 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                   <label htmlFor="">Due Date</label>
                   <DatePicker selected={this.state.dueDate} value={this.state.dueDate} onChange={this.changeDueDate} id="dtPickerdd" name="dtPickerdd" />
               </div>
-                
+              <div>
+                  <label htmlFor="">Rec Date</label>
+                  <DatePicker selected={this.state.receivedDate} value={this.state.receivedDate} onChange={this.changereceivedDate} id="dtPickerrc" name="dtPickerrc" />
+              </div>
 
                 <div>
                   <label htmlFor="">Status</label>
