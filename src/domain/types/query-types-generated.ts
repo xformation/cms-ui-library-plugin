@@ -1406,7 +1406,9 @@ export type LoadLibraryQueryCacheForAdmin = {
 
     books: Array<{
       id: number;
-
+      strDueDate: string;
+      strIssueDate: string;
+      strRecDate: string;
       student: {
         id: number;
       };
@@ -1472,17 +1474,28 @@ export type LibraryAddMutationType = {
     };
   }>;
 };
+
 export type BookAddMutationType = {
   addBook: Array<{
     id: number;
+    issueDate: any;
+    dueDate: any;
+    receivedDate: any;
+
+    noOfCopiesAvailable: number;
+    status: string;
     student: {
       id: number;
     };
     library: {
       id: number;
     };
+    strIssueDate: string;
+    strDueDate: string;
+    strRecDate: string;
   }>;
 };
+
 export type AddBookInput = {
   issueDate?: any | null;
   dueDate?: any | null;
@@ -1513,18 +1526,19 @@ export type UpdateBookMutationVariables = {
 };
 
 export type BookUpdateMutationType = {
-  updateBook: {
-    book: {
-      id: number;
-      issueDate: any;
-      dueDate: any;
-      // receivedDate: any;
-      noOfCopiesAvailable: number;
-      status: string;
-      student: number;
-      library: number;
-    };
-  };
+  updateBook: Array<{
+    id: number;
+    issueDate: any;
+    dueDate: any;
+    // receivedDate: any;
+    noOfCopiesAvailable: number;
+    status: any;
+    student: {id: number};
+    library: {id: number};
+    strIssueDate: string;
+    strDueDate: string;
+    strRecDate: string;
+  }>;
 };
 
 export type BookListQuery = {

@@ -60,17 +60,25 @@ type LibraryState = {
   search: any,
   dueDate: any,
   receivedDate: any,
-  issueDate: any
+  issueDate: any,
   noOfCopiesAvailable: number,
 };
 
 class SaData {
 
- 
+  issueDate: any;
+  dueDate: any; 
+ receivedDate: any;
+ noOfCopiesAvailable: any;
+ status: any;
   studentId: any;
   libraryId: any;
-  constructor( studentId: any, libraryId: any) {
-    
+  constructor( issueDate: any, dueDate: any,receivedDate: any,noOfCopiesAvailable: any,status: any,studentId: any,libraryId: any) {
+    this.issueDate = issueDate;
+    this.dueDate = dueDate;    
+    this.receivedDate = receivedDate
+    this.noOfCopiesAvailable = noOfCopiesAvailable;
+    this.status = status;
     this.studentId = studentId;
     this.libraryId = libraryId;
       
@@ -93,7 +101,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         libraries: {
           id: ""
         },
-        book:{
+        books:{
           id: ""
         },
         academicYear: {
@@ -142,10 +150,11 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         add: false,
         update: false,
         toggle: [],
-        search: '',
         dueDate: "",
         receivedDate: "",
-        issueDate:""
+        issueDate:"",
+        search: ''
+        
       
     };
 
@@ -154,7 +163,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     this.createSubjects = this.createSubjects.bind(this);
     this.savelibrary = this.savelibrary.bind(this);
     this.savebook = this.savebook.bind(this);
-    this.updateBook = this.updateBook.bind(this);
+    // this.updateBook = this.updateBook.bind(this);
     this.createSections = this.createSections.bind(this);
     this.createStudents = this.createStudents.bind(this);
     this.isDatesOverlap = this.isDatesOverlap.bind(this);
@@ -168,7 +177,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     this.back = this.back.bind(this);
     this.create = this.create.bind(this);
     // this.onSubChange = this.onSubChange.bind(this);
-    this.createParticularDiv = this.createParticularDiv.bind(this);
+    // this.createParticularDiv = this.createParticularDiv.bind(this);
     // this.handlereceivedDateTimeChange =this.handlereceivedDateTimeChange.bind(this);
     // this.handleduedateTimeChange = this.handleduedateTimeChange.bind(this);
     // this.handleissuedateTimeChange = this.handleissuedateTimeChange.bind(this);
@@ -176,8 +185,10 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     this.changeDueDate = this.changeDueDate.bind(this);
     this.changeIssueDate = this.changeIssueDate.bind(this);
     this.changereceivedDate = this.changereceivedDate.bind(this);
-    this.createBookRows = this.createBookRows.bind(this);
+    // this.createBookRows = this.createBookRows.bind(this);
     this.createBookAddRow = this.createBookAddRow.bind(this);
+    this.updateSubBook = this.updateSubBook.bind(this);
+    this.editBook = this.editBook.bind(this);
   }
 
   createDepartments(departments: any, selectedBranchId: any) {
@@ -505,47 +516,33 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     const { libraryData } = this.state;
     e.preventDefault();
     
-    // if (this.state.dueDate === undefined || this.state.dueDate === null || this.state.dueDate === "") {
-    //   alert("Please provide Due date");
-    //   return;
+   
+    // let issDate = null;
+    // if (this.state.issueDate !== undefined || this.state.issueDate !== null || this.state.issueDate !== "") {
+    //   issDate = moment(this.state.issueDate, "YYYY-MM-DD");
     // }
-    // if (this.state.issueDate === undefined || this.state.issueDate === null || this.state.issueDate === "") {
-    //   alert("Please provide issue date");
-    //   return;
+    // let ddDate = null;
+    // if (this.state.dueDate !== undefined || this.state.dueDate !== null || this.state.dueDate !== "") {
+    //   ddDate = moment(this.state.dueDate, "YYYY-MM-DD");
     // }
-    // if (this.state.receivedDate === undefined || this.state.receivedDate === null || this.state.receivedDate === "") {
-    //   alert("Please provide Rec date");
-    //   return;
+    // let rcDate = null;
+    // if (this.state.receivedDate !== undefined || this.state.receivedDate !== null || this.state.receivedDate !== "") {
+    //   rcDate = moment(this.state.receivedDate, "YYYY-MM-DD");
     // }
-
-    // let chkStatus: any = document.querySelector("#status");
-    // let status = "AVAILABLE";
-    // if (chkStatus.checked) {
-    //   status = "RESERVED";
+    // if(issDate !== null && ddDate !== null){
+    //   if(this.isDatesOverlap(issDate, issDate)){
+    //     return;
+    //   }
     // }
-
-    let issDate = null;
-    if (this.state.issueDate !== undefined || this.state.issueDate !== null || this.state.issueDate !== "") {
-      issDate = moment(this.state.issueDate, "YYYY-MM-DD");
-    }
-    let ddDate = null;
-    if (this.state.dueDate !== undefined || this.state.dueDate !== null || this.state.dueDate !== "") {
-      ddDate = moment(this.state.dueDate, "YYYY-MM-DD");
-    }
-    let rcDate = null;
-    if (this.state.receivedDate !== undefined || this.state.receivedDate !== null || this.state.receivedDate !== "") {
-      rcDate = moment(this.state.receivedDate, "YYYY-MM-DD");
-    }
-    if(issDate !== null && ddDate !== null){
-      if(this.isDatesOverlap(issDate, issDate)){
-        return;
-      }
-    }
     
     for(let i=0; i<=this.state.noOfCopiesAvailable; i++) {    
       let sd  = new SaData(
-       
-     
+        
+         "1111-11-01T18:00:00.000Z",
+        "1111-11-01T18:00:00.000Z",
+        "1111-11-01T18:00:00.000Z",
+          0,
+          "AVAILABLE",
         2051,
         libraryData.libraries.id,
        
@@ -573,87 +570,88 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
   
    // update book with values for assign to a student
    
-   updateBook(obj: any) {
-    const { updateBookMutation } = this.props;
-    const { libraryData } = this.state;
+  //  updateBook(obj: any) {
+  //   const { updateBookMutation } = this.props;
+  //   const { libraryData } = this.state;
 
-    // for(let i=0; i<libraryData.noOfCopies; i++) {  
-    // let txtFcNm: any = document.querySelector("#batch");
-    // if (txtFcNm.value.trim() === "") {
-    //   alert("Please select Year");
-    //   return;
-    // }
-    // let txtSb: any = document.querySelector("#subject");
-    // if (txtSb.value.trim() === "") {
-    //   alert("Please select Subject");
-    //   return;
-    // }
-    // let txtbcNm: any = document.querySelector("#bookTitle");
-    // if (txtbcNm.value.trim() === "") {
-    //   alert("Please provide some value in Book Title");
-    //   return;
-    // }
-    // let txtFcDs: any = document.querySelector("#author");
-    // if (txtFcDs.value.trim() === "") {
-    //   alert("Please provide some value in Author");
-    //   return;
-    // }
-    // let chkStatus: any = document.querySelector("#bookNo");
-    // if (chkStatus.value.trim() === "") {
-    //   alert("Please provide some value in Book No");
-    //   return;
-    // }
-    // let chkNoCopies: any = document.querySelector("#noOfCopies");
-    // if (chkNoCopies.value.trim() === "") {
-    //   alert("Please provide some value in No Of Copies");
-    //   return;
-    // }
+  //   // for(let i=0; i<libraryData.noOfCopies; i++) {  
+  //   // let txtFcNm: any = document.querySelector("#batch");
+  //   // if (txtFcNm.value.trim() === "") {
+  //   //   alert("Please select Year");
+  //   //   return;
+  //   // }
+  //   // let txtSb: any = document.querySelector("#subject");
+  //   // if (txtSb.value.trim() === "") {
+  //   //   alert("Please select Subject");
+  //   //   return;
+  //   // }
+  //   // let txtbcNm: any = document.querySelector("#bookTitle");
+  //   // if (txtbcNm.value.trim() === "") {
+  //   //   alert("Please provide some value in Book Title");
+  //   //   return;
+  //   // }
+  //   // let txtFcDs: any = document.querySelector("#author");
+  //   // if (txtFcDs.value.trim() === "") {
+  //   //   alert("Please provide some value in Author");
+  //   //   return;
+  //   // }
+  //   // let chkStatus: any = document.querySelector("#bookNo");
+  //   // if (chkStatus.value.trim() === "") {
+  //   //   alert("Please provide some value in Book No");
+  //   //   return;
+  //   // }
+  //   // let chkNoCopies: any = document.querySelector("#noOfCopies");
+  //   // if (chkNoCopies.value.trim() === "") {
+  //   //   alert("Please provide some value in No Of Copies");
+  //   //   return;
+  //   // }
    
-    // if (libraryData.libraries.id === "") {
-    //   alert("This record has no id. It can be added as a new record.");
-    //   return;
-    // }
+  //   if (libraryData.books.id === "") {
+  //     alert("This record has no id. It can be added as a new record.");
+  //     return;
+  //   }
 
-    let chkStatus: any = document.querySelector("#status");
-    let status = "AVAILABLE";
-    if (chkStatus.checked) {
-      status = "RESERVED";
-    }
+  //   let chkStatus: any = document.querySelector("#status");
+  //   let status = "AVAILABLE";
+  //   if (chkStatus.checked) {
+  //     status = "RESERVED";
+  //   }
 
-    let updateBookInput = {
-      id: libraryData.books.id,
-      studentId: libraryData.subject.id,
-      libraryId: libraryData.libraries.id,
-      issueDate: libraryData.issueDate,
-      dueDate: libraryData.dueDate,
-      // receivedDate:libraryData.rcDate["dueDate"+i],
-      status: status,
-      noOfCopiesAvailable: libraryData.noOfCopies
+  //   let updateBookInput = {
+  //     id: libraryData.books.id,
+  //     studentId: libraryData.subject.id,
+  //     libraryId: libraryData.libraries.id,
+  //     issueDate: libraryData.issueDate,
+  //     dueDate: libraryData.dueDate,
+  //     receivedDate: "1111-11-01T18:00:00.000Z",
+  //     // receivedDate:libraryData.rcDate["dueDate"+i],
+  //     status: status,
+  //     noOfCopiesAvailable: libraryData.noOfCopies
       
 
-    };
-    console.log("form data : ", libraryData);
-    return updateBookMutation({
-      variables: { input: updateBookInput }
-    }).then(data => {
-      console.log('update Book ::::: ', data);
-      alert("Library updated successfully!");
-      const sdt = data;
-      libraryData.librarysaveData = [];
-      libraryData.librarysaveData.push(sdt);
-      this.setState({
-        libraryData: libraryData
-      });
-      this.setState({
-        add: false,
-        update: true
-      });
-    }).catch((error: any) => {
-      alert("Due to some error Library could not be updated");
-      console.log('there was an error sending the update Library mutation result', error);
-      return Promise.reject(`Could not retrieve update Library data: ${error}`);
-    });
-  }
+  //   };
+  //   console.log("form data : ", libraryData);
+  //   return updateBookMutation({
+  //     variables: { input: updateBookInput }
+  //   }).then(data => {
+  //     console.log('update Book ::::: ', data);
+  //     alert("Library updated successfully!");
+  //     const sdt = data;
+  //     libraryData.librarysaveData = [];
+  //     libraryData.librarysaveData.push(sdt);
+  //     this.setState({
+  //       libraryData: libraryData
+  //     });
+  //     this.setState({
+  //       add: false,
+  //       update: true
+  //     });
+  //   }).catch((error: any) => {
+  //     alert("Due to some error Library could not be updated");
+  //     console.log('there was an error sending the update Library mutation result', error);
+  //     return Promise.reject(`Could not retrieve update Library data: ${error}`);
+  //   });
+  // }
 
     
 
@@ -775,8 +773,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     }
     let updateLibraryInput = {
       id: libraryData.libraries.id,
-      studentId: libraryData.studnet.id,
-      libraryId: libraryData.batch.id,
+      batchId: libraryData.batch.id,
+      subjectId: libraryData.subject.id,
       bookTitle: libraryData.bookTitle,
       author: libraryData.author,
       bookNo: libraryData.bookNo,
@@ -847,8 +845,11 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let fCatGrid: any = document.querySelector("#listGrid");
     fCatGrid.setAttribute("class", "hide");
 
-    let fCatDtDiv: any = document.querySelector("#feeCatDetailDiv");
-    fCatDtDiv.setAttribute("class", "b-1");
+    // let fCatDtDiv: any = document.querySelector("#feeCatDetailDiv");
+    // fCatDtDiv.setAttribute("class", "b-1");
+
+    let fCatDtDiv: any = document.querySelector("#crmainDiv");
+    fCatDtDiv.setAttribute("class", "hide");
 
     let fCatDiv: any = document.querySelector("#t-main");
     fCatDiv.setAttribute("class", "hide");
@@ -967,8 +968,11 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let fCatGrid: any = document.querySelector("#listGrid");
     fCatGrid.setAttribute("class", "b-1");
 
-    let fCatDtDiv: any = document.querySelector("#feeCatDetailDiv");
-    fCatDtDiv.setAttribute("class", "hide");
+    let fCatDtDiv: any = document.querySelector("#crmainDiv");
+    fCatDtDiv.setAttribute("class", "");
+
+    // let fCatDtDiv: any = document.querySelector("#feeCatDetailDiv");
+    // fCatDtDiv.setAttribute("class", "hide");
 
     let fCatDiv: any = document.querySelector("#t-main");
     fCatDiv.setAttribute("class", "hide");
@@ -1003,7 +1007,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
   
   }
 
-  assigntobutton() {
+  assigntobutton(e: any, obj: any) {
     let { count, countParticularDiv } = this.state;
     countParticularDiv = 0;
     count = [];
@@ -1016,39 +1020,102 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let btsbDiv: any = document.querySelector("#studentsbutton");
     btsbDiv.setAttribute("class", "");
 
+    this.showParticularDiv(e);
+
   }
  
-  changeDueDate = (e: any) => {
-    const { id, varDt } = e.nativeEvent.target;
-    console.log("due date...", varDt);
-    const { libraryData } = this.state;
-    libraryData.dDate[id] = varDt;
-    this.setState({ libraryData: libraryData })
-  }
 
-  changeIssueDate = (e: any) =>{
-    const { id, varDt } = e.nativeEvent.target;
-    const { libraryData } = this.state;
-    libraryData.isDate[id] = varDt;
-    this.setState({ libraryData: libraryData })
-    // const varDt = e;
-    // console.log("issue date..." , varDt);
-    // this.setState({
-    //   issueDate: varDt
-    // })
-  }
-  // handleStTimeChange = (e: any) => {
-  //   const { id, varDt } = e.nativeEvent.target;
-  //   const { libraryData } = this.state;
-  //   libraryData.isDate[id] = varDt;
-  //   this.setState({ libraryData: libraryData })
+
+
+
+  // showParticularDiv = (e: any) => {
+  //   let { count } = this.state;
+  //   count[this.state.countParticularDiv] = 0;
+  //   this.setState({
+  //     countParticularDiv: this.state.countParticularDiv + 1,
+  //     count
+  //   });
+  //   let dvPrt: any = document.querySelectorAll("#feeParticularDiv");
+  //   for (let i = 0; i < dvPrt.length; i++) {
+  //     dvPrt[i].setAttribute("class", "feeDetails");
+  //   }
+    
+  //   // for(let i = 0; i < this.state.countParticularDiv; i++){
+  //   //   let dvPrt : any = document.querySelector("#feeParticularDiv"+i);
+  //   //   dvPrt.setAttribute("class", "feeDetails");
+  //   // }
+
   // }
 
-  changereceivedDate = (e: any) => {
-    const { id, varDt } = e.nativeEvent.target;
+
+  //imp........................................
+  editBook(obj: any) {
     const { libraryData } = this.state;
-    libraryData.rDate[id] = varDt;
-    this.setState({ libraryData: libraryData })
+    
+    let chkSts: any = document.querySelector("#status");
+    let dtPkSt: any = document.querySelector("#dtPickerSt");
+    let dtPkNd: any = document.querySelector("#dtPickerNd");
+    
+    if (obj.status === "RESERVED") {
+      chkSts.checked = true;
+    } else {
+      chkSts.checked = false;
+    }
+    let stDate = "";
+    if(obj.strIssueDate !== null && obj.strIssueDate !== "") {
+      stDate = moment(obj.strIssueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
+    }
+    let ndDate = "";
+    if(obj.strDueDate !== null && obj.strDueDate !== "") {
+      ndDate = moment(obj.strDueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
+    }
+    dtPkSt.value = stDate;
+    dtPkNd.value = ndDate;
+    libraryData.books.id = obj.id;
+    libraryData.noOfCopiesAvailable= obj.noOfCopiesAvailable;
+    libraryData.status = obj.status;
+    let nStDt: any;
+    let nEnDt: any;
+    if(stDate !== ""){
+      nStDt = moment(stDate, "DD/MM/YYYY");
+    }
+    if(ndDate !== ""){
+      nEnDt = moment(ndDate, "DD/MM/YYYY");
+    }
+    this.setState({
+      issueDate: nStDt,
+      dueDate: nEnDt,
+      libraryData: libraryData
+    });
+
+  }
+
+
+  changeDueDate = (e: any) => {
+    const varDt = e;
+    console.log("due date..." , varDt);
+    this.setState({
+      dueDate: varDt
+    })
+   
+  }
+
+  changeIssueDate = (e: any) => {
+    const varDt = e;
+    console.log("start date...", varDt);
+    this.setState({
+      issueDate: varDt
+    });
+  }
+ 
+
+  changereceivedDate = (e: any) => {
+    const varDt = e;
+    console.log("Rec date..." , varDt);
+    this.setState({
+      receivedDate: varDt
+    })
+    
 }
 
  
@@ -1074,65 +1141,126 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
   //   this.setState({ libraryData: libraryData })
   // }
 
-
+  updateSubBook(obj: any) {
+      const { updateBookMutation } = this.props;
+      const { libraryData } = this.state;
   
-  createBookRows(objAry: any) {
-    let { search } = this.state.libraryData;
-    search = search.trim();
-    const mutateResLength = objAry.length;
-    const retVal = [];
-    for (let x = 0; x < mutateResLength; x++) {
-      const tempObj = objAry[x];
-      const libraries = tempObj.data.books;
-      const length = libraries.length;
-      for (let i = 0; i < length; i++) {
-        const library = libraries[i];
-        if(search){
-          if(library.bookTitle.indexOf(search) !== -1 ){
-            retVal.push(
-              <tr key={library.id}>                
-                {/* <td>{library.bookTitle}</td>
-                <td>{library.author}</td>
-                <td>{library.noOfCopies}</td>
-                <td>{library.bookNo}</td>              
-                {/* <td>{library.uniqueNo}</td> */}
-                <td>{library.batch.batch}</td>
-                <td>{library.subject.subjectDesc}</td>
-                <td>{library.additionalInfo}</td> */}
-                <td>
-                    <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Edit</button>
-                </td> 
-                <td>
-                    <button className="btn btn-primary" onClick={e => this.showDetail(e, library)}>Details</button>
-                </td>
-              </tr>
-            );
-          }}
-         else{
-          retVal.push(
-            <tr key={library.id}>             
-                <td>{library.id}</td>
-                {/* <td>{library.author}</td>
-                <td>{library.noOfCopies}</td>
-                {/* <td>{library.uniqueNo}</td> */}
-                <td>{library.bookNo}</td>
-                <td>{library.additionalInfo}</td>                
-                <td>{library.batch.batch}</td>
-                <td>{library.subject.subjectDesc}</td> */}
-                <td>
-                    <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Edit</button>
-                </td> 
-                <td>
-                    <button className="btn btn-primary" onClick={e => this.showDetail(e, library)}>Details</button>
-                </td>
-            </tr>
-          );
-        }
+      
+      let chkStatus: any = document.querySelector("#status");
+      let status = "AVAILABLE";
+      if (chkStatus.checked) {
+        status = "RESERVED";
       }
+      let stDate = null;
+      if (this.state.issueDate !== undefined || this.state.issueDate !== null || this.state.issueDate !== "") {
+        stDate = moment(this.state.issueDate, "YYYY-MM-DD");
+      }
+      let enDate = null;
+      if (this.state.dueDate !== undefined || this.state.dueDate !== null || this.state.dueDate !== "") {
+        enDate = moment(this.state.dueDate, "YYYY-MM-DD");
+      }
+      let rcDate = null;
+      if (this.state.receivedDate !== undefined || this.state.receivedDate !== null || this.state.receivedDate !== "") {
+        rcDate = moment(this.state.receivedDate, "YYYY-MM-DD");
+      }
+      if (libraryData.books.id === "") {
+        alert("This record has no id. It can be added as a new record.");
+        return;
+      }
+      let updateBookInput = {
+        id: libraryData.books.id,
+        noOfCopiesAvailable: 3,        
+        status: status,
+        issueDate: stDate,
+        dueDate: enDate,
+        // receivedDate: rcDate,
+        receivedDate: "1111-11-01T18:00:00.000Z",
+        studentId: libraryData.student.id,
+        libraryId: libraryData.libraries.id,
+        
+      };
+      console.log("form data : ", libraryData);
+      return updateBookMutation({
+        variables: { input: updateBookInput }
+      }).then(data => {
+        console.log('Update Book ::::: ', data);
+        alert("Book assigned successfully!");
+        const sdt = data;
+        libraryData.librarysaveData = [];
+        libraryData.librarysaveData.push(sdt);
+        // = data.data.addFeeCategory;
+        this.setState({
+          libraryData: libraryData
+        });
+        this.setState({
+          add: false,
+          update: true
+        });
+      }).catch((error: any) => {
+        alert("Due to some error Book could not be updated");
+        console.log('there was an error sending the update Book mutation result', error);
+        return Promise.reject(`Could not retrieve Book data: ${error}`);
+      });
+    }
+  
+  
+  // createBookRows(objAry: any) {
+  //   let { search } = this.state.libraryData;
+  //   search = search.trim();
+  //   const mutateResLength = objAry.length;
+  //   const retVal = [];
+  //   for (let x = 0; x < mutateResLength; x++) {
+  //     const tempObj = objAry[x];
+  //     const libraries = tempObj.data.books;
+  //     const length = libraries.length;
+  //     for (let i = 0; i < length; i++) {
+  //       const library = libraries[i];
+  //       if(search){
+  //         if(library.bookTitle.indexOf(search) !== -1 ){
+  //           retVal.push(
+  //             <tr key={library.id}>                
+  //               {/* <td>{library.bookTitle}</td>
+  //               <td>{library.author}</td>
+  //               <td>{library.noOfCopies}</td>
+  //               <td>{library.bookNo}</td>              
+  //               {/* <td>{library.uniqueNo}</td> */}
+  //               <td>{library.batch.batch}</td>
+  //               <td>{library.subject.subjectDesc}</td>
+  //               <td>{library.additionalInfo}</td> */}
+  //               <td>
+  //                   <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Edit</button>
+  //               </td> 
+  //               <td>
+  //                   <button className="btn btn-primary" onClick={e => this.showDetail(e, library)}>Details</button>
+  //               </td>
+  //             </tr>
+  //           );
+  //         }}
+  //        else{
+  //         retVal.push(
+  //           <tr key={library.id}>             
+  //               <td>{library.id}</td>
+  //               {/* <td>{library.author}</td>
+  //               <td>{library.noOfCopies}</td>
+  //               {/* <td>{library.uniqueNo}</td> */}
+  //               <td>{library.bookNo}</td>
+  //               <td>{library.additionalInfo}</td>                
+  //               <td>{library.batch.batch}</td>
+  //               <td>{library.subject.subjectDesc}</td> */}
+  //               <td>
+  //                   <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Edit</button>
+  //               </td> 
+  //               <td>
+  //                   <button className="btn btn-primary" onClick={e => this.showDetail(e, library)}>Details</button>
+  //               </td>
+  //           </tr>
+  //         );
+  //       }
+  //     }
     
-  }
-    return retVal;
-  }
+  // }
+  //   return retVal;
+  // }
 
 
   createLibraryRows(objAry: any) {
@@ -1286,26 +1414,28 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       this.setState({ noOfCopiesAvailable: this.state.noOfCopiesAvailable - 1 })
     }
   }
-
-
+          
   createBookAddRow(obj: any) {
     const { libraryData } = this.state;
-   
-    const retVal = [];
-    // let aryLength = 0;
-    // for (let p = 0; p < len; p++) {
-    
-    
+       const retVal = [];
     for (let x = 0; x < obj.length; x++) {
       let k = obj[x];
+      
       retVal.push(
-        <tr>
+        <tr key={k.id}>
          <td>{k.id}</td>
-          <td>{k.issueDate}</td>
-          <td>{k.dueDate}</td>
+          <td>{k.strDueDate}</td>
+          <td>{k.strIssueDate}</td>
           <td>{k.student.studentName}</td>
-          <td>{k.receivedDate}</td>
+          <td>{k.strRecDate}</td>
           <td>{k.status}</td>
+          {/* <td>
+                    <button className="btn btn-primary" onClick={e => this.editBook(k)}>Edit</button>
+                </td>  */}
+          <td>
+          
+            <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={e => this.assigntobutton(e, k)} style={{ width: '140px' }}>Assign To</button>
+            </td>
           {/* <td>
             <button className="btn btn-primary" onClick={e => this.editFeeCategory(k)}>Edit</button>
           </td>
@@ -1329,11 +1459,15 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       retVal.push(
         <tr>
           <td>{k.id}</td>
-          <td>{k.issueDate}</td>
-          <td>{k.dueDate}</td>
+          <td>{k.strDueDate}</td>
+          <td>{k.strIssueDate}</td>
           <td>{k.student.id}</td>
-          <td>{k.receivedDate}</td>
+          <td>{k.strRecDate}</td>
           <td>{k.status}</td>
+          <td>
+          
+          <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={e => this.assigntobutton(e, k)} style={{ width: '140px' }}>Assign To</button>
+          </td>
           
         </tr>
       );
@@ -1354,12 +1488,12 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     for (let x = 0; x < obj.length; x++) {
       let k = obj[x];
       retVal.push(
-        <tr>
+        <tr >
           <td>{k.id}</td>
-          <td>{k.issueDate}</td>
-          <td>{k.dueDate}</td>
+          <td>{k.strDueDate}</td>
+          <td>{k.strIssueDate}</td>
           <td>{k.student.id}</td>
-          <td>{k.receivedDate}</td>
+          <td>{k.strRecDate}</td>
           <td>{k.status}</td>
          
         </tr>
@@ -1369,11 +1503,12 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
     return retVal;
   }
+  
 
 
   render() {
     const { data: { createLibraryFilterDataCache, refetch }, mutate,mutatebook, addBookMutation, addLibraryMutation, updateLibraryMutation , updateBookMutation} = this.props;
-    const { libraryData, departments, batches, subjects,students,sections,books, submitted } = this.state;
+    const { libraryData, departments, batches, subjects,students,sections,submitted } = this.state;
 
     return (
       <section className="plugin-bg-white">
@@ -1405,11 +1540,11 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                   <button className="btn btn-primary mr-1" id="btnBack" name="btnBack" onClick={this.back} style={{ padding: "13px" }}>Back</button>
 
                  
-                  <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.updateBook} style={{ width: '140px' }}>Update</button>
+                  <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.updateSubBook} style={{ width: '140px' }}>Update</button>
 
               </div>
 
-              <div id="crDiv" className="hide">
+              <div id="crmainDiv" className="">
 
                 <button className="btn btn-primary mr-1" id="btncr" name="btnBack" onClick={this.create} style={{ padding: "13px" }}>Create New Book</button>
                 
@@ -1479,6 +1614,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
             </table>
           </form>
         </div>
+
+
         <div id="searchbox" className="b-1">
         <div id= "btsbsearch" className="student-flex">          
                
@@ -1575,6 +1712,34 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                     <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savebook} style={{ width: '140px' }}>Save Books</button>
           </div>
           </div>
+
+
+          <div id="feeCategoryDiv" className="b-1">
+              <div className="b1 row m-1 j-between">
+
+              <div>
+                  <label htmlFor="">Issue Date</label>
+                  <DatePicker selected={this.state.issueDate} value={this.state.issueDate} onChange={this.changeIssueDate} id="dtPickeris" name="dtPickeris" />
+                </div>
+                <div>
+                  <label htmlFor="">Due Date</label>
+                  <DatePicker selected={this.state.dueDate} value={this.state.dueDate} onChange={this.changeDueDate} id="dtPickerdd" name="dtPickerdd" />
+              </div>
+                
+
+                <div>
+                  <label htmlFor="">Status</label>
+                  <label className="switch">
+                    {' '}
+                    <input type="checkbox" id="status" name="status" defaultChecked /> <span className="slider" />{' '}
+                  </label>
+            </div>
+
+          </div>
+
+
+
+          
           <div id = "studentsbutton" className="hide">
           <div className="m-1 col-md-5 feeSelect">
               <div>
@@ -1607,7 +1772,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
         
           </div>              
         </div>
-        <div id="feeCatDetailDiv" className="hide">
+        {/* <div id="feeCatDetailDiv" className="hide">
         
             <table className="fwidth">
               <thead >
@@ -1626,7 +1791,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
               
             </table>
            
-          </div>
+          </div> */}
       <div id= "booklist" className="hide">
       Books Details
           <div id="bookGrid" className="b-1">
@@ -1639,8 +1804,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                 <th>Student Id</th>
                 <th>Recieved Date</th>
                 <th>Status</th>
-                {/* <th>Edit</th>
-                <th>Details</th> */}
+                 <th>Assign</th>
+                 {/* <th>Details</th>  */}
               </tr>
             </thead>
             <tbody>
@@ -1659,56 +1824,11 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           </table>
         </div>
         </div>   
+     </div>
       </section>
     );
   }
-  createParticularDiv() {
-    const { libraryData } = this.state;
-    const retVal = [];
-
-    for (let i = 0; i < this.state.noOfCopiesAvailable; i++) {
-      retVal.push(
-        <tbody>
-          <tr>
-          <td>
-              <input type="number" id={"idd" + i} name="id" value={libraryData.id} className="w-80"  onChange={this.onChange} disabled ></input>
-            </td>
-            <td> 
-                <input type="date" className="w-125" value={libraryData.issueDate} id={"issueDate" + i} name="issueDate" maxLength={8} onChange={this.changeIssueDate} ></input> 
-              </td>
-              <td> 
-                  <input type="date" className="w-125" value={libraryData.issueDate} id={"dueDate" + i} name="dueDate" maxLength={8} onChange={this.changeDueDate} ></input> 
-              </td>
-         
-              <td>
-                  <input type="number" className="w-80" id={"sid" + i} value={libraryData.student.id} name="sid"  onChange={this.onChange} ></input>
-              </td>
-              <td>
-                  <input type="text" id={"sname" + i} name="sname" value={libraryData.studentName} onChange={this.onChange} ></input>
-              </td> 
-              <td> 
-                  <input type="date" className="w-125" value={libraryData.receivedDate} id={"receivedDate" + i} name="receivedDate" maxLength={8} onChange={this.changeDueDate} ></input> 
-              </td>            
-            
-            <td>
-            <div>
-              <label htmlFor="">Status</label>
-              <label className="switch">
-                {' '}
-                <input type="checkbox" id="status" name="status"  /> <span className="slider" />{' '}
-              </label>
-            </div>
-            </td>
-           
-            <td>
-            <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.assigntobutton} style={{ width: '140px' }}>Assign To</button>
-            </td>
-          </tr>
-        </tbody>
-      );
-    }
-    return retVal;
-  }
+  
 }
 export default withExamSubjDataLoader(
   compose(

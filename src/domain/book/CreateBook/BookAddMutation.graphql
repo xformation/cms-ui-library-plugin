@@ -1,11 +1,20 @@
 mutation addBook($input: [AddBookInput!]!) {
   addBook(input: $input) {
-    book {
+    id,
+    status,
+    issueDate,
+    dueDate,
+    receivedDate,    
+    strIssueDate,
+    strDueDate,
+    strRecDate,
+    
+    noOfCopiesAvailable,
+    library{
       id
-      
-      library {
-        id
-      }
+    },
+    student{
+      id
     }
-  } 
+  }
 }

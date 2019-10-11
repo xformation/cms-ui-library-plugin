@@ -1,17 +1,21 @@
 mutation updateBook($input: UpdateBookInput!) {
    updateBook(input: $input) {
     book {
-      id
-      issueDate
-      dueDate
-      noOfCopiesAvailable
-      status
+      id,
+      issueDate,
+      dueDate,
+      receivedDate,
+      noOfCopiesAvailable,
+      status,
       student{
         id
-      }  
+      } , 
       library {
         id
-      }
+      },
+      strIssueDate,
+      strDueDate,
+      strRecDate
     }
     }
   }
