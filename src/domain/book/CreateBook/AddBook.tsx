@@ -536,7 +536,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     //   }
     // }
     
-    for(let i=0; i<=this.state.noOfCopiesAvailable; i++) {    
+    for(let i=1; i<=this.state.noOfCopiesAvailable; i++) {    
       let sd  = new SaData(
         
         "1111-11-11T18:00:00.000Z",
@@ -1065,13 +1065,29 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
     // let bl: any = document.querySelector("#rec");
     // bl.setAttribute("class", "hide");
-    let chkSts: any = document.querySelector("#status");
+    
     let dtPkSt: any = document.querySelector("#dtPickeris");
+    let chkSts: any = document.querySelector("#status");
     let dtPkNd: any = document.querySelector("#dtPickerdd");
     let dtPkRc: any = document.querySelector("#dtPickerrc");
+   
     let stpk: any = document.querySelector("#student");
-     
+    
+    let stDiv: any = document.querySelector("#studentsbutton");
+    stDiv.setAttribute("class", "hide");
+
  
+    let dtSt: any = document.querySelector("#due");
+    dtSt.setAttribute("class", "hide");
+    let dtNd: any = document.querySelector("#iss");
+    dtNd.setAttribute("class", "hide");
+    let reNd: any = document.querySelector("#rec");
+    reNd.setAttribute("class", "");
+    
+    let ubdiv: any = document.querySelector("#updatebookdiv");
+    ubdiv.setAttribute("class", "");
+
+
     if (obj.status === "RESERVED") {
       chkSts.checked = true;
     } else {
@@ -1114,8 +1130,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       
       libraryData: libraryData
     });
-    let btsbDiv: any = document.querySelector("#studentsbutton");
-    btsbDiv.setAttribute("class", "");
+  
 
     let ddv: any = document.querySelector("#datediv");
     ddv.setAttribute("class", "");
@@ -1129,9 +1144,19 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let chkSts: any = document.querySelector("#status");
     let dtPkSt: any = document.querySelector("#dtPickeris");
     let dtPkNd: any = document.querySelector("#dtPickerdd");
-    let dtPkRc: any = document.querySelector("#dtPickerrc");
+    let dtPkRc: any = document.querySelector("#rec");
+    dtPkRc.setAttribute("class", "hide");
+
     let stpk: any = document.querySelector("#student");
      
+
+    let dtSt: any = document.querySelector("#due");
+    dtSt.setAttribute("class", "");
+    let dtNd: any = document.querySelector("#iss");
+    dtNd.setAttribute("class", "");
+
+    let ubdiv: any = document.querySelector("#updatebookdiv");
+    ubdiv.setAttribute("class", "");
    
     if (obj.status === "RESERVED") {
       chkSts.checked = true;
@@ -1811,11 +1836,11 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <div id = "datediv" className="hide">
               <div  className="b1 row m-1 j-between">
 
-                <div>
+                <div id="iss" className="">
                   <label htmlFor="">Issue Date</label>
                   <DatePicker selected={this.state.issueDate} value={this.state.issueDate} onChange={this.changeIssueDate} id="dtPickeris" name="dtPickeris" />
                 </div>
-                <div>
+                <div id="due" className="">
                   <label htmlFor="">Due Date</label>
                   <DatePicker selected={this.state.dueDate} value={this.state.dueDate} onChange={this.changeDueDate} id="dtPickerdd" name="dtPickerdd" />
                 </div>
@@ -1823,7 +1848,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                   <label htmlFor="">Rec Date</label>
                   <DatePicker selected={this.state.receivedDate} value={this.state.receivedDate} onChange={this.changereceivedDate} id="dtPickerrc" name="dtPickerrc" />
               </div>
-                <div>
+                <div id="sts" className="">
                   <label htmlFor="">Status</label>
                   <label className="switch">
                     {' '}
@@ -1862,7 +1887,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                     </select>
                   </div>
 
-                  <div>
+                  <div id= "updatebookdiv" className="">
                  
                     <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.updateSubBook} style={{ width: '140px' }}>Save</button>
                   </div>
