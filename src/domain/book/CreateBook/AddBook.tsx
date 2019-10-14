@@ -293,10 +293,10 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     const { libraryData } = this.state;
     e.preventDefault();
 
-    if (this.state.noOfCopiesAvailable === 0) {
-      alert("Please select no of exams");
-      return;
-    }  
+    // if (this.state.noOfCopiesAvailable === 0) {
+    //   alert("Please select no of exams");
+    //   return;
+    // }  
 
     if (libraryData.noOfCopiesAvailable) {
       e.target.querySelector("#detailGridTable").removeAttribute("class");
@@ -538,9 +538,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     for(let i=0; i<=this.state.noOfCopiesAvailable; i++) {    
       let sd  = new SaData(
         
-        "1111-11-01T18:00:00.000Z",
-         "1111-11-01T18:00:00.000Z",
-         "1111-11-01T18:00:00.000Z",
+        "1111-11-11T18:00:00.000Z",
+         "1111-11-11T18:00:00.000Z",
+         "1111-11-11T18:00:00.000Z",
           0,
           "AVAILABLE",
         2051,
@@ -1058,6 +1058,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let dtPkSt: any = document.querySelector("#dtPickeris");
     let dtPkNd: any = document.querySelector("#dtPickerdd");
     let dtPkRc: any = document.querySelector("#dtPickerrc");
+    let stpk: any = document.querySelector("#student");
      
     // txtCn.value = obj.categoryName;
     // txtDs.value = obj.description;
@@ -1099,7 +1100,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     this.setState({
       issueDate: nStDt,
       dueDate: nEnDt,
-      receivedDate: nRcDt,
+      receivedDate: nRcDt,     
       libraryData: libraryData
     });
     let btsbDiv: any = document.querySelector("#studentsbutton");
@@ -1169,7 +1170,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       }
       let stDate = null;
       if (this.state.issueDate !== undefined || this.state.issueDate !== null || this.state.issueDate !== "") {
-        stDate = moment(this.state.issueDate, "YYYY-MM-DD");
+              stDate = moment(this.state.issueDate, "YYYY-MM-DD");
       }
       let enDate = null;
       if (this.state.dueDate !== undefined || this.state.dueDate !== null || this.state.dueDate !== "") {
@@ -1179,6 +1180,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       if (this.state.receivedDate !== undefined || this.state.receivedDate !== null || this.state.receivedDate !== "") {
         rcDate = moment(this.state.receivedDate, "YYYY-MM-DD");
       }
+      
       if (libraryData.books.id === "") {
         alert("This record has no id. It can be added as a new record.");
         return;
@@ -1445,19 +1447,15 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <td>{k.student.id}</td>
           <td>{k.strRecDate}</td>
           <td>{k.status}</td>
+         
           <td>
-                    <button className="btn btn-primary" onClick={e => this.editBook(k)}>Edit</button>
+                    <button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button>
                 </td> 
-          <td>
+          {/* <td>
           
             <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={e => this.assigntobutton(e, k)} style={{ width: '140px' }}>Assign To</button>
-            </td>
-          {/* <td>
-            <button className="btn btn-primary" onClick={e => this.editFeeCategory(k)}>Edit</button>
-          </td>
-          <td>
-            <button className="btn btn-primary" onClick={e => this.showDetail(e, k)}>Details</button>
-          </td> */}
+            </td> */}
+         
         </tr>
       );
     }
@@ -1481,12 +1479,12 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <td>{k.strRecDate}</td>
           <td>{k.status}</td>
           <td>
-            <button className="btn btn-primary" onClick={e => this.editBook(k)}>Edit</button>
+            <button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button>
           </td>
-          <td>
+          {/* <td>
           
           <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={e => this.assigntobutton(e, k)} style={{ width: '140px' }}>Assign To</button>
-          </td>
+          </td> */}
           
         </tr>
       );
@@ -1515,7 +1513,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <td>{k.strRecDate}</td>
           <td>{k.status}</td>
           <td>
-            <button className="btn btn-primary" onClick={e => this.editBook(k)}>Edit</button>
+            <button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button>
           </td>
         </tr>
       );
@@ -1724,7 +1722,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
               <div id = "bookcopiesdiv" className="hide">
               <div id = "bookcdiv" className="m-1 col-md-5 feeSelect">
                <form className="gf-form-group"  > 
-             
+                Add No Of Copies:
                   <a onClick={this.decreaseExamValue.bind(this)}> - </a>
                     &nbsp;{this.state.noOfCopiesAvailable}&nbsp;
                     <a onClick={this.increaseExamValue.bind(this)}> + </a>
@@ -1791,7 +1789,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                 </div>
                 <div>
                   <label htmlFor="">Student</label>
-                    <select required name="student" id="student" onChange={this.onSubChange} value={libraryData.student.studentName} className="gf-form-input max-width-22">
+                    <select required name="student" id="student" onChange={this.onSubChange} value={libraryData.student.id} className="gf-form-input max-width-22">
                       {this.createStudents(this.props.data.createLibraryFilterDataCache.students, libraryData.batch.id, libraryData.department.id, libraryData.section.id)}
                     </select>
                 </div>
@@ -1833,7 +1831,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                 <th>Student Id</th>
                 <th>Recieved Date</th>
                 <th>Status</th>
-                 <th>Assign</th>
+                <th>Assign</th>
+                 {/* <th>Assign</th> */}
                  {/* <th>Details</th>  */}
               </tr>
             </thead>
