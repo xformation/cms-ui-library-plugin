@@ -1525,7 +1525,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <td>{k.status}</td>
          
           <td><button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button></td> 
-          <td><button className="btn btn-primary" onClick={e => this.etBook(k)}>Assign</button></td> 
+          <td><button className="btn btn-primary" onClick={e => this.etBook(k)}>Receive</button></td> 
           {/* <td>
           
             <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={e => this.assigntobutton(e, k)} style={{ width: '140px' }}>Assign To</button>
@@ -1554,7 +1554,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <td>{k.strRecDate}</td>
           <td>{k.status}</td>
           <td><button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button></td> 
-          <td><button className="btn btn-primary" onClick={e => this.etBook(k)}>Assign</button></td> 
+          <td><button className="btn btn-primary" onClick={e => this.etBook(k)}>Receive</button></td> 
           {/* <td>
           
           <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={e => this.assigntobutton(e, k)} style={{ width: '140px' }}>Assign To</button>
@@ -1587,7 +1587,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <td>{k.strRecDate}</td>
           <td>{k.status}</td>
           <td><button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button></td>
-          <td><button className="btn btn-primary" onClick={e => this.etBook(k)}>Assign</button></td>  
+          <td><button className="btn btn-primary" onClick={e => this.etBook(k)}>Receive</button></td>  
         </tr>
       );
     }
@@ -1770,9 +1770,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
         </div>
         <div id="detailbox" className="b-1">
           <div id= "smdt" className="hide">
-                <div className="col-xs-12 col-sm-4 m-b-1">
-                  <span className="profile-label">
-                    Book Name: 
+                <div className="col-xs-12 row-sm-4 m-b-1">
+                  <span className="profile-label row">
+                    Book Name:
                   </span>
                   <span>{libraryData.bookTitle}</span>
                 </div>
@@ -1784,14 +1784,14 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                 </div>
                 <div className="col-xs-12 col-sm-4 m-b-1">
                   <span className="profile-label">
-                    Author Name: 
+                   Author Name: 
                   </span>
                   <span>{libraryData.author}</span>
                 </div>
              </div>
             </div>
             <div id = "bookcopiesdiv" className="hide">
-              <div id = "bookcdiv" className="m-1 col-md-5 feeSelect">
+              <div id = "bookcdiv" className="b-1 ">
                <form className="gf-form-group"  > 
                 Add No Of Copies:
                   <a onClick={this.decreaseExamValue.bind(this)}> - </a>
@@ -1872,7 +1872,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
        
       <div id= "booklist" className="hide">
-      Books Details
+      <h6>Books Details</h6>
           <div id="bookGrid" className="b-1">
           <table className="fwidth" id="booktable">
             <thead >
@@ -1881,10 +1881,10 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                 <th>Isue Date</th>
                 <th>Due Date</th>
                 <th>Student Id</th>
-                <th>Recieved Date</th>
+                <th>Received Date</th>
                 <th>Status</th>
                 <th>Assign</th>
-                <th>Assign</th>
+                <th>Receive</th>
                  {/* <th>Assign</th> */}
                  {/* <th>Details</th>  */}
               </tr>
