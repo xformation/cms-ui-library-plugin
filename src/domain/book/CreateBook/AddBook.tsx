@@ -189,6 +189,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     this.createBookAddRow = this.createBookAddRow.bind(this);
     this.updateSubBook = this.updateSubBook.bind(this);
     this.editBook = this.editBook.bind(this);
+    this.etBook = this.etBook.bind(this);
   }
 
   createDepartments(departments: any, selectedBranchId: any) {
@@ -872,6 +873,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let btsbDiv: any = document.querySelector("#btsbsearch");
     btsbDiv.setAttribute("class", "hide");
 
+    let ddv: any = document.querySelector("#datediv");
+    ddv.setAttribute("class", "hide");
+
     let stb: any = document.querySelector("#studentsbutton");
     stb.setAttribute("class", "hide");
 
@@ -980,6 +984,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let stDtDiv: any = document.querySelector("#studentsbutton");
     stDtDiv.setAttribute("class", "hide");
 
+    let ddv: any = document.querySelector("#datediv");
+    ddv.setAttribute("class", "hide");
+
     let svFCatDiv: any = document.querySelector("#saveFeeCatDiv");
     svFCatDiv.setAttribute("class", "hide");
 
@@ -1020,6 +1027,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let btsbDiv: any = document.querySelector("#studentsbutton");
     btsbDiv.setAttribute("class", "");
 
+    let ddv: any = document.querySelector("#datediv");
+    ddv.setAttribute("class", "");
+
     this.showParticularDiv(e);
 
   }
@@ -1050,18 +1060,18 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
   //imp........................................
   
-  editBook(obj: any) {
+  etBook(obj: any) {
     const { libraryData } = this.state;
-    // let txtCn: any = document.querySelector("#categoryName");
-    // let txtDs: any = document.querySelector("#description");
+
+    // let bl: any = document.querySelector("#rec");
+    // bl.setAttribute("class", "hide");
     let chkSts: any = document.querySelector("#status");
     let dtPkSt: any = document.querySelector("#dtPickeris");
     let dtPkNd: any = document.querySelector("#dtPickerdd");
     let dtPkRc: any = document.querySelector("#dtPickerrc");
     let stpk: any = document.querySelector("#student");
      
-    // txtCn.value = obj.categoryName;
-    // txtDs.value = obj.description;
+ 
     if (obj.status === "RESERVED") {
       chkSts.checked = true;
     } else {
@@ -1101,10 +1111,76 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       issueDate: nStDt,
       dueDate: nEnDt,
       receivedDate: nRcDt,     
+      
       libraryData: libraryData
     });
     let btsbDiv: any = document.querySelector("#studentsbutton");
     btsbDiv.setAttribute("class", "");
+
+    let ddv: any = document.querySelector("#datediv");
+    ddv.setAttribute("class", "");
+
+  }
+  editBook(obj: any) {
+    const { libraryData } = this.state;
+    
+    // let bl: any = document.querySelector("#rec");
+    // bl.setAttribute("class", "hide");
+    let chkSts: any = document.querySelector("#status");
+    let dtPkSt: any = document.querySelector("#dtPickeris");
+    let dtPkNd: any = document.querySelector("#dtPickerdd");
+    let dtPkRc: any = document.querySelector("#dtPickerrc");
+    let stpk: any = document.querySelector("#student");
+     
+   
+    if (obj.status === "RESERVED") {
+      chkSts.checked = true;
+    } else {
+      chkSts.checked = false;
+    }
+    let stDate = "";
+    if(obj.strDueDate !== null && obj.strDueDate !== "") {
+      stDate = moment(obj.strDueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
+    }
+    let ndDate = "";
+    if(obj.strIssueDate !== null && obj.strIssueDate !== "") {
+      ndDate = moment(obj.strIssueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
+    }
+    let rcDate = "";
+    if(obj.strRecDate !== null && obj.strRecDate !== "") {
+      rcDate = moment(obj.strRecDate, "DD-MM-YYYY").format("DD/MM/YYYY");
+    }
+    dtPkSt.value = stDate;
+    dtPkNd.value = ndDate;
+    dtPkRc.value = rcDate;
+    libraryData.books.id = obj.id;
+    libraryData.student.id = obj.student.id;
+    libraryData.noOfCopiesAvailable = 0;
+    let nStDt: any;
+    let nEnDt: any;
+    let nRcDt: any;
+    if(stDate !== ""){
+      nStDt = moment(stDate, "DD/MM/YYYY");
+    }
+    if(ndDate !== ""){
+      nEnDt = moment(ndDate, "DD/MM/YYYY");
+    }
+    if(rcDate !== ""){
+      nRcDt = moment(ndDate, "DD/MM/YYYY");
+    }
+    this.setState({
+      issueDate: nStDt,
+      dueDate: nEnDt,
+      receivedDate: nRcDt,     
+      // receivedDate: "1111-11-11T18:00:00.000Z",
+
+      libraryData: libraryData
+    });
+    let btsbDiv: any = document.querySelector("#studentsbutton");
+    btsbDiv.setAttribute("class", "");
+
+    let ddv: any = document.querySelector("#datediv");
+    ddv.setAttribute("class", "");
 
   }
 
@@ -1448,9 +1524,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <td>{k.strRecDate}</td>
           <td>{k.status}</td>
          
-          <td>
-                    <button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button>
-                </td> 
+          <td><button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button></td> 
+          <td><button className="btn btn-primary" onClick={e => this.etBook(k)}>Assign</button></td> 
           {/* <td>
           
             <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={e => this.assigntobutton(e, k)} style={{ width: '140px' }}>Assign To</button>
@@ -1478,9 +1553,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <td>{k.student.id}</td>
           <td>{k.strRecDate}</td>
           <td>{k.status}</td>
-          <td>
-            <button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button>
-          </td>
+          <td><button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button></td> 
+          <td><button className="btn btn-primary" onClick={e => this.etBook(k)}>Assign</button></td> 
           {/* <td>
           
           <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={e => this.assigntobutton(e, k)} style={{ width: '140px' }}>Assign To</button>
@@ -1512,9 +1586,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <td>{k.student.id}</td>
           <td>{k.strRecDate}</td>
           <td>{k.status}</td>
-          <td>
-            <button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button>
-          </td>
+          <td><button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button></td>
+          <td><button className="btn btn-primary" onClick={e => this.etBook(k)}>Assign</button></td>  
         </tr>
       );
     }
@@ -1715,11 +1788,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                   </span>
                   <span>{libraryData.author}</span>
                 </div>
-          
-          
-              </div>
-              </div>
-              <div id = "bookcopiesdiv" className="hide">
+             </div>
+            </div>
+            <div id = "bookcopiesdiv" className="hide">
               <div id = "bookcdiv" className="m-1 col-md-5 feeSelect">
                <form className="gf-form-group"  > 
                 Add No Of Copies:
@@ -1732,93 +1803,74 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                     <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savebook} style={{ width: '140px' }}>Save Books</button>
                 }
                  </form>
-          </div>
-          </div>
+              </div>
+            </div>
 
 
           <div id="feeCategoryDiv" className="b-1">
-              <div className="b1 row m-1 j-between">
+          <div id = "datediv" className="hide">
+              <div  className="b1 row m-1 j-between">
 
-              <div>
+                <div>
                   <label htmlFor="">Issue Date</label>
                   <DatePicker selected={this.state.issueDate} value={this.state.issueDate} onChange={this.changeIssueDate} id="dtPickeris" name="dtPickeris" />
                 </div>
                 <div>
                   <label htmlFor="">Due Date</label>
                   <DatePicker selected={this.state.dueDate} value={this.state.dueDate} onChange={this.changeDueDate} id="dtPickerdd" name="dtPickerdd" />
-              </div>
-              <div>
+                </div>
+                <div id="rec" className="">
                   <label htmlFor="">Rec Date</label>
                   <DatePicker selected={this.state.receivedDate} value={this.state.receivedDate} onChange={this.changereceivedDate} id="dtPickerrc" name="dtPickerrc" />
               </div>
-
                 <div>
                   <label htmlFor="">Status</label>
                   <label className="switch">
                     {' '}
                     <input type="checkbox" id="status" name="status" defaultChecked /> <span className="slider" />{' '}
                   </label>
+                </div>
+
+              </div> 
+              </div>         
+              <div id = "studentsbutton" className="hide">
+                <div className="m-1 col-md-5 feeSelect">
+                  <div>
+                      <label htmlFor="">Department</label>
+                        <select required name="department" id="department" onChange={this.onSubChange}  className="gf-form-input max-width-8">
+                          {this.createDepartments(this.props.data.createLibraryFilterDataCache.departments,libraryData.branch.id)}
+                        </select>
+                  </div>
+                
+                  <div>
+                    <label htmlFor="">Select Year</label>
+                      <select required name="batch" id="batch" onChange={this.onSubChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
+                          {this.createBatches(this.props.data.createLibraryFilterDataCache.batches, libraryData.department.id)}
+                        </select>
+                 </div>
+                
+                  <div>
+                    <label htmlFor="">Section</label>
+                      <select required name="section" id="section" onChange={this.onSubChange} value={libraryData.section.id} className="gf-form-input max-width-22">
+                        {this.createSections(this.props.data.createLibraryFilterDataCache.sections, libraryData.batch.id)}
+                      </select>
+                  </div>
+                  <div>
+                    <label htmlFor="">Student</label>
+                      <select required name="student" id="student" onChange={this.onSubChange} value={libraryData.student.id} className="gf-form-input max-width-22">
+                        {this.createStudents(this.props.data.createLibraryFilterDataCache.students, libraryData.batch.id, libraryData.department.id, libraryData.section.id)}
+                    </select>
+                  </div>
+
+                  <div>
+                 
+                    <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.updateSubBook} style={{ width: '140px' }}>Save</button>
+                  </div>
+              </div>              
             </div>
 
-          </div>
 
-
-
-          
-          <div id = "studentsbutton" className="hide">
-          <div className="m-1 col-md-5 feeSelect">
-              <div>
-                  <label htmlFor="">Department</label>
-                  <select required name="department" id="department" onChange={this.onSubChange}  className="gf-form-input max-width-8">
-                    {this.createDepartments(this.props.data.createLibraryFilterDataCache.departments,libraryData.branch.id)}
-                  </select>
-                </div>
-                
-                <div>
-                  <label htmlFor="">Select Year</label>
-                  <select required name="batch" id="batch" onChange={this.onSubChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
-                      {this.createBatches(this.props.data.createLibraryFilterDataCache.batches, libraryData.department.id)}
-                    </select>
-                </div>
-                
-                <div>
-                  <label htmlFor="">Section</label>
-                    <select required name="section" id="section" onChange={this.onSubChange} value={libraryData.section.id} className="gf-form-input max-width-22">
-                      {this.createSections(this.props.data.createLibraryFilterDataCache.sections, libraryData.batch.id)}
-                    </select>
-                </div>
-                <div>
-                  <label htmlFor="">Student</label>
-                    <select required name="student" id="student" onChange={this.onSubChange} value={libraryData.student.id} className="gf-form-input max-width-22">
-                      {this.createStudents(this.props.data.createLibraryFilterDataCache.students, libraryData.batch.id, libraryData.department.id, libraryData.section.id)}
-                    </select>
-                </div>
-                <div>
-                 
-                <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.updateSubBook} style={{ width: '140px' }}>Update</button>
-                </div>
-          </div>              
-        </div>
-        {/* <div id="feeCatDetailDiv" className="hide">
-        
-            <table className="fwidth">
-              <thead >
-                <tr>
-                  <th>Book No</th>
-                  <th>Isue Date</th>
-                  <th>Due Date</th>
-                  <th>Student Id</th>
-                  <th>Student Name</th>
-                  <th>Recieved Date</th>
-                  <th>Status</th>
-                  <th>Assigned to</th>
-                </tr>
-              </thead>
-              {this.createParticularDiv()}
-              
-            </table>
-           
-          </div> */}
+       
       <div id= "booklist" className="hide">
       Books Details
           <div id="bookGrid" className="b-1">
@@ -1831,6 +1883,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                 <th>Student Id</th>
                 <th>Recieved Date</th>
                 <th>Status</th>
+                <th>Assign</th>
                 <th>Assign</th>
                  {/* <th>Assign</th> */}
                  {/* <th>Details</th>  */}
