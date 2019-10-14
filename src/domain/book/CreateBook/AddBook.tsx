@@ -538,9 +538,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     for(let i=0; i<=this.state.noOfCopiesAvailable; i++) {    
       let sd  = new SaData(
         
+        "1111-11-01T18:00:00.000Z",
          "1111-11-01T18:00:00.000Z",
-        "1111-11-01T18:00:00.000Z",
-        "1111-11-01T18:00:00.000Z",
+         "1111-11-01T18:00:00.000Z",
           0,
           "AVAILABLE",
         2051,
@@ -1083,7 +1083,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     dtPkRc.value = rcDate;
     libraryData.books.id = obj.id;
     libraryData.student.id = obj.student.id;
-    libraryData.noOfCopiesAvailable = 3;
+    libraryData.noOfCopiesAvailable = 0;
     let nStDt: any;
     let nEnDt: any;
     let nRcDt: any;
@@ -1102,6 +1102,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       receivedDate: nRcDt,
       libraryData: libraryData
     });
+    let btsbDiv: any = document.querySelector("#studentsbutton");
+    btsbDiv.setAttribute("class", "");
 
   }
 
@@ -1183,7 +1185,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       }
       let updateBookInput = {
         id: libraryData.books.id,
-        noOfCopiesAvailable: 3,        
+        noOfCopiesAvailable: 0,        
         status: status,
         issueDate: stDate,
         dueDate: enDate,
@@ -1417,7 +1419,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
   // }
 
   increaseExamValue() {
-    if (this.state.noOfCopiesAvailable < 5) {
+    let n=1000;
+    if (this.state.noOfCopiesAvailable < n) {
       this.setState({ noOfCopiesAvailable: this.state.noOfCopiesAvailable + 1 })
     }
   }
@@ -1558,7 +1561,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                   <button className="btn btn-primary mr-1" id="btnBack" name="btnBack" onClick={this.back} style={{ padding: "13px" }}>Back</button>
 
                  
-                  <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.updateSubBook} style={{ width: '140px' }}>Update</button>
+                
 
               </div>
 
@@ -1720,14 +1723,17 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
               </div>
               <div id = "bookcopiesdiv" className="hide">
               <div id = "bookcdiv" className="m-1 col-md-5 feeSelect">
-              <form className="gf-form-group" onSubmit={this.onBookSubmit} >
+               <form className="gf-form-group"  > 
              
                   <a onClick={this.decreaseExamValue.bind(this)}> - </a>
                     &nbsp;{this.state.noOfCopiesAvailable}&nbsp;
                     <a onClick={this.increaseExamValue.bind(this)}> + </a>
-                    </form>
+                   
+                { this.state.noOfCopiesAvailable >=1 &&
 
                     <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.savebook} style={{ width: '140px' }}>Save Books</button>
+                }
+                 </form>
           </div>
           </div>
 
@@ -1789,8 +1795,10 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                       {this.createStudents(this.props.data.createLibraryFilterDataCache.students, libraryData.batch.id, libraryData.department.id, libraryData.section.id)}
                     </select>
                 </div>
-                
-        
+                <div>
+                 
+                <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.updateSubBook} style={{ width: '140px' }}>Update</button>
+                </div>
           </div>              
         </div>
         {/* <div id="feeCatDetailDiv" className="hide">
