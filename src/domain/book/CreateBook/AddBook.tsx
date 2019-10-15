@@ -1132,7 +1132,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     this.setState({
       issueDate: nStDt,
       dueDate: nEnDt,
-      receivedDate: nRcDt,     
+      receivedDate: date,     
       
       libraryData: libraryData
     });
@@ -1199,12 +1199,13 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     if(rcDate !== ""){
       nRcDt = moment(rcDate, "DD/MM/YYYY");
     }
+    let date= new Date();
     this.setState({
       issueDate: nStDt,
       dueDate: nEnDt,
       // receivedDate: nRcDt,     
-      receivedDate: "2019-11-11T18:00:00.000Z",
-
+      // receivedDate: "2019-11-11T18:00:00.000Z",
+      receivedDate: date,
       libraryData: libraryData
     });
     console.log('checkt the date:', this.state.receivedDate);
@@ -1801,7 +1802,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                 <div id="rec" className="">
                   <label htmlFor="">Rec Date</label>
                   {/* <DatePicker selected={this.state.receivedDate} value={this.state.receivedDate} onChange={this.changereceivedDate} id="dtPickerrc" name="dtPickerrc" /> */}
-                  <input type= "date" id="dtPickerrc" value="15-10-2019" name="dtPickerrc" onChange={this.changereceivedDate}  ></input>
+                  <input type= "date" id="dtPickerrc" value={libraryData.receivedDate} name="dtPickerrc" onChange={this.changereceivedDate}  ></input>
               </div>
                 <div id="sts" className="">
                   <label htmlFor="">Status</label>
