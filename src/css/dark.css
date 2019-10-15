@@ -1849,3 +1849,11 @@ td {
 .w-125 {
   width: 125px !important;
 }
+
+.color-lb {
+  background-color: #3697ef;
+}
+
+#bookstable > th {
+  text-align: center;
+}

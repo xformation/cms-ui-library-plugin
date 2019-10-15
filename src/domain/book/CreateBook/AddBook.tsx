@@ -1484,8 +1484,15 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           {/* <td>{k.strRecDate}</td> */}
           <td>{k.status}</td>
          
-          <td id="assignbtn"><button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button></td> 
-          <td id="receivebtn"><button className="btn btn-primary" onClick={e => this.etBook(k)}>Receive</button></td> 
+          <td>{
+            k.status === "AVAILABLE" &&
+            <button className="btn bs" onClick={e => this.editBook(k)}>ASSIGN</button>
+          }{
+            k.status === "RESERVED" &&
+            <button className="btn bs color-lb" onClick={e => this.etBook(k)}>RECEIVE</button>
+          }
+          </td> 
+         
           {/* <td>
           
             <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={e => this.assigntobutton(e, k)} style={{ width: '140px' }}>Assign To</button>
@@ -1513,8 +1520,14 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <td>{k.student.id}</td>
           {/* <td>{k.strRecDate}</td> */}
           <td>{k.status}</td>
-          <td><button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button></td> 
-          <td><button className="btn btn-primary" onClick={e => this.etBook(k)}>Receive</button></td> 
+          <td>{
+            k.status === "AVAILABLE" &&
+            <button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button>
+          }{
+            k.status === "RESERVED" &&
+            <button className="btn btn-primary" onClick={e => this.etBook(k)}>Receive</button>
+          }
+          </td>  
           {/* <td>
           
           <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={e => this.assigntobutton(e, k)} style={{ width: '140px' }}>Assign To</button>
@@ -1546,8 +1559,14 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <td>{k.student.id}</td>
           {/* <td>{k.strRecDate}</td> */}
           <td>{k.status}</td>
-          <td><button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button></td>
-          <td><button className="btn btn-primary" onClick={e => this.etBook(k)}>Receive</button></td>  
+          <td>{
+            k.status === "AVAILABLE" &&
+            <button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button>
+          }{
+            k.status === "RESERVED" &&
+            <button className="btn btn-primary" onClick={e => this.etBook(k)}>Receive</button>
+          }
+          </td> 
         </tr>
       );
     }
@@ -1838,15 +1857,14 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           <div id="bookGrid" className="b-1">
           <table className="fwidth" id="booktable">
             <thead >
-              <tr>
+              <tr id="bookstable">
                 <th>Book Id</th>
                 <th>Isue Date</th>
                 <th>Due Date</th>
                 <th>Student Id</th>
                 {/* <th>Received Date</th> */}
                 <th>Status</th>
-                <th>Assign</th>
-                <th>Receive</th>
+                <th>Assign/Receive</th>
                  {/* <th>Assign</th> */}
                  {/* <th>Details</th>  */}
               </tr>
