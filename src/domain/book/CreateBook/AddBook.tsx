@@ -61,6 +61,7 @@ type LibraryState = {
   dueDate: any,
   receivedDate: any,
   issueDate: any,
+  status: any,
   noOfCopiesAvailable: number,
 };
 
@@ -68,16 +69,16 @@ class SaData {
 
   // issueDate: any;
 //   dueDate: any; 
-//  receivedDate: any;
+ receivedDate: any;
  noOfCopiesAvailable: any;
  status: any;
   studentId: any;
   libraryId: any;
-  constructor( noOfCopiesAvailable: any,status: any,studentId: any,libraryId: any) {
+  constructor(receivedDate: any, noOfCopiesAvailable: any,status: any,studentId: any,libraryId: any) {
     // issueDate: any, dueDate: any,receivedDate: any,
     // this.issueDate = issueDate;
     // this.dueDate = dueDate;    
-    // this.receivedDate = receivedDate
+    this.receivedDate = receivedDate
     this.noOfCopiesAvailable = noOfCopiesAvailable;
     this.status = status;
     this.studentId = studentId;
@@ -154,6 +155,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         dueDate: "",
         receivedDate: "",
         issueDate:"",
+        status:"",
         search: ''
         
       
@@ -542,7 +544,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     for(let i=1; i<=this.state.noOfCopiesAvailable; i++) {    
       let sd  = new SaData(
         
-        // newDate,
+         newDate,
         
           0,
           "AVAILABLE",
@@ -1128,12 +1130,13 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     if(rcDate !== ""){
       nRcDt = moment(rcDate, "DD/MM/YYYY");
     }
-    console.log('check recive date:',nRcDt);
+    console.log('check recive date:', nRcDt);
     this.setState({
       issueDate: nStDt,
       dueDate: nEnDt,
-      receivedDate: date,     
-      
+      receivedDate: nRcDt,  
+      status: status,   
+      // receivedDate: "1111-11-01T18:00:00.000Z",
       libraryData: libraryData
     });
   
@@ -1203,9 +1206,10 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     this.setState({
       issueDate: nStDt,
       dueDate: nEnDt,
-      // receivedDate: nRcDt,     
+      receivedDate: nRcDt, 
+      status: status,    
       // receivedDate: "2019-11-11T18:00:00.000Z",
-      receivedDate: date,
+      // receivedDate: date,
       libraryData: libraryData
     });
     console.log('checkt the date:', this.state.receivedDate);
@@ -1801,8 +1805,8 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                 </div>
                 <div id="rec" className="">
                   <label htmlFor="">Rec Date</label>
-                  {/* <DatePicker selected={this.state.receivedDate} value={this.state.receivedDate} onChange={this.changereceivedDate} id="dtPickerrc" name="dtPickerrc" /> */}
-                  <input type= "date" id="dtPickerrc" value={libraryData.receivedDate} name="dtPickerrc" onChange={this.changereceivedDate}  ></input>
+                  <DatePicker selected={this.state.receivedDate} value={this.state.receivedDate} onChange={this.changereceivedDate} id="dtPickerrc" name="dtPickerrc" />
+                  {/* <input type= "date" id="dtPickerrc" value={libraryData.receivedDate} name="dtPickerrc" onChange={this.changereceivedDate}  ></input> */}
               </div>
                 <div id="sts" className="">
                   <label htmlFor="">Status</label>
