@@ -1473,6 +1473,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
   createBookAddRow(obj: any) {
     const { libraryData } = this.state;
        const retVal = [];
+       console.log("data:", obj);
     for (let x = 0; x < obj.length; x++) {
       let k = obj[x];
      
@@ -1480,9 +1481,11 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       //   let stas: any = document.querySelector("#assignbtn");       
       //   stas.setAttribute( "disabled", true);
       // }
+      if(libraryData.libraries.id == k.library.id){
       retVal.push(
         <tr key={k.id}>
          <td>{k.id}</td>
+         <td>{k.library.id}</td>
           <td>{ k.status === "RESERVED" ? k.strDueDate : k.strDueDate == ""  }</td>
          <td>{ k.status === "RESERVED" ? k.strIssueDate : k.strIssueDate == "" }</td>
          <td>{k.status === "RESERVED" ? k.student.id : k.student.id == ""}</td>
@@ -1507,7 +1510,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
         </tr>
       );
     }
-    // }
+    }
     return retVal;
   } 
    
@@ -1518,17 +1521,20 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     //   let v = obj[p];
     for (let x = 0; x < obj.length; x++) {
       let k = obj[x];
+      if(this.state.libraryData.libraries.id == k.library.id){
       retVal.push(
         <tr>
           <td>{k.id}</td>
+          <td>{k.library.id}</td>
           <td>{ k.status === "RESERVED" ? k.strDueDate : k.strDueDate == ""  }</td>
           <td>{ k.status === "RESERVED" ? k.strIssueDate : k.strIssueDate == "" }</td>
           <td>{k.status === "RESERVED" ? k.student.id : k.student.id == ""}</td>
           {/* <td>{k.strRecDate}</td> */}
           <td>{k.status}</td>
           <td>{
-            k.status === "AVAILABLE" &&
+            k.status === "AVAILABLE" &&  
             <button className="btn bs" onClick={e => this.editBook(k)}>ASSIGN</button> 
+           
           }{
             k.status === "RESERVED" &&
             <button className="btn btn-primary" onClick={e => this.etBook(k)}>Receive</button>
@@ -1542,7 +1548,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
         </tr>
       );
     }
-    // }
+    }
     return retVal;
   }
 
@@ -1557,9 +1563,11 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     }
     for (let x = 0; x < obj.length; x++) {
       let k = obj[x];
+      if(libraryData.libraries.id == k.library.id){
       retVal.push(
         <tr >
           <td>{k.id}</td>
+          <td>{k.library.id}</td>
           <td>{ k.status === "RESERVED" ? k.strDueDate : k.strDueDate == ""  }</td>
           <td>{ k.status === "RESERVED" ? k.strIssueDate : k.strIssueDate == "" }</td>
           <td>{k.status === "RESERVED" ? k.student.id : k.student.id == ""}</td>
@@ -1576,7 +1584,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
         </tr>
       );
     }
-
+  }
 
     return retVal;
   }
@@ -1772,6 +1780,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                    Author Name: 
                   </span>
                   <span>{libraryData.author}</span>
+                  <span>{libraryData.libraries.id}</span>
                 </div>
              </div>
             </div>
