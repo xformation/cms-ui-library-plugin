@@ -1702,16 +1702,17 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
 
         <div id="searchbox" className="b-1">
-        <div id= "btsbsearch" className="student-flex">          
-               
-            <select required name="batch" id="batch" onChange={this.onChange} value=  {libraryData.batch.id} className="gf-form-input max-width-22">
+        <div id= "btsbsearch" className="student-flex ">          
+        {/* <label>Year</label>    */}
+            <select required name="batch" id="batch" onChange={this.onChange} value=  {libraryData.batch.id}  className="gf-form-input">
                         {this.createBatches(this.props.data.createLibraryFilterDataCache.batches,1901)}
             </select>
-            <select required name={"subject"} id="subject" onChange={this.onChange} value=    {libraryData.subject.id} className="gf-form-input max-width-22">                {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, 1901,libraryData.batch.id)}
+            {/* <label>Subject</label> */}
+            <select required name={"subject"} id="subject" onChange={this.onChange} value= {libraryData.subject.id} className="gf-form-input ">                {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, 1901,libraryData.batch.id)}
             </select>    
-            <div  className="margin-bott max-width-22">
-                  <label htmlFor="">Search</label>
-                  <input type="text" name="search" value={libraryData.search} onChange={this.onChange} />
+            <div  className="margin-bott max-width-25">
+                 
+                  <input type="text" name="search" placeholder="Title/Aauthor" value={libraryData.search} onChange={this.onChange} />
           </div>
       </div>
         <div id = "searchbutton" className="m-b-1 bg-heading-bg studentSearch">
