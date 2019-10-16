@@ -1485,7 +1485,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       retVal.push(
         <tr key={k.id}>
          <td>{k.id}</td>
-         <td>{k.library.id}</td>
+         {/* <td>{k.library.id}</td> */}
           <td>{ k.status === "RESERVED" ? k.strDueDate : k.strDueDate == ""  }</td>
          <td>{ k.status === "RESERVED" ? k.strIssueDate : k.strIssueDate == "" }</td>
          <td>{k.status === "RESERVED" ? k.student.id : k.student.id == ""}</td>
@@ -1525,7 +1525,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       retVal.push(
         <tr>
           <td>{k.id}</td>
-          <td>{k.library.id}</td>
+          {/* <td>{k.library.id}</td> */}
           <td>{ k.status === "RESERVED" ? k.strDueDate : k.strDueDate == ""  }</td>
           <td>{ k.status === "RESERVED" ? k.strIssueDate : k.strIssueDate == "" }</td>
           <td>{k.status === "RESERVED" ? k.student.id : k.student.id == ""}</td>
@@ -1567,7 +1567,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       retVal.push(
         <tr >
           <td>{k.id}</td>
-          <td>{k.library.id}</td>
+          {/* <td>{k.library.id}</td> */}
           <td>{ k.status === "RESERVED" ? k.strDueDate : k.strDueDate == ""  }</td>
           <td>{ k.status === "RESERVED" ? k.strIssueDate : k.strIssueDate == "" }</td>
           <td>{k.status === "RESERVED" ? k.student.id : k.student.id == ""}</td>
