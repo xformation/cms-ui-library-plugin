@@ -1483,15 +1483,16 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       retVal.push(
         <tr key={k.id}>
          <td>{k.id}</td>
-          <td>{k.strDueDate}</td>
-          <td>{k.strIssueDate}</td>
-          <td>{k.student.id}</td>
+          <td>{ k.status === "RESERVED" ? k.strDueDate : k.strDueDate == ""  }</td>
+         <td>{ k.status === "RESERVED" ? k.strIssueDate : k.strIssueDate == "" }</td>
+         <td>{k.status === "RESERVED" ? k.student.id : k.student.id == ""}</td>
           {/* <td>{k.strRecDate}</td> */}
           <td>{k.status}</td>
          
           <td>{
             k.status === "AVAILABLE" &&
-            <button className="btn bs" onClick={e => this.editBook(k)}>ASSIGN</button>
+            <button className="btn bs" onClick={e => this.editBook(k)}>ASSIGN</button> 
+           
           }{
             k.status === "RESERVED" &&
             <button className="btn bs color-lb" onClick={e => this.etBook(k)}>RECEIVE</button>
@@ -1520,14 +1521,14 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       retVal.push(
         <tr>
           <td>{k.id}</td>
-          <td>{k.strDueDate}</td>
-          <td>{k.strIssueDate}</td>
-          <td>{k.student.id}</td>
+          <td>{ k.status === "RESERVED" ? k.strDueDate : k.strDueDate == ""  }</td>
+          <td>{ k.status === "RESERVED" ? k.strIssueDate : k.strIssueDate == "" }</td>
+          <td>{k.status === "RESERVED" ? k.student.id : k.student.id == ""}</td>
           {/* <td>{k.strRecDate}</td> */}
           <td>{k.status}</td>
           <td>{
             k.status === "AVAILABLE" &&
-            <button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button>
+            <button className="btn bs" onClick={e => this.editBook(k)}>ASSIGN</button> 
           }{
             k.status === "RESERVED" &&
             <button className="btn btn-primary" onClick={e => this.etBook(k)}>Receive</button>
@@ -1559,14 +1560,14 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       retVal.push(
         <tr >
           <td>{k.id}</td>
-          <td>{k.strDueDate}</td>
-          <td>{k.strIssueDate}</td>
-          <td>{k.student.id}</td>
+          <td>{ k.status === "RESERVED" ? k.strDueDate : k.strDueDate == ""  }</td>
+          <td>{ k.status === "RESERVED" ? k.strIssueDate : k.strIssueDate == "" }</td>
+          <td>{k.status === "RESERVED" ? k.student.id : k.student.id == ""}</td>
           {/* <td>{k.strRecDate}</td> */}
           <td>{k.status}</td>
           <td>{
             k.status === "AVAILABLE" &&
-            <button className="btn btn-primary" onClick={e => this.editBook(k)}>Assign</button>
+            <button className="btn bs" onClick={e => this.editBook(k)}>ASSIGN</button> 
           }{
             k.status === "RESERVED" &&
             <button className="btn btn-primary" onClick={e => this.etBook(k)}>Receive</button>
