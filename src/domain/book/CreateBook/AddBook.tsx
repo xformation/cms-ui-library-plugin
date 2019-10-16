@@ -1764,7 +1764,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
         <div id="detailbox" className="b-1">
           <div id= "smdt" className="hide">
                 <div className="col-xs-12 row-sm-4 m-b-1">
-                  <span className="profile-label row">
+                  <span className="profile-label">
                     Book Name:
                   </span>
                   <span>{libraryData.bookTitle}</span>
@@ -1781,6 +1781,12 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                   </span>
                   <span>{libraryData.author}</span>
                   <span>{libraryData.libraries.id}</span>
+                </div>
+                <div className="col-xs-12 col-sm-4 m-b-1">
+                  <span className="profile-label">
+                   Library Id: 
+                  </span>
+                    <span>{libraryData.libraries.id}</span>
                 </div>
              </div>
             </div>
