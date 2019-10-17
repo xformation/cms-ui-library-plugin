@@ -62,6 +62,7 @@ type LibraryState = {
   receivedDate: any,
   issueDate: any,
   status: any,
+  num : any,
   noOfCopiesAvailable: number,
 };
 
@@ -92,6 +93,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     super(props);
     this.state = {
       noOfCopiesAvailable: 0,
+      num : 0,
       libraryData: {
         bookTitle: "",
         author: "",
@@ -193,6 +195,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     this.updateSubBook = this.updateSubBook.bind(this);
     this.editBook = this.editBook.bind(this);
     this.etBook = this.etBook.bind(this);
+    this.handleChangenum = this.handleChangenum.bind(this);
   }
 
   createDepartments(departments: any, selectedBranchId: any) {
@@ -271,6 +274,21 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     }
     return studentsOptions;
   }
+
+
+  handleChangenum = (e: any) => {
+    const { id, value } = e.nativeEvent.target;
+    const { libraryData } = this.state;
+    const key = id;
+    const val = value;
+    e.preventDefault();
+    
+    libraryData.textValueMap[id] = libraryData.num;
+  
+    this.setState({ libraryData: libraryData })
+
+  }
+
 
 
   onFormSubmit = (e: any) => {
@@ -662,6 +680,10 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
   editLibrary(obj: any) {
     const { libraryData } = this.state;
+
+    let crdiv: any = document.querySelector("#t-main");
+    crdiv.setAttribute("class", "");
+
     let txtCn: any = document.querySelector("#batch");
     let txtDs: any = document.querySelector("#subject");
     let chkSts: any = document.querySelector("#bookTitle");
@@ -825,7 +847,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       retVal.push(
         <tr>
           <td>{k.id}</td>
-          <td>{k.bookTitle}</td>
+          <td>{k.bookTitle}</td>         
           <td>{k.author}</td>
           <td>{k.bookNo}</td>
           <td>{k.noOfCopies}</td>
@@ -936,6 +958,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     for (let i = 0; i < dvPrt.length; i++) {
       dvPrt[i].setAttribute("class", "feeDetails");
     }
+
+    let crdiv: any = document.querySelector("#t-main");
+    crdiv.setAttribute("class", "hide");
     
     // for(let i = 0; i < this.state.countParticularDiv; i++){
     //   let dvPrt : any = document.querySelector("#feeParticularDiv"+i);
@@ -1335,13 +1360,14 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                 <td>{library.bookTitle}</td>
                 <td>{library.author}</td>
                 <td>{library.noOfCopies}</td>
-                <td>{library.bookNo}</td>              
+                <td>{library.bookNo}</td>  
+                      
                 {/* <td>{library.uniqueNo}</td> */}
                 <td>{library.batch.batch}</td>
                 <td>{library.subject.subjectDesc}</td>
                 <td>{library.additionalInfo}</td>
                 <td>
-                    <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Edit</button>
+                    <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Modify</button>
                 </td> 
                 <td>
                     <button className="btn btn-primary" onClick={e => this.showDetail(e, library)}>Details</button>
@@ -1356,12 +1382,13 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
               <td>{library.author}</td>
               <td>{library.noOfCopies}</td>
               <td>{library.bookNo}</td>
+              
               {/* <td>{library.uniqueNo}</td> */}
               <td>{library.additionalInfo}</td>             
               <td>{library.batch.batch}</td>
               <td>{library.subject.subjectDesc}</td>
               <td>
-                    <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Edit</button>
+                    <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Modify</button>
                 </td> 
                 <td>
                     <button className="btn btn-primary" onClick={e => this.showDetail(e, library)}>Details</button>
@@ -1376,11 +1403,13 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                 <td>{library.noOfCopies}</td>
                 {/* <td>{library.uniqueNo}</td> */}
                 <td>{library.bookNo}</td>
+                {/* <td>{this.state.libraryData.textValueMap["num" + i]}</td> */}
+            {/* imp    <td>{libraryData.num}</td>  */}
                 <td>{library.additionalInfo}</td>                
                 <td>{library.batch.batch}</td>
                 <td>{library.subject.subjectDesc}</td>
                 <td>
-                    <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Edit</button>
+                    <button className="btn btn-primary" onClick={e => this.editLibrary(library)}>Modify</button>
                 </td> 
                 <td>
                     <button className="btn btn-primary" onClick={e => this.showDetail(e, library)}>Details</button>
@@ -1469,19 +1498,20 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       this.setState({ noOfCopiesAvailable: this.state.noOfCopiesAvailable - 1 })
     }
   }
-          
+         
   createBookAddRow(obj: any) {
     const { libraryData } = this.state;
        const retVal = [];
        console.log("data:", obj);
+       let c =0;
     for (let x = 0; x < obj.length; x++) {
       let k = obj[x];
      
-      // if(k.status === "RESERVED"){
-      //   let stas: any = document.querySelector("#assignbtn");       
-      //   stas.setAttribute( "disabled", true);
-      // }
+    
       if(libraryData.libraries.id == k.library.id){
+        if(k.status == "AVAILABLE"){
+        c += 1;
+        }
       retVal.push(
         <tr key={k.id}>
          <td>{k.id}</td>
@@ -1502,15 +1532,15 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
           }
           </td> 
          
-          {/* <td>
-          
-            <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={e => this.assigntobutton(e, k)} style={{ width: '140px' }}>Assign To</button>
-            </td> */}
          
         </tr>
       );
     }
+   
     }
+    libraryData.num = c;
+    console.log("s", libraryData.num);
+    libraryData.num;
     return retVal;
   } 
    
@@ -1665,9 +1695,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                       </select>
                   </td>
                   <td>
-                  <select required name="subject" id="subject" onChange={this.onChange} value={libraryData.subject.subjectDesc} className="gf-form-input max-width-22">
-                      {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, 1901,libraryData.batch.id)}
-                </select>
+                      <select required name="subject" id="subject" onChange={this.onChange} value={libraryData.subject.subjectDesc} className="gf-form-input max-width-22">
+                          {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, 1901,libraryData.batch.id)}
+                    </select>
                   </td>
 
                   <td>
@@ -1683,7 +1713,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                   </td>
 
                   <td>
-                    <input type="number" id={"noOfCopies"} name={"noOfCopies"} onChange={this.onChange} className="fwidth" value={libraryData.noOfCopies} />
+                    <input type="number" id={"noOfCopies"} name={"noOfCopies"} onChange={this.handleChangenum} className="fwidth" value={libraryData.noOfCopies} />
                   </td>
 
                   {/* <td>
@@ -1736,7 +1766,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                   <th>Additional Info</th>
                   <th>Year</th>
                   <th>Subject</th>
-                  <th>Edit</th>
+                  <th>Modify</th>
                   <th>Details</th>
               </tr>
             </thead>
