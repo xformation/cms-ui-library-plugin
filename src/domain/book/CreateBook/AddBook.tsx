@@ -494,7 +494,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       noOfCopies: libraryData.noOfCopies,
       bookNo: libraryData.bookNo,
       additionalInfo: libraryData.additionalInfo,
-      uniqueNo: 2,
+      uniqueNo: 11,
       subjectId: libraryData.subject.id,
       batchId: libraryData.batch.id
     };
@@ -516,9 +516,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
       });
 
     }).catch((error: any) => {
-      alert("Due to some error fee category could not be added");
-      console.log('there was an error sending the add fee category mutation result', error);
-      return Promise.reject(`Could not retrieve add fee category data: ${error}`);
+      alert("Due to some error Library could not be added");
+      console.log('there was an error sending the add Library mutation result', error);
+      return Promise.reject(`Could not retrieve add Library data: ${error}`);
     });
 
   }
@@ -1628,7 +1628,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
                   </td>
 
                   <td>
-                    <input type="number" id={"noOfCopies"} name={"noOfCopies"} onChange={this.handleChangenum} className="fwidth" value={libraryData.noOfCopies} />
+                    <input type="number" id={"noOfCopies"} name={"noOfCopies"} onChange={this.onChange} className="fwidth" value={libraryData.noOfCopies} />
                   </td>
 
                   {/* <td>
