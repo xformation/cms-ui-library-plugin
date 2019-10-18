@@ -583,6 +583,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let crCatDiv: any = document.querySelector("#crmainDiv");
     crCatDiv.setAttribute("class", "hide");
 
+    let svFCatDiv: any = document.querySelector("#saveFeeCatDiv");
+    svFCatDiv.setAttribute("class", "hide");
+
     let txtCn: any = document.querySelector("#batch");
     let txtDs: any = document.querySelector("#subject");
     let chkSts: any = document.querySelector("#bookTitle");
@@ -771,8 +774,6 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let fCatGrid: any = document.querySelector("#listGrid");
     fCatGrid.setAttribute("class", "hide");
 
-
-
     let fCatDtDiv: any = document.querySelector("#crmainDiv");
     fCatDtDiv.setAttribute("class", "hide");
 
@@ -792,10 +793,13 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     crdiv.setAttribute("class", "hide");
 
     let stDiv: any = document.querySelector("#detailbox");
-    stDiv.setAttribute("class", "b-1");
+    stDiv.setAttribute("class", "b-1 m-1 p-1");
 
     let btsbDiv: any = document.querySelector("#btsbsearch");
     btsbDiv.setAttribute("class", "hide");
+
+    let sboxDiv: any = document.querySelector("#searchbox");
+    sboxDiv.setAttribute("class", "hide");
 
     let ddv: any = document.querySelector("#datediv");
     ddv.setAttribute("class", "hide");
@@ -804,10 +808,10 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     stb.setAttribute("class", "hide");
 
     let dt: any = document.querySelector("#smdt");
-    dt.setAttribute("class", "");
+    dt.setAttribute("class", "lflex");
 
     let cpDiv: any = document.querySelector("#bookcopiesdiv");
-    cpDiv.setAttribute("class", "");
+    cpDiv.setAttribute("class", "m-1");
 
     let bl: any = document.querySelector("#booklist");
     bl.setAttribute("class", "");
@@ -908,6 +912,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let fCatGrid: any = document.querySelector("#listGrid");
     fCatGrid.setAttribute("class", "m-1");
 
+    let sboxDiv: any = document.querySelector("#searchbox");
+    sboxDiv.setAttribute("class", "b-1 m-1 p-1");
+
     let fCatDtDiv: any = document.querySelector("#crmainDiv");
     fCatDtDiv.setAttribute("class", "");
 
@@ -943,7 +950,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     btsbDiv.setAttribute("class", "dflex");
 
     let btbDiv: any = document.querySelector("#searchbutton");
-    btbDiv.setAttribute("class", "m-b-1");
+    btbDiv.setAttribute("class", "");
 
     let cpDiv: any = document.querySelector("#bookcopiesdiv");
     cpDiv.setAttribute("class", "hide");
@@ -1567,7 +1574,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
 
 
 
-            <button className="btn btn-primary mr-1" id="btnBack" name="btnBack" onClick={this.back} style={{ padding: "13px", width: "100px" }}>Back</button>
+            <button className="btn btn-primary mr-1" id="btnBack" name="btnBack" onClick={this.back} style={{ width: "100px" }}>Back</button>
 
 
 
@@ -1576,7 +1583,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
 
           <div id="crmainDiv" className="">
 
-            <button className="btn btn-primary mr-1" id="btncr" name="btnBack" onClick={this.create} style={{ padding: "13px" }}>Create New Book</button>
+            <button className="btn btn-primary mr-1" id="btncr" name="btnBack" onClick={this.create} >Create New Book</button>
 
           </div>
         </div>
@@ -1707,7 +1714,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
             </tbody>
           </table>
         </div>
-        <div id="detailbox" className="b-1">
+        <div id="detailbox" className="b-1 m-1">
           <div id="smdt" className="hide">
             <div className="col-xs-12 row-sm-4 m-b-1">
               <span className="profile-label">
@@ -1737,12 +1744,12 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
           </div>
         </div>
         <div id="bookcopiesdiv" className="hide">
-          <div id="bookcdiv" className="b-1 ">
-            <form className="gf-form-group"  >
-              Add No Of Copies:
-                  <a onClick={this.decreaseExamValue.bind(this)}> - </a>
+          <div id="bookcdiv" className="b-1">
+            <form className="gf-form-group m-1"  >
+              Add No Of Copies:&nbsp;&nbsp;
+                  <a onClick={this.decreaseExamValue.bind(this)} className="btn btn-primary mr-1 btn-small"><i className="fa fa-minus" /></a>
               &nbsp;{this.state.noOfCopiesAvailable}&nbsp;
-                    <a onClick={this.increaseExamValue.bind(this)}> + </a>
+                    <a onClick={this.increaseExamValue.bind(this)} className="btn btn-primary mr-1 btn-small m-l-1"><i className="fa fa-plus" /></a>
 
               {this.state.noOfCopiesAvailable >= 1 &&
 
@@ -1753,7 +1760,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         </div>
 
 
-        <div id="feeCategoryDiv" className="b-1">
+        <div id="feeCategoryDiv" className="b-1 m-1">
           <div id="datediv" className="hide">
             <div className="b1 row m-1 j-between">
 
@@ -1820,7 +1827,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
 
 
           <div id="booklist" className="hide">
-            <h6>Books Details</h6>
+            <h6 className="m-1">Books Details</h6>
             <div id="bookGrid" className="b-1">
               <table className="fwidth" id="booktable">
                 <thead >

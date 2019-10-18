@@ -1861,3 +1861,7 @@ td {
 #btsbsearch > select {
   width: 220px;
 }
+.lflex {
+  display: flex;
+  justify-content: flex-end;
+}
