@@ -684,6 +684,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let crdiv: any = document.querySelector("#t-main");
     crdiv.setAttribute("class", "");
 
+    let upFeeCatDiv: any = document.querySelector("#upFeeCatDiv");
+    upFeeCatDiv.setAttribute("class", "");
+
     let txtCn: any = document.querySelector("#batch");
     let txtDs: any = document.querySelector("#subject");
     let chkSts: any = document.querySelector("#bookTitle");
@@ -872,8 +875,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     let fCatGrid: any = document.querySelector("#listGrid");
     fCatGrid.setAttribute("class", "hide");
 
-    // let fCatDtDiv: any = document.querySelector("#feeCatDetailDiv");
-    // fCatDtDiv.setAttribute("class", "b-1");
+ 
 
     let fCatDtDiv: any = document.querySelector("#crmainDiv");
     fCatDtDiv.setAttribute("class", "hide");
@@ -961,6 +963,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
     let crdiv: any = document.querySelector("#t-main");
     crdiv.setAttribute("class", "hide");
+
+    let updiv: any = document.querySelector("#upFeeCatDiv");
+    updiv.setAttribute("class", "hide");
     
     // for(let i = 0; i < this.state.countParticularDiv; i++){
     //   let dvPrt : any = document.querySelector("#feeParticularDiv"+i);
@@ -979,6 +984,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
      let fCatGrid: any = document.querySelector("#saveFeeCatDiv");
      fCatGrid.setAttribute("class", "");
+
+     let upFeeCatDiv: any = document.querySelector("#upFeeCatDiv");
+     upFeeCatDiv.setAttribute("class", "hide");
 
      let crdiv: any = document.querySelector("#t-main");
      crdiv.setAttribute("class", "");
@@ -1018,6 +1026,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
     let svFCatDiv: any = document.querySelector("#saveFeeCatDiv");
     svFCatDiv.setAttribute("class", "hide");
+
+    let upFeeCatDiv: any = document.querySelector("#upFeeCatDiv");
+    upFeeCatDiv.setAttribute("class", "hide");
 
     let bDiv: any = document.querySelector("#backDiv");
     bDiv.setAttribute("class", "hide"); 
@@ -1644,7 +1655,15 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
                   <button className="btn btn-primary mr-1" id="btnReset" name="btnReset" onClick={this.reset} >Reset</button>
 
-                  <button className="btn btn-primary mr-1" id="btnUpdateFeeCategory" name="btnUpdateFeeCategory" onClick={this.updateLibrary} style={{ width: '170px' }}>Update</button>
+                 
+
+              </div>
+              <div id="upFeeCatDiv" className="hide">                   
+
+                  
+                  <button className="btn btn-primary mr-1" id="btnReset" name="btnReset" onClick={this.reset} >Reset</button>
+
+                  <button className="btn btn-primary mr-1" id="btnUpdateFeeCategory" name="btnUpdateFeeCategory" onClick={this.updateLibrary} style={{ width: '170px' }}>Save</button>
 
               </div>
 
