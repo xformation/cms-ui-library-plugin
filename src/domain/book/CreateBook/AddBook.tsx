@@ -523,14 +523,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
   }
 
-  // isDatesOverlap(startDate: any, endDate: any){
-  //   if (endDate.isBefore(startDate)) {
-  //     alert("End date should not be prior to start date.");
-  //     return true;
-  //   }
-  //   return false;
-  // }
-//  save book with null values
+  
   savebook = (e: any) => {
     
     const { id, value } = e.nativeEvent.target;
@@ -539,23 +532,7 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
     e.preventDefault();
     
    
-    // let issDate = null;
-    // if (this.state.issueDate !== undefined || this.state.issueDate !== null || this.state.issueDate !== "") {
-    //   issDate = moment(this.state.issueDate, "YYYY-MM-DD");
-    // }
-    // let ddDate = null;
-    // if (this.state.dueDate !== undefined || this.state.dueDate !== null || this.state.dueDate !== "") {
-    //   ddDate = moment(this.state.dueDate, "YYYY-MM-DD");
-    // }
-    // let rcDate = null;
-    // if (this.state.receivedDate !== undefined || this.state.receivedDate !== null || this.state.receivedDate !== "") {
-    //   rcDate = moment(this.state.receivedDate, "YYYY-MM-DD");
-    // }
-    // if(issDate !== null && ddDate !== null){
-    //   if(this.isDatesOverlap(issDate, issDate)){
-    //     return;
-    //   }
-    // }
+  
     let newDate = new Date();
   // let date = newDate.getDate();
     
@@ -591,90 +568,6 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
   });
   } 
   
-   // update book with values for assign to a student
-   
-  //  updateBook(obj: any) {
-  //   const { updateBookMutation } = this.props;
-  //   const { libraryData } = this.state;
-
-  //   // for(let i=0; i<libraryData.noOfCopies; i++) {  
-  //   // let txtFcNm: any = document.querySelector("#batch");
-  //   // if (txtFcNm.value.trim() === "") {
-  //   //   alert("Please select Year");
-  //   //   return;
-  //   // }
-  //   // let txtSb: any = document.querySelector("#subject");
-  //   // if (txtSb.value.trim() === "") {
-  //   //   alert("Please select Subject");
-  //   //   return;
-  //   // }
-  //   // let txtbcNm: any = document.querySelector("#bookTitle");
-  //   // if (txtbcNm.value.trim() === "") {
-  //   //   alert("Please provide some value in Book Title");
-  //   //   return;
-  //   // }
-  //   // let txtFcDs: any = document.querySelector("#author");
-  //   // if (txtFcDs.value.trim() === "") {
-  //   //   alert("Please provide some value in Author");
-  //   //   return;
-  //   // }
-  //   // let chkStatus: any = document.querySelector("#bookNo");
-  //   // if (chkStatus.value.trim() === "") {
-  //   //   alert("Please provide some value in Book No");
-  //   //   return;
-  //   // }
-  //   // let chkNoCopies: any = document.querySelector("#noOfCopies");
-  //   // if (chkNoCopies.value.trim() === "") {
-  //   //   alert("Please provide some value in No Of Copies");
-  //   //   return;
-  //   // }
-   
-  //   if (libraryData.books.id === "") {
-  //     alert("This record has no id. It can be added as a new record.");
-  //     return;
-  //   }
-
-  //   let chkStatus: any = document.querySelector("#status");
-  //   let status = "AVAILABLE";
-  //   if (chkStatus.checked) {
-  //     status = "RESERVED";
-  //   }
-
-  //   let updateBookInput = {
-  //     id: libraryData.books.id,
-  //     studentId: libraryData.subject.id,
-  //     libraryId: libraryData.libraries.id,
-  //     issueDate: libraryData.issueDate,
-  //     dueDate: libraryData.dueDate,
-  //     receivedDate: "1111-11-01T18:00:00.000Z",
-  //     // receivedDate:libraryData.rcDate["dueDate"+i],
-  //     status: status,
-  //     noOfCopiesAvailable: libraryData.noOfCopies
-      
-
-  //   };
-  //   console.log("form data : ", libraryData);
-  //   return updateBookMutation({
-  //     variables: { input: updateBookInput }
-  //   }).then(data => {
-  //     console.log('update Book ::::: ', data);
-  //     alert("Library updated successfully!");
-  //     const sdt = data;
-  //     libraryData.librarysaveData = [];
-  //     libraryData.librarysaveData.push(sdt);
-  //     this.setState({
-  //       libraryData: libraryData
-  //     });
-  //     this.setState({
-  //       add: false,
-  //       update: true
-  //     });
-  //   }).catch((error: any) => {
-  //     alert("Due to some error Library could not be updated");
-  //     console.log('there was an error sending the update Library mutation result', error);
-  //     return Promise.reject(`Could not retrieve update Library data: ${error}`);
-  //   });
-  // }
 
     
 
@@ -686,6 +579,9 @@ createSubjects(subjects: any, selectedDepartmentId: any, selectedBatchId: any) {
 
     let upFeeCatDiv: any = document.querySelector("#upFeeCatDiv");
     upFeeCatDiv.setAttribute("class", "");
+
+    let crCatDiv: any = document.querySelector("#crmainDiv");
+    crCatDiv.setAttribute("class", "hide");
 
     let txtCn: any = document.querySelector("#batch");
     let txtDs: any = document.querySelector("#subject");
