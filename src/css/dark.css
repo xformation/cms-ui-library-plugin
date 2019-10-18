@@ -1686,11 +1686,11 @@ td {
 .margin-bott {
   margin-bottom: 25px;
 }
-.bg-heading {
+/* .bg-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
+} */
 .bg-heading h2 {
   flex-grow: 1;
 }
@@ -1856,4 +1856,8 @@ td {
 
 #bookstable > th {
   text-align: center;
+}
+
+#btsbsearch > select {
+  width: 220px;
 }
