@@ -577,6 +577,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let crdiv: any = document.querySelector("#t-main");
     crdiv.setAttribute("class", "m-1");
 
+    let moddv: any = document.querySelector("#modifyDiv");
+    moddv.setAttribute("class", "b-1 m-1");
+
     let upFeeCatDiv: any = document.querySelector("#upFeeCatDiv");
     upFeeCatDiv.setAttribute("class", "");
 
@@ -804,6 +807,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let ddv: any = document.querySelector("#datediv");
     ddv.setAttribute("class", "hide");
 
+    let moddv: any = document.querySelector("#modifyDiv");
+    moddv.setAttribute("class", "b-1 m-1");
+
     let stb: any = document.querySelector("#studentsbutton");
     stb.setAttribute("class", "hide");
 
@@ -918,6 +924,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let fCatDtDiv: any = document.querySelector("#crmainDiv");
     fCatDtDiv.setAttribute("class", "");
 
+    let moddv: any = document.querySelector("#modifyDiv");
+    moddv.setAttribute("class", "hide");
+
     // let fCatDtDiv: any = document.querySelector("#feeCatDetailDiv");
     // fCatDtDiv.setAttribute("class", "hide");
 
@@ -1028,7 +1037,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let dtNd: any = document.querySelector("#iss");
     dtNd.setAttribute("class", "hide");
     let reNd: any = document.querySelector("#rec");
-    reNd.setAttribute("class", "");
+    reNd.setAttribute("class", "m-r-1");
 
     let ubdiv: any = document.querySelector("#updatebookdiv");
     ubdiv.setAttribute("class", "");
@@ -1102,9 +1111,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
 
 
     let dtSt: any = document.querySelector("#due");
-    dtSt.setAttribute("class", "");
+    dtSt.setAttribute("class", "m-r-1");
     let dtNd: any = document.querySelector("#iss");
-    dtNd.setAttribute("class", "");
+    dtNd.setAttribute("class", "m-r-1");
 
     let ubdiv: any = document.querySelector("#updatebookdiv");
     ubdiv.setAttribute("class", "");
@@ -1714,28 +1723,28 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
             </tbody>
           </table>
         </div>
-        <div id="detailbox" className="b-1 m-1">
+        <div id="detailbox" className="">
           <div id="smdt" className="hide">
-            <div className="col-xs-12 row-sm-4 m-b-1">
+            <div className="m-1 width-14">
               <span className="profile-label">
                 Book Name:
                   </span>
               <span>{libraryData.bookTitle}</span>
             </div>
-            <div className="col-xs-12 col-sm-4 m-b-1">
+            <div className="m-1 width-14">
               <span className="profile-label">
                 Book No:
                     </span>
               <span>{libraryData.bookNo}</span>
             </div>
-            <div className="col-xs-12 col-sm-4 m-b-1">
+            <div className="m-1 width-14">
               <span className="profile-label">
                 Author Name:
                   </span>
               <span>{libraryData.author}</span>
               <span>{libraryData.libraries.id}</span>
             </div>
-            <div className="col-xs-12 col-sm-4 m-b-1">
+            <div className="m-1 width-14">
               <span className="profile-label">
                 Library Id:
                   </span>
@@ -1747,42 +1756,43 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
           <div id="bookcdiv" className="b-1">
             <form className="gf-form-group m-1"  >
               Add No Of Copies:&nbsp;&nbsp;
-                  <a onClick={this.decreaseExamValue.bind(this)} className="btn btn-primary mr-1 btn-small"><i className="fa fa-minus" /></a>
+                  <a onClick={this.decreaseExamValue.bind(this)} className="btn btn-primary mr-1 btn-small m-l-1"><i className="fa fa-minus" /></a>
               &nbsp;{this.state.noOfCopiesAvailable}&nbsp;
                     <a onClick={this.increaseExamValue.bind(this)} className="btn btn-primary mr-1 btn-small m-l-1"><i className="fa fa-plus" /></a>
 
               {this.state.noOfCopiesAvailable >= 1 &&
 
-                <button className="btn btn-primary mr-1" id="btnSaveBook" name="btnSaveBook" onClick={this.savebook} style={{ width: '140px' }}>Save Books</button>
+                <button className="btn btn-primary mr-1 m-l-1" id="btnSaveBook" name="btnSaveBook" onClick={this.savebook} style={{ width: '140px' }}>Save Books</button>
               }
             </form>
           </div>
         </div>
 
 
-        <div id="feeCategoryDiv" className="b-1 m-1">
+        <div id="modifyDiv" className="hide">
           <div id="datediv" className="hide">
-            <div className="b1 row m-1 j-between">
-
-              <div id="iss" className="">
-                <label htmlFor="">Issue Date</label>
-                <DatePicker selected={this.state.issueDate} value={this.state.issueDate} onChange={this.changeIssueDate} id="dtPickeris" name="dtPickeris" />
-              </div>
-              <div id="due" className="">
-                <label htmlFor="">Due Date </label>
-                <DatePicker selected={this.state.dueDate} value={this.state.dueDate} onChange={this.changeDueDate} id="dtPickerdd" name="dtPickerdd" />
-              </div>
-              <div id="rec" className="">
-                <label htmlFor="">Rec Date</label>
-                <DatePicker selected={this.state.receivedDate} value={this.state.receivedDate} onChange={this.changereceivedDate} id="dtPickerrc" name="dtPickerrc" />
-                {/* <input type= "date" id="dtPickerrc" value={libraryData.receivedDate} name="dtPickerrc" onChange={this.changereceivedDate}  ></input> */}
-              </div>
-              <div id="sts" className="">
-                <label htmlFor="">Status</label>
-                <label className="switch">
-                  {' '}
-                  <input type="checkbox" id="status" name="status" defaultChecked /> <span className="slider" />{' '}
-                </label>
+            <div className="b1 row m-1 j-between m-b-2">
+              <div className="lflex">
+                <div id="iss" className="">
+                  <label htmlFor="">Issue Date</label>
+                  <DatePicker selected={this.state.issueDate} value={this.state.issueDate} onChange={this.changeIssueDate} id="dtPickeris" name="dtPickeris" className="width-18" />
+                </div>
+                <div id="due" className="">
+                  <label htmlFor="">Due Date </label>
+                  <DatePicker selected={this.state.dueDate} value={this.state.dueDate} onChange={this.changeDueDate} id="dtPickerdd" name="dtPickerdd" className="width-18" />
+                </div>
+                <div id="rec" className="">
+                  <label htmlFor="">Rec Date</label>
+                  <DatePicker selected={this.state.receivedDate} value={this.state.receivedDate} onChange={this.changereceivedDate} id="dtPickerrc" name="dtPickerrc" className="width-18" />
+                  {/* <input type= "date" id="dtPickerrc" value={libraryData.receivedDate} name="dtPickerrc" onChange={this.changereceivedDate}  ></input> */}
+                </div>
+                <div id="sts" className="">
+                  <label htmlFor="">Status</label>
+                  <label className="switch">
+                    {' '}
+                    <input type="checkbox" id="status" name="status" defaultChecked /> <span className="slider" />{' '}
+                  </label>
+                </div>
               </div>
               <div id="updatebookdiv" className="">
                 <button className="btn btn-primary mr-1" id="btnSaveBook" name="btnSaveBook" onClick={this.updateSubBook} style={{ width: '140px' }}>Save</button>
@@ -1792,30 +1802,30 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
             </div>
           </div>
           <div id="studentsbutton" className="hide">
-            <div className="m-1 col-md-5 feeSelect">
-              <div>
+            <div className="m-1 lflex m-b-2">
+              <div className="m-r-1">
                 <label htmlFor="">Department</label>
-                <select required name="department" id="department" onChange={this.onSubChange} className="gf-form-input max-width-8">
+                <select required name="department" id="department" onChange={this.onSubChange} className="gf-form-input width-18">
                   {this.createDepartments(this.props.data.createLibraryFilterDataCache.departments, libraryData.branch.id)}
                 </select>
               </div>
 
-              <div>
+              <div className="m-r-1">
                 <label htmlFor="">Select Year</label>
-                <select required name="batch" id="batch" onChange={this.onSubChange} value={libraryData.batch.id} className="gf-form-input max-width-22">
+                <select required name="batch" id="batch" onChange={this.onSubChange} value={libraryData.batch.id} className="gf-form-input width-18">
                   {this.createBatches(this.props.data.createLibraryFilterDataCache.batches, libraryData.department.id)}
                 </select>
               </div>
 
-              <div>
+              <div className="m-r-1">
                 <label htmlFor="">Section</label>
-                <select required name="section" id="section" onChange={this.onSubChange} value={libraryData.section.id} className="gf-form-input max-width-22">
+                <select required name="section" id="section" onChange={this.onSubChange} value={libraryData.section.id} className="gf-form-input width-18">
                   {this.createSections(this.props.data.createLibraryFilterDataCache.sections, libraryData.batch.id)}
                 </select>
               </div>
-              <div>
+              <div className="m-r-1">
                 <label htmlFor="">Student</label>
-                <select required name="student" id="student" onChange={this.onSubChange} value={libraryData.student.id} className="gf-form-input max-width-22">
+                <select required name="student" id="student" onChange={this.onSubChange} value={libraryData.student.id} className="gf-form-input width-18">
                   {this.createStudents(this.props.data.createLibraryFilterDataCache.students, libraryData.batch.id, libraryData.department.id, libraryData.section.id)}
                 </select>
               </div>
