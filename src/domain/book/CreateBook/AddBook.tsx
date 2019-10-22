@@ -1279,8 +1279,11 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       const length = libraries.length;
       for (let i = 0; i < length; i++) {
         const library = libraries[i];
+        let a = library.bookTitle.toUpperCase();
+        let b = library.author.toUpperCase();
+        
         if (search) {
-          if (library.bookTitle.indexOf(search) !== -1) {
+          if (a.indexOf(search.toUpperCase()) !== -1) {
             retVal.push(
               <tr key={library.id}>
                 <td>{library.bookTitle}</td>
@@ -1301,7 +1304,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
               </tr>
             );
           }
-          else if (library.author.indexOf(search) !== -1) {
+          else if (b.indexOf(search.toUpperCase()) !== -1) {
             retVal.push(
               <tr key={library.id}>
                 <td>{library.bookTitle}</td>
