@@ -38,7 +38,7 @@
     {
       "type": "page",
       "name": "BookListPage",
-      "addToNav": true,
+      "addToNav": false,
       "defaultNav": false,
       "component": "BookListPage"
     }
