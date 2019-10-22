@@ -16,8 +16,8 @@
     "version": "1.0",
     "updated": "2018-10-12",
     "logos": {
-      "small": "img/Fee.png",
-      "large": "img/Fee.png"
+      "small": "img/library.png",
+      "large": "img/library.png"
     }
   },
   "includes": [
@@ -28,7 +28,6 @@
       "defaultNav": false,
       "component": "WelcomePage"
     },
-
     {
       "type": "page",
       "name": "AddBook",
