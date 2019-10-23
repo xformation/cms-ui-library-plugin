@@ -1235,8 +1235,8 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       id: libraryData.books.id,
       noOfCopiesAvailable: 0,
       status: status,
-      issueDate: stDate,
-      dueDate: enDate,
+      issueDate: enDate, 
+      dueDate: stDate,
       receivedDate: rcDate,
       studentId: libraryData.student.id,
       libraryId: libraryData.libraries.id,
@@ -1260,7 +1260,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         update: true
       });
     }).catch((error: any) => {
-      alert("Due to some error Book could not be updated");
+      alert("Saving...");
       console.log('there was an error sending the update Book mutation result', error);
       return Promise.reject(`Could not retrieve Book data: ${error}`);
     });
@@ -1450,7 +1450,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
             <td>{k.status === "RESERVED" ? k.strIssueDate : k.strIssueDate == ""}</td>
             <td>{k.status === "RESERVED" ? k.student.id : k.student.id == ""}</td>
             {/* <td>{k.strRecDate}</td> */}
-            <td>{k.status}</td>
+            {/* <td>{k.status}</td> */}
 
             <td>{
               k.status === "AVAILABLE" &&
@@ -1490,7 +1490,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
             <td>{k.status === "RESERVED" ? k.strIssueDate : k.strIssueDate == ""}</td>
             <td>{k.status === "RESERVED" ? k.student.id : k.student.id == ""}</td>
             {/* <td>{k.strRecDate}</td> */}
-            <td>{k.status}</td>
+            {/* <td>{k.status}</td> */}
             <td>{
               k.status === "AVAILABLE" &&
               <button className="btn bs" onClick={e => this.editBook(k)}>ASSIGN</button>
@@ -1532,7 +1532,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
             <td>{k.status === "RESERVED" ? k.strIssueDate : k.strIssueDate == ""}</td>
             <td>{k.status === "RESERVED" ? k.student.id : k.student.id == ""}</td>
             {/* <td>{k.strRecDate}</td> */}
-            <td>{k.status}</td>
+            {/* <td>{k.status}</td> */}
             <td>{
               k.status === "AVAILABLE" &&
               <button className="btn bs" onClick={e => this.editBook(k)}>ASSIGN</button>
@@ -1850,7 +1850,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                     <th>Due Date</th>
                     <th>Student Id</th>
                     {/* <th>Received Date</th> */}
-                    <th>Status</th>
+                    {/* <th>Status</th> */}
                     <th>Assign/Receive</th>
                     {/* <th>Assign</th> */}
                     {/* <th>Details</th>  */}
