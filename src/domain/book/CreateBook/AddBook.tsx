@@ -174,7 +174,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     // this.isDatesOverlap = this.isDatesOverlap.bind(this);
     this.createLibraryRows = this.createLibraryRows.bind(this)
     this.createLibraryUpdateRow = this.createLibraryUpdateRow.bind(this);
-    this.createBookUpdateRow = this.createBookUpdateRow.bind(this);
+    // this.createBookUpdateRow = this.createBookUpdateRow.bind(this);
     this.editLibrary = this.editLibrary.bind(this);
     this.reset = this.reset.bind(this);
     this.updateLibrary = this.updateLibrary.bind(this);
@@ -1049,12 +1049,13 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       chkSts.checked = false;
     }
     let stDate = "";
-    if (obj.strDueDate !== null && obj.strDueDate !== "") {
-      stDate = moment(obj.strDueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
-    }
-    let ndDate = "";
     if (obj.strIssueDate !== null && obj.strIssueDate !== "") {
-      ndDate = moment(obj.strIssueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
+      stDate = moment(obj.strIssueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
+    }
+   
+    let ndDate = "";
+    if (obj.strDueDate !== null && obj.strDueDate !== "") {
+      ndDate = moment(obj.strDueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
     }
     let rcDate = "";
     if (obj.strRecDate !== null && obj.strRecDate !== "") {
@@ -1123,13 +1124,13 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     } else {
       chkSts.checked = false;
     }
-    let stDate = "";
-    if (obj.strDueDate !== null && obj.strDueDate !== "") {
-      stDate = moment(obj.strDueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
-    }
     let ndDate = "";
+    if (obj.strDueDate !== null && obj.strDueDate !== "") {
+      ndDate = moment(obj.strDueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
+    }
+    let stDate = "";
     if (obj.strIssueDate !== null && obj.strIssueDate !== "") {
-      ndDate = moment(obj.strIssueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
+      stDate = moment(obj.strIssueDate, "DD-MM-YYYY").format("DD/MM/YYYY");
     }
     let rcDate = "";
     if (obj.strRecDate !== null && obj.strRecDate !== "") {
@@ -1202,7 +1203,26 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
 
   }
 
+  resetSubBook(){
 
+    const { libraryData } = this.state;
+    let dtPkSt: any = document.querySelector("#dtPickeris");
+    let dtPkNd: any = document.querySelector("#dtPickerdd");
+    dtPkSt.value = "";
+    dtPkNd.value = "";
+
+    this.setState({
+      issueDate: "",
+      dueDate: ""
+
+      // feeSetupData : feeSetupData
+    });
+    this.setState({
+      libraryData: libraryData
+    });
+
+
+  }
 
   updateSubBook(obj: any) {
     const { updateBookMutation } = this.props;
@@ -1215,10 +1235,18 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       status = "RESERVED";
     }
     let stDate = null;
-    if (this.state.issueDate !== undefined || this.state.issueDate !== null || this.state.issueDate !== "") {
+    if(this.state.issueDate === undefined || this.state.issueDate === null || this.state.issueDate === "" ){
+      alert("Please provide issue date");
+      return;
+    }
+    if (this.state.issueDate !== undefined || this.state.issueDate !== null || this.state.issueDate !== "") {     
       stDate = moment(this.state.issueDate, "YYYY-MM-DD");
     }
+
     let enDate = null;
+    if (this.state.dueDate === undefined || this.state.dueDate === null || this.state.dueDate === "") {
+      alert("Please provide due date"); }
+
     if (this.state.dueDate !== undefined || this.state.dueDate !== null || this.state.dueDate !== "") {
       enDate = moment(this.state.dueDate, "YYYY-MM-DD");
     }
@@ -1231,12 +1259,18 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       alert("This record has no id. It can be added as a new record.");
       return;
     }
+
+    // if (this.state.startDate === undefined || this.state.startDate === null || this.state.startDate === "") {
+    //   alert("Please provide start date");
+    //   return;
+    // }
+
     let updateBookInput = {
       id: libraryData.books.id,
       noOfCopiesAvailable: 0,
       status: status,
-      issueDate: enDate, 
-      dueDate: stDate,
+      issueDate: stDate, 
+      dueDate: enDate,
       receivedDate: rcDate,
       studentId: libraryData.student.id,
       libraryId: libraryData.libraries.id,
@@ -1245,6 +1279,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     console.log("form data : ", libraryData);
     return updateBookMutation({
       variables: { input: updateBookInput }
+     
     }).then(data => {
       console.log('Update Book ::::: ', data);
       alert("Book assigned successfully!");
@@ -1260,7 +1295,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
         update: true
       });
     }).catch((error: any) => {
-      alert("Saving...");
+      alert("due to some erroe book not assigned.");
       console.log('there was an error sending the update Book mutation result', error);
       return Promise.reject(`Could not retrieve Book data: ${error}`);
     });
@@ -1438,7 +1473,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       let k = obj[x];
 
 
-      if (libraryData.libraries.id == k.library.id) {
+      if (this.state.libraryData.libraries.id == k.library.id) {
         if (k.status == "AVAILABLE") {
           c += 1;
         }
@@ -1512,42 +1547,42 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     return retVal;
   }
 
-  createBookUpdateRow(obj: any) {
-    const { libraryData } = this.state;
-    const len = obj.length;
-    const retVal = [];
-    let aryLength = 0;
-    let v = obj[0];
-    if (v.data.updateBook === undefined || v.data.updateBook === null) {
-      return;
-    }
-    for (let x = 0; x < obj.length; x++) {
-      let k = obj[x];
-      if (libraryData.libraries.id == k.library.id) {
-        retVal.push(
-          <tr >
-            <td>{k.id}</td>
-            {/* <td>{k.library.id}</td> */}
-            <td>{k.status === "RESERVED" ? k.strDueDate : k.strDueDate == ""}</td>
-            <td>{k.status === "RESERVED" ? k.strIssueDate : k.strIssueDate == ""}</td>
-            <td>{k.status === "RESERVED" ? k.student.id : k.student.id == ""}</td>
-            {/* <td>{k.strRecDate}</td> */}
-            {/* <td>{k.status}</td> */}
-            <td>{
-              k.status === "AVAILABLE" &&
-              <button className="btn bs" onClick={e => this.editBook(k)}>ASSIGN</button>
-            }{
-                k.status === "RESERVED" &&
-                <button className="btn btn-primary" onClick={e => this.etBook(k)}>Receive</button>
-              }
-            </td>
-          </tr>
-        );
-      }
-    }
+  // createBookUpdateRow(obj: any) {
+  //   const { libraryData } = this.state;
+  //   const len = obj.length;
+  //   const retVal = [];
+  //   let aryLength = 0;
+  //   let v = obj[0];
+  //   if (v.data.updateBook === undefined || v.data.updateBook === null) {
+  //     return;
+  //   }
+  //   for (let x = 0; x < obj.length; x++) {
+  //     let k = obj[x];
+  //     // if (libraryData.libraries.id == k.library.id) {
+  //       retVal.push(
+  //         <tr >
+  //           <td>{k.id}</td>
+  //           {/* <td>{k.library.id}</td> */}
+  //           <td>{k.status === "RESERVED" ? k.strDueDate : k.strDueDate == ""}</td>
+  //           <td>{k.status === "RESERVED" ? k.strIssueDate : k.strIssueDate == ""}</td>
+  //           <td>{k.status === "RESERVED" ? k.student.id : k.student.id == ""}</td>
+  //           {/* <td>{k.strRecDate}</td> */}
+  //           {/* <td>{k.status}</td> */}
+  //           <td>{
+  //             k.status === "AVAILABLE" &&
+  //             <button className="btn bs" onClick={e => this.editBook(k)}>ASSIGN</button>
+  //           }{
+  //               k.status === "RESERVED" &&
+  //               <button className="btn btn-primary" onClick={e => this.etBook(k)}>Receive</button>
+  //             }
+  //           </td>
+  //         </tr>
+  //       );
+  //     }
+  //   // }
 
-    return retVal;
-  }
+  //   return retVal;
+  // }
 
 
 
@@ -1782,7 +1817,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                 </div>
                 <div id="due" className="">
                   <label htmlFor="">Due Date </label>
-                  <DatePicker selected={this.state.dueDate} value={this.state.dueDate} onChange={this.changeDueDate} id="dtPickerdd" name="dtPickerdd" className="width-18" />
+                  <DatePicker selected={this.state.dueDate} value={this.state.dueDate} onChange={this.changeDueDate}  id="dtPickerdd" name="dtPickerdd" className="width-18" />
                 </div>
                 <div id="rec" className="">
                   <label htmlFor="">Rec Date</label>
@@ -1863,11 +1898,11 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
 
 
                   }
-                  {
+                  {/* {
                     libraryData.librarysaveData.length > 0 && this.state.add === false && this.state.update === true && (
                       this.createBookUpdateRow(libraryData.librarysaveData)
                     )
-                  }
+                  } */}
                 </tbody>
               </table>
             </div>
