@@ -61,6 +61,7 @@ type LibraryState = {
   dueDate: any,
   receivedDate: any,
   issueDate: any,
+  studentId  : any,
   status: any,
   num: any,
   noOfCopiesAvailable: number,
@@ -157,6 +158,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       dueDate: "",
       receivedDate: "",
       issueDate: "",
+      studentId: "",
       status: "",
       search: ''
 
@@ -267,7 +269,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       let sbId = "" + students[i].batch.id;
       if (students[i].department.id == selectedDepartmentId && students[i].batch.id == selectedBatchId && students[i].section.id == selectedSectionId) {
         studentsOptions.push(
-          <option key={id} value={id}>{students[i].id}</option>
+          <option key={id} value={id}>{students[i].id +"--"+ students[i].studentName}</option>
         );
       }
 
@@ -481,17 +483,17 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       alert("Please provide some value in Book No");
       return;
     }
-    let chkNoCopies: any = document.querySelector("#noOfCopies");
-    if (chkNoCopies.value.trim() === "") {
-      alert("Please provide some value in No Of Copies");
-      return;
-    }
+    // let chkNoCopies: any = document.querySelector("#noOfCopies");
+    // if (chkNoCopies.value.trim() === "") {
+    //   alert("Please provide some value in No Of Copies");
+    //   return;
+    // }
 
 
     let addLibraryInput = {
       bookTitle: libraryData.bookTitle,
       author: libraryData.author,
-      noOfCopies: libraryData.noOfCopies,
+      noOfCopies: 1,
       bookNo: libraryData.bookNo,
       additionalInfo: libraryData.additionalInfo,
       uniqueNo: 11,
@@ -507,6 +509,32 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       const sdt = data;
       libraryData.librarysaveData = [];
       libraryData.librarysaveData.push(sdt);
+
+      let txtCn: any = document.querySelector("#batch");
+      let txtDs: any = document.querySelector("#subject");
+      let chkSts: any = document.querySelector("#bookTitle");
+      let dtPkSt: any = document.querySelector("#author");
+      let bkNo: any = document.querySelector("#bookNo");
+      // let bkNc: any = document.querySelector("#noOfCopies");
+      let adinf: any = document.querySelector("#additionalInfo");
+
+      txtCn.value = "";
+      txtDs.value = "";
+      chkSts.value = "";
+      dtPkSt.value = "";
+      bkNo.value = "";
+      // bkNc.value = "";
+      adinf.value = "";
+
+    libraryData.bookTitle = "";
+    libraryData.bookNo = "";
+    libraryData.author = "";
+    libraryData.noOfCopies = "";
+    libraryData.uniqueNo = "";
+    libraryData.additionalInfo = "";
+    libraryData.batch.id = "";
+    libraryData.subject.id = "";
+
       this.setState({
         libraryData: libraryData
       });
@@ -540,7 +568,6 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       let sd = new SaData(
 
         newDate,
-
         0,
         "AVAILABLE",
         2051,
@@ -594,7 +621,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let chkSts: any = document.querySelector("#bookTitle");
     let dtPkSt: any = document.querySelector("#author");
     let bkNo: any = document.querySelector("#bookNo");
-    let bkNc: any = document.querySelector("#noOfCopies");
+    // let bkNc: any = document.querySelector("#noOfCopies");
     let adinf: any = document.querySelector("#additionalInfo");
     // let unNo: any = document.querySelector('#uniqueNo');
     txtCn.value = obj.batch.id;
@@ -602,7 +629,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     chkSts.value = obj.bookTitle;
     dtPkSt.value = obj.author;
     bkNo.value = obj.bookNo;
-    bkNc.value = obj.noOfCopies;
+    // bkNc.value = obj.noOfCopies;
     adinf.value = obj.additionalInfo;
 
     // unNo.value = obj.uniqueNo;
@@ -612,11 +639,14 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     libraryData.bookTitle = obj.bookTitle;
     libraryData.author = obj.author;
     libraryData.bookNo = obj.bookNo;
-    libraryData.noOfCopies = obj.noOfCopies;
+    // libraryData.noOfCopies = obj.noOfCopies;
     libraryData.additionalInfo = obj.additionalInfo;
     // libraryData.uniqueNo = obj.uniqueNo;
+    
     libraryData.batch.id = obj.batch.id;
     libraryData.subject.id = obj.subject.id;
+
+    
 
     this.setState({
 
@@ -632,7 +662,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     let chkSts: any = document.querySelector("#bookTitle");
     let dtPkSt: any = document.querySelector("#author");
     let bkNo: any = document.querySelector("#bookNo");
-    let bkNc: any = document.querySelector("#noOfCopies");
+    // let bkNc: any = document.querySelector("#noOfCopies");
     let adinf: any = document.querySelector("#additionalInfo");
     // let unNo: any = document.querySelector('#uniqueNo');
     txtCn.value = "";
@@ -640,13 +670,13 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     chkSts.value = "";
     dtPkSt.value = "";
     bkNo.value = "";
-    bkNc.value = "";
+    // bkNc.value = "";
     adinf.value = "";
     // unNo.value = "";
     libraryData.bookTitle = "";
     libraryData.bookNo = "";
-    libraryData.author.id = "";
-    libraryData.noOfCopies = "";
+    libraryData.author = "";
+    // libraryData.noOfCopies = "";
     libraryData.uniqueNo = "";
     libraryData.additionalInfo = "";
     libraryData.libraries.id = "";
@@ -688,11 +718,11 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       alert("Please provide some value in Book No");
       return;
     }
-    let chkNoCopies: any = document.querySelector("#noOfCopies");
-    if (chkNoCopies.value.trim() === "") {
-      alert("Please provide some value in No Of Copies");
-      return;
-    }
+    // let chkNoCopies: any = document.querySelector("#noOfCopies");
+    // if (chkNoCopies.value.trim() === "") {
+    //   alert("Please provide some value in No Of Copies");
+    //   return;
+    // }
 
     // let uniqueNo: any = document.querySelector("#uniqueNo");
     // if (uniqueNo.value.trim() === "") {
@@ -710,7 +740,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       bookTitle: libraryData.bookTitle,
       author: libraryData.author,
       bookNo: libraryData.bookNo,
-      noOfCopies: libraryData.noOfCopies,
+      noOfCopies: 1,
       additionalInfo: libraryData.additionalInfo,
       uniqueNo: 2,
 
@@ -724,6 +754,32 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       const sdt = data;
       libraryData.librarysaveData = [];
       libraryData.librarysaveData.push(sdt);
+
+      let txtCn: any = document.querySelector("#batch");
+      let txtDs: any = document.querySelector("#subject");
+      let chkSts: any = document.querySelector("#bookTitle");
+      let dtPkSt: any = document.querySelector("#author");
+      let bkNo: any = document.querySelector("#bookNo");
+      // let bkNc: any = document.querySelector("#noOfCopies");
+      let adinf: any = document.querySelector("#additionalInfo");
+
+      txtCn.value = "";
+      txtDs.value = "";
+      chkSts.value = "";
+      dtPkSt.value = "";
+      bkNo.value = "";
+      // bkNc.value = "";
+      adinf.value = "";
+
+    libraryData.bookTitle = "";
+    libraryData.bookNo = "";
+    libraryData.author = "";
+    // libraryData.noOfCopies = "";
+    libraryData.uniqueNo = "";
+    libraryData.additionalInfo = "";
+    libraryData.batch.id = "";
+    libraryData.subject.id = "";
+    
       this.setState({
         libraryData: libraryData
       });
@@ -1062,7 +1118,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       rcDate = moment(obj.strRecDate, "DD-MM-YYYY").format("DD/MM/YYYY");
     }
 
-    var curDate = moment(new Date()).format("DD-MM-YYYY");
+    var curDate = moment(new Date()).format("DD/MM/YYYY");
     let date = new Date();
     dtPkSt.value = stDate;
     dtPkNd.value = ndDate;
@@ -1136,11 +1192,11 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     if (obj.strRecDate !== null && obj.strRecDate !== "") {
       rcDate = moment(obj.strRecDate, "DD-MM-YYYY").format("DD/MM/YYYY");
     }
-    dtPkSt.value = stDate;
-    dtPkNd.value = ndDate;
-    dtPkRc.value = rcDate;
+    // dtPkSt.value = stDate;
+    // dtPkNd.value = ndDate;
+    // dtPkRc.value = rcDate;
     libraryData.books.id = obj.id;
-    libraryData.student.id = obj.student.id;
+    // libraryData.student.id = obj.student.id;
     libraryData.noOfCopiesAvailable = 0;
     let nStDt: any;
     let nEnDt: any;
@@ -1156,9 +1212,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
     }
     let date = new Date();
     this.setState({
-      issueDate: nStDt,
-      dueDate: nEnDt,
-      receivedDate: nRcDt,
+      // issueDate: nStDt,
+      // dueDate: nEnDt,
+      // receivedDate: nRcDt,
       status: status,
       // receivedDate: "2019-11-11T18:00:00.000Z",
       // receivedDate: date,
@@ -1245,7 +1301,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
 
     let enDate = null;
     if (this.state.dueDate === undefined || this.state.dueDate === null || this.state.dueDate === "") {
-      alert("Please provide due date"); }
+      alert("Please provide due date"); 
+    return;
+    }
 
     if (this.state.dueDate !== undefined || this.state.dueDate !== null || this.state.dueDate !== "") {
       enDate = moment(this.state.dueDate, "YYYY-MM-DD");
@@ -1260,11 +1318,13 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       return;
     }
 
-    // if (this.state.startDate === undefined || this.state.startDate === null || this.state.startDate === "") {
-    //   alert("Please provide start date");
+
+    // let dtPkStu: any = document.querySelector("#student");
+    // if (dtPkStu.value.trim() === "") {
+    //   alert("Please select Student");
     //   return;
     // }
-
+   
     let updateBookInput = {
       id: libraryData.books.id,
       noOfCopiesAvailable: 0,
@@ -1286,7 +1346,30 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       const sdt = data;
       libraryData.librarysaveData = [];
       libraryData.librarysaveData.push(sdt);
-      // = data.data.addFeeCategory;
+      let dtPkSt: any = document.querySelector("#dtPickeris"); 
+      let dtPkNd: any = document.querySelector("#dtPickerdd");
+      // let dtPkRc: any = document.querySelector("#dtPickerrc");
+      let dtPkStu: any = document.querySelector("#student");
+
+      
+      
+      dtPkSt.value = "";
+      dtPkNd.value = "";
+      // dtPkRc.value = "";
+      dtPkStu.value = "";
+    libraryData.student.id = "";
+    libraryData.department.id = "";
+    libraryData.batch.id = "";
+    libraryData.section.id = "";
+
+      this.setState({
+        issueDate: "",
+        dueDate: "",
+        // receivedDate : "",
+        studentId : ""
+      });
+
+
       this.setState({
         libraryData: libraryData
       });
@@ -1323,7 +1406,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
               <tr key={library.id}>
                 <td>{library.bookTitle}</td>
                 <td>{library.author}</td>
-                <td>{library.noOfCopies}</td>
+                {/* <td>{library.noOfCopies}</td> */}
                 <td>{library.bookNo}</td>
 
                 {/* <td>{library.uniqueNo}</td> */}
@@ -1344,7 +1427,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
               <tr key={library.id}>
                 <td>{library.bookTitle}</td>
                 <td>{library.author}</td>
-                <td>{library.noOfCopies}</td>
+                {/* <td>{library.noOfCopies}</td> */}
                 <td>{library.bookNo}</td>
 
                 {/* <td>{library.uniqueNo}</td> */}
@@ -1365,7 +1448,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
             <tr key={library.id}>
               <td>{library.bookTitle}</td>
               <td>{library.author}</td>
-              <td>{library.noOfCopies}</td>
+              {/* <td>{library.noOfCopies}</td> */}
               {/* <td>{library.uniqueNo}</td> */}
               <td>{library.bookNo}</td>
               {/* <td>{this.state.libraryData.textValueMap["num" + i]}</td> */}
@@ -1411,10 +1494,10 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
       this.setState({
         libraryData: libraryData
       });
-      console.log('Student filter mutation result ::::: ', libraryData.mutateResult);
+      console.log('Library filter mutation result ::::: ', libraryData.mutateResult);
     }).catch((error: any) => {
       console.log('there was an error sending the query result', error);
-      return Promise.reject(`Could not retrieve student data: ${error}`);
+      return Promise.reject(`Could not retrieve Library data: ${error}`);
     });
 
   }
@@ -1646,7 +1729,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                   <th>Book Title</th>
                   <th>Author</th>
                   <th>Book No</th>
-                  <th>No Of Copies</th>
+                  {/* <th>No Of Copies</th> */}
                   {/* <th>Unique No</th> */}
                   <th>Additional Info</th>
                 </tr>
@@ -1664,7 +1747,8 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                     </select>
                   </td>
                   <td>
-                    <select required name="subject" id="subject" onChange={this.onChange} value={libraryData.subject.subjectDesc} className="gf-form-input max-width-22">
+                  
+                    <select required name={"subject"} id="subject" onChange={this.onChange} value={libraryData.subject.id} className="gf-form-input max-width-22">
                       {this.createSubjects(this.props.data.createLibraryFilterDataCache.subjects, 1901, libraryData.batch.id)}
                     </select>
                   </td>
@@ -1681,9 +1765,9 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                     <input type="number" id={"bookNo"} name={"bookNo"} onChange={this.onChange} className="fwidth" value={libraryData.bookNo} />
                   </td>
 
-                  <td>
+                  {/* <td>
                     <input type="number" id={"noOfCopies"} name={"noOfCopies"} onChange={this.onChange} className="fwidth" value={libraryData.noOfCopies} />
-                  </td>
+                  </td> */}
 
                   {/* <td>
                     <input type="number" id={"uniqueNo"} name={"uniqueNo"} onChange={this.onChange} className="fwidth" value={libraryData.uniqueNo} />
@@ -1729,7 +1813,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
               <tr>
                 <th>Book Title</th>
                 <th>Author</th>
-                <th>No Of Copies</th>
+                {/* <th>No Of Copies</th> */}
                 <th>Book No</th>
                 {/* <th>Unique No</th> */}
                 <th>Additional Info</th>
@@ -1828,7 +1912,7 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
                   <label htmlFor="">Status</label>
                   <label className="switch">
                     {' '}
-                    <input type="checkbox" id="status" name="status" defaultChecked /> <span className="slider" />{' '}
+                    <input type="checkbox" id="status" name="status"  /> <span className="slider" />{' '}
                   </label>
                 </div>
               </div>
