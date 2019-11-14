@@ -7,12 +7,13 @@ import * as LibraryUpdateMutation from './LibraryUpdateMutation.graphql';
 import * as BookAddMutation from './BookAddMutation.graphql';
 import * as BookUpdateMutation from './BookUpdateMutation.graphql';
 import { LoadLibraryQueryCacheForAdmin, LibraryAddMutationType, LibraryUpdateMutationType, BookAddMutationType, LibraryListQuery, BookListQuery, BookUpdateMutationType } from '../../types';
-import withExamSubjDataLoader from './withExamSubjDataLoader';
 import "react-datepicker/dist/react-datepicker.css";
 import * as LibraryListQueryGql from './LibraryListQuery.graphql';
 import * as BookListQueryGql from './BookListQuery.graphql';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { ADD_BOOK, ADD_LIBRARY, BOOKS, GET_BOOK_LIST, CREATE_LIBRARY_FILTER_DATA_CACHE, UPDATE_BOOK, UPDATE_LIBRARY } from '../_queries';
+import withLoadingHandler from '../withLoadingHandler';
 
 
 
@@ -1997,27 +1998,48 @@ class AddBook extends React.Component<LibraryPageProps, LibraryState>{
   }
 
 }
-export default withExamSubjDataLoader(
-  compose(
+// export default withExamSubjDataLoader(
+//   compose(
 
-    graphql<LibraryAddMutationType, LibraryRootProps>(LibraryAddMutation, {
-      name: "addLibraryMutation",
-    }),
-    graphql<LibraryUpdateMutationType, LibraryRootProps>(LibraryUpdateMutation, {
-      name: "updateLibraryMutation"
-    }),
-    graphql<BookAddMutationType, LibraryRootProps>(BookAddMutation, {
-      name: "addBookMutation",
-    }),
-    graphql<BookUpdateMutationType, LibraryRootProps>(BookUpdateMutation, {
-      name: "updateBookMutation"
-    }),
-    graphql<LibraryListQuery, LibraryRootProps>(LibraryListQueryGql, {
-      name: "mutate"
-    }),
-    graphql<BookListQuery, LibraryRootProps>(BookListQueryGql, {
-      name: "mutatebook"
-    })
+//     graphql<LibraryAddMutationType, LibraryRootProps>(LibraryAddMutation, {
+//       name: "addLibraryMutation",
+//     }),
+//     graphql<LibraryUpdateMutationType, LibraryRootProps>(LibraryUpdateMutation, {
+//       name: "updateLibraryMutation"
+//     }),
+//     graphql<BookAddMutationType, LibraryRootProps>(BookAddMutation, {
+//       name: "addBookMutation",
+//     }),
+//     graphql<BookUpdateMutationType, LibraryRootProps>(BookUpdateMutation, {
+//       name: "updateBookMutation"
+//     }),
+//     graphql<LibraryListQuery, LibraryRootProps>(LibraryListQueryGql, {
+//       name: "mutate"
+//     }),
+//     graphql<BookListQuery, LibraryRootProps>(BookListQueryGql, {
+//       name: "mutatebook"
+//     })
+//   )
+//     (AddBook) as any
+// );
+
+export default graphql(CREATE_LIBRARY_FILTER_DATA_CACHE, {
+  options: ({ }) => ({
+    variables: {
+      academicYearId: 1701,
+      collegeId: 1801
+    }
+  })
+}) (withLoadingHandler(
+
+  compose(
+    graphql(ADD_LIBRARY, { name: "addLibraryMutation" }),
+    graphql(UPDATE_LIBRARY, { name: "updateLibraryMutation" }),
+    graphql(ADD_BOOK, { name: "addBookMutation" }),
+    graphql(UPDATE_BOOK, { name: "updateBookMutation" }),
+    graphql(GET_BOOK_LIST, { name: "mutate" }),
+    graphql(BOOKS, { name: "mutatebook" })
+
   )
     (AddBook) as any
-);
+));

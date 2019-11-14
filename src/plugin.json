@@ -7,40 +7,26 @@
     "light": "css/light.css"
   },
   "info": {
-    "description": "fee for grafana",
+    "description": "EMS Library Plugin",
     "author": {
       "name": "Synectiks",
       "url": "https://xformation.com"
     },
-    "keywords": ["fee", "panel"],
+    "keywords": ["cms", "panel"],
     "version": "1.0",
     "updated": "2018-10-12",
     "logos": {
-      "small": "img/library.png",
-      "large": "img/library.png"
+      "small": "img/fee.png",
+      "large": "img/fee.png"
     }
   },
   "includes": [
     {
       "type": "page",
-      "name": "Home",
-      "addToNav": false,
-      "defaultNav": false,
-      "component": "WelcomePage"
-    },
-    {
-      "type": "page",
-      "name": "AddBook",
+      "name": "librarytab",
       "addToNav": true,
       "defaultNav": true,
-      "component": "AddBook"
-    },
-    {
-      "type": "page",
-      "name": "BookListPage",
-      "addToNav": false,
-      "defaultNav": false,
-      "component": "BookListPage"
+      "component": "LibraryTab"
     }
   ],
   "dependencies": {
