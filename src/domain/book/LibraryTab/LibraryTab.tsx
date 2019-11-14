@@ -27,7 +27,7 @@ export default class LibraryTab extends React.Component<any, any> {
         <div className="tab-flex p-1">
           {/* <img src="../../img/students.png" alt="" /> */}
           <h5><FaUserGraduate className="m-1 fa-2x" /></h5>
-          <h5 className="p-1">Fee</h5>
+          <h5 className="p-1">Library</h5>
         </div>
         <Nav tabs className="pl-3 pl-3 mb-4 mt-4 boxShadow">
           <NavItem className="cursor-pointer">
