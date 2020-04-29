@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "es2015",
-      "es2016",
-      "dom"
-    ],
+    "lib": ["es2015", "es2016", "dom"],
     "module": "commonjs",
     "declaration": false,
     "noImplicitAny": true,
@@ -17,8 +13,5 @@
     "noLib": false,
     "jsx": "react"
   },
-  "include": [
-    "./declarations.d.ts",
-    "./src/**/*"
-  ]
+  "include": ["./declarations.d.ts", "./src/**/*"]
 }

@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
-export const GET_BOOK_LIST = gql`
-  mutation getBookList($filter: BookListFilterInput!) {
-    getBookList(filter: $filter) {
+export const BOOK_LIST = gql`
+  query {
+    getBookList {
       id
       issueDate
       dueDate
@@ -16,6 +16,14 @@ export const GET_BOOK_LIST = gql`
       departmentId
       libraryId
       studentId
+      department {
+        id
+        name
+      }
+      batch {
+        id
+        batch
+      }
       student {
         id
         studentName
@@ -23,16 +31,9 @@ export const GET_BOOK_LIST = gql`
       }
       library {
         id
+        rowName
         bookTitle
         bookNo
-      }
-      batch {
-        id
-        batch
-      }
-      department {
-        id
-        name
       }
     }
   }

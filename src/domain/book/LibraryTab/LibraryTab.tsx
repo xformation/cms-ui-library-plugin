@@ -1,8 +1,12 @@
 import * as React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
-import AddBook from '../CreateBook/AddBook';
+// import AddBook from '../CreateBook/AddBook';
 import { FaUserGraduate } from 'react-icons/fa';
-import './tabs.css';
+import '../../../css/custom.css';
+import '../../../css/dark.css';
+import '../../../css/tabs.css';
+import '../../../css/light.css';
+import CreateBook from '../CreateBook';
 
 
 export default class LibraryTab extends React.Component<any, any> {
@@ -40,7 +44,7 @@ export default class LibraryTab extends React.Component<any, any> {
               Library
             </NavLink>
           </NavItem>
-          <NavItem className="cursor-pointer">
+          {/* <NavItem className="cursor-pointer">
             <NavLink
               className={`${activeTab === 1 ? 'active' : ''}`}
               onClick={() => {
@@ -59,11 +63,11 @@ export default class LibraryTab extends React.Component<any, any> {
             >
               tab 2
             </NavLink>
-          </NavItem>
+          </NavItem> */}
         </Nav>
         <TabContent activeTab={activeTab} className="border-right">
           <TabPane tabId={0}>
-            <AddBook />
+            <CreateBook/>
           </TabPane>
          
         </TabContent>

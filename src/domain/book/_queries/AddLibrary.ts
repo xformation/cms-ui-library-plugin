@@ -1,21 +1,25 @@
 import gql from 'graphql-tag';
 
 export const ADD_LIBRARY = gql`
-  mutation addLibrary($input: AddLibraryInput!) {
+  mutation addLibrary($input: AddLibraryInput) {
     addLibrary(input: $input) {
-      library {
-        id
-        bookTitle
-        author
-        bookNo
-        noOfCopies
-        additionalInfo
-        uniqueNo
-        batch {
+      cmsLibraryVo {
+        exitCode
+        exitDescription
+        dataList {
           id
-        }
-        subject {
-          id
+          rowName
+          bookTitle
+          bookNo
+          author
+          noOfCopies
+          uniqueNo
+          departmentId
+          department {
+            id
+            name
+            deptHead
+          }
         }
       }
     }

@@ -1,0 +1,202 @@
+import * as React from 'react';
+import {withRouter, RouteComponentProps, Link} from 'react-router-dom';
+import {TabContent, TabPane, Nav, NavItem, NavLink} from 'reactstrap';
+import wsCmsBackendServiceSingletonClient from '../../../wsCmsBackendServiceClient';
+import '../../../css/college-settings.css';
+import {withApollo} from 'react-apollo';
+import AddLibraryPage from './AddLibraryPage';
+import AddBookPage from './AddBookPage';
+import {CREATE_LIBRARY_FILTER_DATA_CACHE} from '../_queries';
+import LibraryListPage from './LibraryListPage';
+import BookListPage from './BookListPage';
+import BookPage from './BookPage';
+
+export interface LibraryProps extends React.HTMLAttributes<HTMLElement> {
+  [data: string]: any;
+  user?: any;
+}
+
+class Library extends React.Component<LibraryProps, any> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      activeTab: 0,
+      user: this.props.user,
+      createLibraryFilterDataCache: null,
+      branchId: null,
+      academicYearId: null,
+      departmentId: null,
+    };
+    this.toggleTab = this.toggleTab.bind(this);
+    this.registerSocket = this.registerSocket.bind(this);
+    this.getcreateLibraryFilterDataCache = this.getcreateLibraryFilterDataCache.bind(
+      this
+    );
+  }
+
+  // async componentDidMount() {
+  //   console.log('Library. component did mount. User ::::', this.state.user.login);
+  //   await this.registerSocket();
+  //   await this.getcreateLibraryFilterDataCache();
+  // }
+
+  async registerSocket() {
+    const socket = wsCmsBackendServiceSingletonClient.getInstance();
+
+    socket.onmessage = (response: any) => {
+      let message = JSON.parse(response.data);
+      console.log('Student index. message received from server ::: ', message);
+      this.setState({
+        branchId: message.selectedBranchId,
+        academicYearId: message.selectedAcademicYearId,
+        departmentId: message.selectedDepartmentId,
+      });
+      console.log('Library index. branchId: ', this.state.branchId);
+      console.log('Library index. departmentId: ', this.state.departmentId);
+      console.log('Library index. ayId: ', this.state.academicYearId);
+    };
+
+    socket.onopen = () => {
+      console.log("Library index. Opening websocekt connection on index.tsx. User : ",this.state.user.login);
+        // this.state.user
+        socket.send(this.state.user.login);
+    }
+    window.onbeforeunload = () => {
+      console.log('Library index. Closing websocekt connection on index.tsx');
+    };
+    // const {data} = await this.props.client.query({
+    //   query: CREATE_LIBRARY_FILTER_DATA_CACHE,
+    //   variables: {
+    //   },
+
+    //   fetchPolicy: 'no-cache',
+    // });
+    // this.setState({
+    //   createLibraryFilterDataCache: data,
+    // });
+  }
+
+  async getcreateLibraryFilterDataCache() {
+  // const {} = this.state;
+    // console.log('Library branch Id:', branchId);
+    const {data} = await this.props.client.query({
+      query: CREATE_LIBRARY_FILTER_DATA_CACHE,
+      variables: {
+        // collegeId: '' + branchId,
+        // departmentId: departmentId,
+        // academicYearId: '' + academicYearId,
+        // collegeId: collegeId,
+      },
+
+      fetchPolicy: 'no-cache',
+    });
+    this.setState({
+      createLibraryFilterDataCache: data,
+    });
+  }
+
+  toggleTab(tabNo: any) {
+    this.setState({
+      activeTab: tabNo,
+    });
+    if (tabNo === 0) {
+      this.getcreateLibraryFilterDataCache();
+    }
+    if(tabNo===1){
+      this.getcreateLibraryFilterDataCache();
+  }
+  if(tabNo===2){
+    this.getcreateLibraryFilterDataCache();
+  }
+  if(tabNo===3){
+    this.getcreateLibraryFilterDataCache();
+  }
+}
+
+  render() {
+    const {activeTab, user, createLibraryFilterDataCache} = this.state;
+    return (
+      <section className="tab-container row vertical-tab-container">
+        <Nav tabs className="pl-3 pl-3 mb-4 mt-4 col-sm-2">
+          <NavItem className="cursor-pointer">
+            <NavLink
+              className={`vertical-nav-link ${activeTab === 0 ? 'side-active' : ''}`}
+              onClick={() => {
+                this.toggleTab(0);
+              }}
+            >
+             Add Book page
+            </NavLink>
+          </NavItem>
+          <NavItem className="cursor-pointer">
+            <NavLink
+              className={`vertical-nav-link ${activeTab === 1 ? 'side-active' : ''}`}
+              onClick={() => {
+                this.toggleTab(1);
+              }}
+            >
+             Issue Book Page
+            </NavLink>
+          </NavItem>
+          <NavItem className="cursor-pointer">
+            <NavLink
+              className={`vertical-nav-link ${activeTab === 2 ? 'side-active' : ''}`}
+              onClick={() => {
+                this.toggleTab(2);
+              }}
+            >
+              Library List Page
+            </NavLink>
+          </NavItem>
+          <NavItem className="cursor-pointer">
+            <NavLink
+              className={`vertical-nav-link ${activeTab === 3 ? 'side-active' : ''}`}
+              onClick={() => {
+                this.toggleTab(3);
+              }}
+            >
+              Book List Page
+            </NavLink>
+          </NavItem>
+        </Nav>
+        <TabContent activeTab={activeTab} className="col-sm-10 border-left p-t-1">
+        <TabPane tabId={0}>
+        {
+           user !== null && createLibraryFilterDataCache !== null?
+            <AddLibraryPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
+              :
+            null
+        }
+        </TabPane>
+          <TabPane tabId={1}>
+          {/* <AddBookPage/> */}
+          {
+           user !== null && createLibraryFilterDataCache !== null?
+            <BookPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
+              :
+            null
+        }
+          </TabPane>
+          <TabPane tabId={2}>
+          {
+           user !== null && createLibraryFilterDataCache !== null?
+            <LibraryListPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
+              :
+            null
+        }
+          </TabPane>
+          <TabPane tabId={3}>
+          {
+           user !== null && createLibraryFilterDataCache !== null?
+            <BookListPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
+              :
+            null
+        }
+          </TabPane>
+        </TabContent>
+      </section>
+    );
+  }
+}
+
+export default withApollo(Library);

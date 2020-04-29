@@ -1,6 +1,0 @@
-#import "./book.graphql"
-
-
-fragment bookDetails on Book {
-  ...book
-}

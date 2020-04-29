@@ -1,3 +1,18 @@
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .section-to-print,
+  .section-to-print * {
+    visibility: visible;
+  }
+  .section-to-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
 /* .striped-table{
     width: 100%;
     border-collapse: separate;
@@ -28,26 +43,71 @@
 /* .page-container {
     margin: 0px !important;
 } */
+
 .tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
-    }
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
 
-    .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  /* / Position the tooltip / / */
+  position: absolute;
+  z-index: 1;
+}
 
-    /* / Position the tooltip / / */
-    position: absolute;
-    z-index: 1;
-    }
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
 
-    .tooltip:hover .tooltiptext {
-    visibility: visible;
-    }
+.b-r {
+  border-radius: 0px !important;
+}
+
+.p-0 {
+  padding: 0px;
+}
+
+.height-33 {
+  height: 33px;
+}
+
+.st-p {
+  padding: 2rem 2rem 0rem 2rem;
+}
+.algn-item-center {
+  align-items: baseline !important;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 26% 74%;
+  grid-gap: 5px;
+  padding: 5px 10px 5px 5px;
+}
+
+.p-m-1 {
+  margin: 0rem 1rem 1rem 1.6rem;
+}
+
+.mbten {
+  margin-bottom: 10px;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 21% 79%;
+  grid-gap: 5px;
+  padding: 20px 10px 0px 5px;
+}
+
+.input-textbox-error {
+  border: 1px solid #d44939 !important;
+}
