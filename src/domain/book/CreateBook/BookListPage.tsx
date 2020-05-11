@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
 import {NavItem,NavLink, TabPane, TabContent} from 'reactstrap';
-import { graphql, QueryProps, MutationFunc, compose, withApollo } from "react-apollo";
+import { withApollo } from "react-apollo";
 import {GET_BOOK_LIST} from '../_queries';
 import withLoadingHandler from '../withLoadingHandler';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import wsCmsBackendServiceSingletonClient from '../../../wsCmsBackendServiceClient';
+import moment = require('moment');
+import BookDetails from './BookDetails';
 
 const w180 = {
     width: '180px',
@@ -41,6 +43,7 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
       bObj: {},
       user: this.props.user,
       createLibraryFilterDataCache: this.props.createLibraryFilterDataCache,
+      // isModalOpen: false,
       branchId: null,
       academicYearId: null,
       departmentId: null,
@@ -57,7 +60,10 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
       },
       students:"",
       pageSize: 5,
-      search: ''
+      search: '',
+      // errorMessage: "",
+      // successMessage: "",
+      // modelHeader: ""
 
     };
     this.createStudent = this.createStudent.bind(this);
@@ -78,8 +84,6 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
       activeTab: tabNo,
     });
   }
-
-
  async registerSocket() {
     const socket = wsCmsBackendServiceSingletonClient.getInstance();
 
@@ -178,7 +182,7 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
 
   async showDetail(obj: any, e: any) {
     await this.SetObject(obj);
-    console.log('3. data in lbObj:', this.state.bObj);
+    console.log('3. data in bObj:', this.state.bObj);
     await this.toggleTab(1);
   }
 
@@ -189,6 +193,29 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
     });
     console.log('2. data in obj:', obj);
   }
+
+//   async showDetails(e: any, bShow: boolean, editObj: any, modelHeader: any) {
+//     e && e.preventDefault();
+//     await this.toggleTab(1);
+//     const { bObj } = this.state;
+//     bObj.id = editObj.id;
+//     bObj.batchId =editObj.batchId;
+//     bObj.departmentId =editObj.departmentId;
+//     bObj.libraryId =editObj.libraryId;
+//     bObj.studentId =editObj.studentId;
+//     bObj.bookStatus = editObj.bookStatus;
+//     bObj.noOfCopiesAvailable = editObj.noOfCopiesAvailable;
+//     bObj.issueDate = moment(editObj.strIssueDate,"DD-MM-YYYY").format("YYYY-MM-DD");
+//     bObj.dueDate =moment(editObj.strDueDate,"DD-MM-YYYY").format("YYYY-MM-DD");
+//     // bObj.receivedDate = moment(editObj.strReceivedDate,"DD-MM-YYYY").format("YYYY-MM-DD");
+//     this.setState(() => ({
+//         isModalOpen: bShow,
+//         bObj: bObj,
+//         modelHeader: modelHeader,
+//         errorMessage: "",
+//         successMessage: "",
+//     }));
+// }
 
   createBookRows(objAry: any) {
     let { search } = this.state.bookData;
@@ -214,9 +241,10 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
                 </td>
                 <td>{book.id}</td>
                 <td>
-                <a onClick={(e: any) => this.showDetail(book, e)} style={{color: '#307dc2'}}>
+                {/* <a onClick={(e: any) => this.showDetail(book, e)} style={{color: '#307dc2'}}>
                   {book.student.rollNo}
-                </a>
+                </a> */}
+                {book.student.rollNo}
               </td>
                 <td>{book.student.studentName}</td>
                 <td>{book.strIssueDate}</td>
@@ -230,8 +258,11 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
                 <td>{book.bookStatus}</td>
                 <td>
                     {
-                        <button className="btn btn-primary" onClick={e => this.showDetail(e, true)}>Edit</button>
-                    }
+                      <button className="btn btn-primary" onClick={e => this.showDetail(e, true)}>Edit</button>                    }
+                </td>
+                <td>
+                    {
+                      <button className="btn btn-primary" onClick={(e: any) => this.showDetail(book, e)}>Details</button>                    }
                 </td>
               </tr>
             );
@@ -250,9 +281,10 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
                 </td>
                 <td>{book.id}</td>
                 <td>
-                <a onClick={(e: any) => this.showDetail(book, e)} style={{color: '#307dc2'}}>
+                {/* <a onClick={(e: any) => this.showDetail(book, e)} style={{color: '#307dc2'}}>
                   {book.student.rollNo}
-                </a>
+                </a> */}
+                {book.student.rollNo}
               </td>
                 <td>{book.student.studentName}</td>
                 <td>{book.strIssueDate}</td>
@@ -266,8 +298,11 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
                 <td>{book.bookStatus}</td>
                 <td>
                     {
-                        <button className="btn btn-primary" onClick={e => this.showDetail(e, true)}>Edit</button>
-                    }
+                      <button className="btn btn-primary" onClick={e => this.showDetail(e, true)}>Edit</button>                    }
+                </td>
+                <td>
+                    {
+                      <button className="btn btn-primary" onClick={(e: any) => this.showDetail(book, e)}>Details</button>                    }
                 </td>
             </tr>
           );
@@ -333,9 +368,9 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
         },
       })
       .then((data: any) => {
-      const vdt = data;
+      const bdt = data;
       bookData.mutateResult = [];
-      bookData.mutateResult.push(vdt);
+      bookData.mutateResult.push(bdt);
       this.setState({
         bookData: bookData
       });
@@ -430,6 +465,7 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
                   {/* <th>Author</th> */}
                   <th>Book Status</th>
                   <th>Edit</th> 
+                  <th>Details</th>
                 </tr>
               </thead>
               <tbody>
@@ -444,17 +480,17 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
           </div>
         </div>
         </TabPane>
-        {/* <TabPane tabId={1}>
+        <TabPane tabId={1}>
             <div className="container-fluid" style={{padding: '0px'}}>
               <div className="m-b-1 bg-heading-bgStudent studentListFlex p-point5">
                 <div className="">
-                  <h4 className="ptl-06">L Details</h4>
+                  <h4 className="ptl-06">Issue Book Details</h4>
                 </div>
                 <div className="">
                   <a
                     className="btn btn-primary m-l-1"
                     onClick={() => {
-                      this.toggleTab(4);
+                      this.toggleTab(3);
                     }}
                   >
                     Back
@@ -469,11 +505,11 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
                   </a>
                 </div>
               </div>
-              {this.state.vObj !== null && this.state.vObj !== undefined && (
-                <VehicleDetails data={this.state.vObj} />
+              {this.state.bObj !== null && this.state.bObj !== undefined && (
+                <BookDetails data={this.state.bObj} />
               )}
             </div>
-          </TabPane> */}
+          </TabPane>
         </TabContent>
       </section>
 

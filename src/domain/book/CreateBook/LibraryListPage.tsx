@@ -6,6 +6,7 @@ import {GET_LIBRARY_LIST} from '../_queries';
 import withLoadingHandler from '../withLoadingHandler';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import wsCmsBackendServiceSingletonClient from '../../../wsCmsBackendServiceClient';
+import LibraryDetails from './LibraryDetails';
 
 const w180 = {
     width: '180px',
@@ -78,8 +79,6 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
       activeTab: tabNo,
     });
   }
-
-
  async registerSocket() {
     const socket = wsCmsBackendServiceSingletonClient.getInstance();
 
@@ -214,10 +213,11 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
                 </td>
                 <td>{library.id}</td>
                 <td>
-                <a onClick={(e: any) => this.showDetail(library, e)}
+                {/* <a onClick={(e: any) => this.showDetail(library, e)}
                   style={{color: '#307dc2'}}>
                   {library.bookNo}
-                </a>
+                </a> */}
+                {library.bookNo}
               </td>
                 <td>{library.rowName}</td>
                 <td>{library.bookTitle}</td>
@@ -227,6 +227,11 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
                 <td>
                     {
                         <button className="btn btn-primary" onClick={e => this.showDetail(e, true)}>Edit</button>
+                    }
+                </td>
+                <td>
+                    {
+                        <button className="btn btn-primary" onClick={(e: any) => this.showDetail(library, e)}>Details</button>
                     }
                 </td>
               </tr>
@@ -245,10 +250,11 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
               </td>
               <td>{library.id}</td>
               <td>
-              <a onClick={(e: any) => this.showDetail(library, e)}
+              {/* <a onClick={(e: any) => this.showDetail(library, e)}
               style={{color: '#307dc2'}}>
                   {library.bookNo}
-                </a>
+                </a> */}
+                {library.bookNo}
                </td>
                <td>{library.rowName}</td>
                <td>{library.bookTitle}</td>
@@ -258,6 +264,11 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
                 <td>
                     {
                         <button className="btn btn-primary" onClick={e => this.showDetail(e, true)}>Edit</button>
+                    }
+                </td>
+                <td>
+                    {
+                        <button className="btn btn-primary" onClick={(e: any) => this.showDetail(library, e)}>Details</button>
                     }
                 </td>
             </tr>
@@ -415,6 +426,7 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
                   <th>NoOfCopies</th>
                   <th>Department</th>
                   <th>Edit</th> 
+                  <th>Details</th>
                 </tr>
               </thead>
               <tbody>
@@ -429,17 +441,17 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
           </div>
         </div>
         </TabPane>
-        {/* <TabPane tabId={1}>
+        <TabPane tabId={0}>
             <div className="container-fluid" style={{padding: '0px'}}>
               <div className="m-b-1 bg-heading-bgStudent studentListFlex p-point5">
                 <div className="">
-                  <h4 className="ptl-06">L Details</h4>
+                  <h4 className="ptl-06">Book Details</h4>
                 </div>
                 <div className="">
                   <a
                     className="btn btn-primary m-l-1"
                     onClick={() => {
-                      this.toggleTab(4);
+                      this.toggleTab(2);
                     }}
                   >
                     Back
@@ -454,11 +466,11 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
                   </a>
                 </div>
               </div>
-              {this.state.vObj !== null && this.state.vObj !== undefined && (
-                <VehicleDetails data={this.state.vObj} />
+              {this.state.lbObj !== null && this.state.lbObj !== undefined && (
+                <LibraryDetails data={this.state.lbObj} />
               )}
             </div>
-          </TabPane> */}
+          </TabPane>
         </TabContent>
       </section>
 
