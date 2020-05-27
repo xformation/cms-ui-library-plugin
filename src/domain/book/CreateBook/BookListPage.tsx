@@ -8,6 +8,8 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import wsCmsBackendServiceSingletonClient from '../../../wsCmsBackendServiceClient';
 import moment = require('moment');
 import BookDetails from './BookDetails';
+import AddBookPage from './AddBookPage';
+import EditBook from './EditBook';
 
 const w180 = {
     width: '180px',
@@ -84,31 +86,31 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
       activeTab: tabNo,
     });
   }
- async registerSocket() {
+  async registerSocket() {
     const socket = wsCmsBackendServiceSingletonClient.getInstance();
+    // socket.onmessage = (response: any) => {
+    //   let message = JSON.parse(response.data);
+    //   console.log('Book index. message received from server ::: ', message);
+    //   this.setState({
+    //     branchId: message.selectedBranchId,
+    //     academicYearId: message.selectedAcademicYearId,
+    //     departmentId: message.selectedDepartmentId,
+    //   });
+    //   console.log('Book index. branchId: ', this.state.branchId);
+    //   console.log('Book index. departmentId: ', this.state.departmentId);
+    //   console.log('Book index. ayId: ', this.state.academicYearId);
+    // };
 
-    socket.onmessage = (response: any) => {
-        let message = JSON.parse(response.data);
-        console.log("Book Index. message received from server ::: ", message);
-        this.setState({
-            branchId: message.selectedBranchId,
-            academicYearId: message.selectedAcademicYearId,
-            departmentId: message.selectedDepartmentId,
-        });
-        console.log("Book Index. branchId: ",this.state.branchId);
-        console.log("Book Index. departmentId: ",this.state.departmentId);  
-        console.log("Book Index. ayId: ",this.state.academicYearId);  
-    }
+    // socket.onopen = () => {
+    //   console.log("Book index. Opening websocekt connection on index.tsx. User : ",this.state.user.login);
+    //     // this.state.user
+    //     socket.send(this.state.user.login);
+    // }
+    // window.onbeforeunload = () => {
+    //   console.log('Book index. Closing websocekt connection on index.tsx');
+    // };
+}
 
-    socket.onopen = () => {
-        console.log("Book Index. Opening websocekt connection to cmsbackend. User : ",this.state.user.login);
-        socket.send(this.state.user.login);
-    }
-
-    window.onbeforeunload = () => {
-        console.log("Book. Closing websocket connection with cms backend service");
-    }
-  }
 
   createBook(books: any) {
     let booksOptions = [
@@ -185,6 +187,12 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
     console.log('3. data in bObj:', this.state.bObj);
     await this.toggleTab(1);
   }
+  
+  async showDetails(obj: any, e: any) {
+    await this.SetObject(obj);
+    console.log('3. data in bObj:', this.state.bObj);
+    await this.toggleTab(2);
+  }
 
   async SetObject(obj: any) {
     console.log('1. setting object :', obj);
@@ -254,11 +262,11 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
                 <td>{book.batch.batch}</td>
                 <td>{book.library.bookTitle}</td>
                 <td>{book.library.bookNo}</td>
-                {/* <td>{book.library.author}</td> */}
+                <td>{book.strReceivedDate}</td>
                 <td>{book.bookStatus}</td>
                 <td>
                     {
-                      <button className="btn btn-primary" onClick={e => this.showDetail(e, true)}>Edit</button>                    }
+                      <button className="btn btn-primary" onClick={(e: any) => this.showDetails(book, e)}>Edit</button>                    }
                 </td>
                 <td>
                     {
@@ -294,11 +302,11 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
                 <td>{book.batch.batch}</td>
                 <td>{book.library.bookTitle}</td>
                 <td>{book.library.bookNo}</td>
-                {/* <td>{book.library.author}</td> */}
+                <td>{book.strReceivedDate}</td>
                 <td>{book.bookStatus}</td>
                 <td>
                     {
-                      <button className="btn btn-primary" onClick={e => this.showDetail(e, true)}>Edit</button>                    }
+                      <button className="btn btn-primary" onClick={(e: any) => this.showDetails(book, e)}>Edit</button>                    }
                 </td>
                 <td>
                     {
@@ -462,7 +470,7 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
                   <th>Year</th>
                   <th>Book Title</th>
                   <th>Book No</th>
-                  {/* <th>Author</th> */}
+                  <th>Received Date</th>
                   <th>Book Status</th>
                   <th>Edit</th> 
                   <th>Details</th>
@@ -510,7 +518,48 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
               )}
             </div>
           </TabPane>
+          <TabPane tabId={2}>
+            <div className="container-fluid" style={{padding: '0px'}}>
+              <div className="m-b-1 bg-heading-bgStudent studentListFlex p-point5">
+                <div className="">
+                  <h4 className="ptl-06">Edit Issue Book </h4>
+                </div>
+                <div className="">
+                  <a
+                    className="btn btn-primary m-l-1"
+                    onClick={() => {
+                      this.toggleTab(3);
+                    }}
+                  >
+                    Back
+                  </a>
+                  <a
+                    className="btn btn-primary m-l-1"
+                    onClick={(e: any) => {
+                      print();
+                    }}
+                  >
+                    Print
+                  </a>
+                </div>
+              </div>
+              {user !== null &&
+                this.state.bObj !== null &&
+                this.state.bObj !== undefined && (
+                  <EditBook
+                    user={user}
+                    data={this.state.bObj}
+                    bObj={this.state.bObj}
+                    batches={this.state.createLibraryFilterDataCache.batches}
+                    students={this.state.createLibraryFilterDataCache.students}
+                    departments={this.state.createLibraryFilterDataCache.departments}
+                    libraries={this.state.createLibraryFilterDataCache.libraries}
+                  />
+                )}
+            </div>
+          </TabPane>
         </TabContent>
+        
       </section>
 
     );

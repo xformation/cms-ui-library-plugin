@@ -9,7 +9,7 @@ import AddBookPage from './AddBookPage';
 import {CREATE_LIBRARY_FILTER_DATA_CACHE} from '../_queries';
 import LibraryListPage from './LibraryListPage';
 import BookListPage from './BookListPage';
-import BookPage from './BookPage';
+
 
 export interface LibraryProps extends React.HTMLAttributes<HTMLElement> {
   [data: string]: any;
@@ -39,31 +39,32 @@ class Library extends React.Component<LibraryProps, any> {
   //   await this.registerSocket();
   //   await this.getcreateLibraryFilterDataCache();
   // }
-
+  async componentDidMount(){
+    await this.registerSocket();
+  }
   async registerSocket() {
     const socket = wsCmsBackendServiceSingletonClient.getInstance();
+    // socket.onmessage = (response: any) => {
+    //   let message = JSON.parse(response.data);
+    //   console.log('Student index. message received from server ::: ', message);
+    //   this.setState({
+    //     branchId: message.selectedBranchId,
+    //     academicYearId: message.selectedAcademicYearId,
+    //     departmentId: message.selectedDepartmentId,
+    //   });
+    //   console.log('Library index. branchId: ', this.state.branchId);
+    //   console.log('Library index. departmentId: ', this.state.departmentId);
+    //   console.log('Library index. ayId: ', this.state.academicYearId);
+    // };
 
-    socket.onmessage = (response: any) => {
-      let message = JSON.parse(response.data);
-      console.log('Student index. message received from server ::: ', message);
-      this.setState({
-        branchId: message.selectedBranchId,
-        academicYearId: message.selectedAcademicYearId,
-        departmentId: message.selectedDepartmentId,
-      });
-      console.log('Library index. branchId: ', this.state.branchId);
-      console.log('Library index. departmentId: ', this.state.departmentId);
-      console.log('Library index. ayId: ', this.state.academicYearId);
-    };
-
-    socket.onopen = () => {
-      console.log("Library index. Opening websocekt connection on index.tsx. User : ",this.state.user.login);
-        // this.state.user
-        socket.send(this.state.user.login);
-    }
-    window.onbeforeunload = () => {
-      console.log('Library index. Closing websocekt connection on index.tsx');
-    };
+    // socket.onopen = () => {
+    //   console.log("Library index. Opening websocekt connection on index.tsx. User : ",this.state.user.login);
+    //     // this.state.user
+    //     socket.send(this.state.user.login);
+    // }
+    // window.onbeforeunload = () => {
+    //   console.log('Library index. Closing websocekt connection on index.tsx');
+    // };
     // const {data} = await this.props.client.query({
     //   query: CREATE_LIBRARY_FILTER_DATA_CACHE,
     //   variables: {
@@ -172,7 +173,7 @@ class Library extends React.Component<LibraryProps, any> {
           {/* <AddBookPage/> */}
           {
            user !== null && createLibraryFilterDataCache !== null?
-            <BookPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
+            <AddBookPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
               :
             null
         }

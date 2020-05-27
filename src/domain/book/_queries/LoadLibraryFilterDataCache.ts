@@ -10,6 +10,9 @@ export const CREATE_LIBRARY_FILTER_DATA_CACHE = gql`
       batches {
         id
         batch
+        department {
+          id
+        }
       }
       libraries {
         id
