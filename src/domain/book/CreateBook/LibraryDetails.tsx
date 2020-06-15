@@ -76,7 +76,7 @@ export interface LibraryDetailsProps extends React.HTMLAttributes<HTMLElement> {
           <table id="libraryTable" className="striped-table fwidth bg-white p-3 m-t-1">
             <thead>
              <tr>
-              <th>rowName</th>
+              <th>clNo</th>
               <th>bookTitle</th>
               <th>bookNo</th>
               <th>author</th>
@@ -84,7 +84,7 @@ export interface LibraryDetailsProps extends React.HTMLAttributes<HTMLElement> {
               <th>uniqueNo</th>
              </tr>
             </thead>
-              <td>{lbObj.rowName}</td>
+              <td>{lbObj.clNo}</td>
               <td>{lbObj.bookTitle}</td>
               <td>{lbObj.bookNo}</td>
               <td>{lbObj.author}</td>

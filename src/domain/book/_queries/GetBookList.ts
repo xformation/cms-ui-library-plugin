@@ -25,6 +25,7 @@ export const GET_BOOK_LIST = gql`
         id
         bookTitle
         bookNo
+        noOfCopies
       }
       batch {
         id

@@ -91,7 +91,9 @@ export interface BookDetailsProps extends React.HTMLAttributes<HTMLElement> {
               <th>Student Name</th>
               <th>Issue  Date</th>
               <th>Due  Date</th>
-              <th>No Of Copies Available </th>
+              <th>Received Date</th>
+              <th>No  </th>
+              <th>Copies Available </th>
               <th>Department Name</th>
               <th>Year</th>
               <th>Book Title</th>
@@ -107,6 +109,10 @@ export interface BookDetailsProps extends React.HTMLAttributes<HTMLElement> {
                 )}
                <td>{bObj.strIssueDate}</td>
                <td>{bObj.strDueDate}</td>
+               <td>{bObj.strReceivedDate}</td>
+               {bObj.library !== undefined && (
+                        <td>{bObj.library.noOfCopies}</td>
+                      )}
                <td>{bObj.noOfCopiesAvailable}</td>
                {bObj.department !== undefined && (
                         <td>{bObj.department.name}</td>

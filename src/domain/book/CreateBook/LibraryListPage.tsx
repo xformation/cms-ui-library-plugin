@@ -7,6 +7,8 @@ import withLoadingHandler from '../withLoadingHandler';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import wsCmsBackendServiceSingletonClient from '../../../wsCmsBackendServiceClient';
 import LibraryDetails from './LibraryDetails';
+import EditLibrary from './EditLibrary';
+// import EditLibrary from './EditLibrary';
 
 const w180 = {
     width: '180px',
@@ -16,7 +18,7 @@ const w180 = {
 type LibraryTableStates = {
   user:any,
   libraries: any,
-  libraryData: any,
+  libData: any,
   departments: any,
   pageSize: any,
   search: any,
@@ -46,7 +48,7 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
       academicYearId: null,
       departmentId: null,
       libraries: {},
-      libraryData: {
+      libData: {
        department: {
           id: ""
         },
@@ -79,31 +81,10 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
       activeTab: tabNo,
     });
   }
- async registerSocket() {
+  async registerSocket() {
     const socket = wsCmsBackendServiceSingletonClient.getInstance();
+}
 
-    socket.onmessage = (response: any) => {
-        let message = JSON.parse(response.data);
-        console.log("Library Index. message received from server ::: ", message);
-        this.setState({
-            branchId: message.selectedBranchId,
-            academicYearId: message.selectedAcademicYearId,
-            departmentId: message.selectedDepartmentId,
-        });
-        console.log("Library Index. branchId: ",this.state.branchId);
-        console.log("Library Index. departmentId: ",this.state.departmentId);  
-        console.log("Library Index. ayId: ",this.state.academicYearId);  
-    }
-
-    socket.onopen = () => {
-        console.log("Library Index. Opening websocekt connection to cmsbackend. User : ",this.state.user.login);
-        socket.send(this.state.user.login);
-    }
-
-    window.onbeforeunload = () => {
-        console.log("Library. Closing websocket connection with cms backend service");
-    }
-  }
 
   createDepartment(departments: any) {
     let departmentsOptions = [
@@ -139,8 +120,8 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
   }
 
   checkAllLibraries(e: any) {
-    const { libraryData } = this.state;
-    const mutateResLength = libraryData.mutateResult.length;
+    const { libData } = this.state;
+    const mutateResLength = libData.mutateResult.length;
     let chkAll = e.nativeEvent.target.checked;
     let els = document.querySelectorAll("input[type=checkbox]");
 
@@ -173,7 +154,11 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
     }
     return retVal;
   }
-
+  async showDetails(obj: any, e: any) {
+    await this.SetObject(obj);
+    console.log('3. data in lbObj:', this.state.lbObj);
+    await this.toggleTab(1);
+  }
 
   async showDetail(obj: any, e: any) {
     await this.SetObject(obj);
@@ -190,7 +175,7 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
   }
 
   createLibraryRows(objAry: any) {
-    let { search } = this.state.libraryData;
+    let { search } = this.state.libData;
     search = search.trim();
     const mutateResLength = objAry.length;
     const retVal = [];
@@ -219,14 +204,14 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
                 </a> */}
                 {library.bookNo}
               </td>
-                <td>{library.rowName}</td>
+                <td>{library.clNo}</td>
                 <td>{library.bookTitle}</td>
                 <td>{library.author}</td>
                 <td>{library.noOfCopies}</td>
                 <td>{library.department.name}</td>
                 <td>
                     {
-                        <button className="btn btn-primary" onClick={e => this.showDetail(e, true)}>Edit</button>
+                        <button className="btn btn-primary" onClick={(e: any) => this.showDetails(library, e)}>Edit</button>
                     }
                 </td>
                 <td>
@@ -256,14 +241,14 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
                 </a> */}
                 {library.bookNo}
                </td>
-               <td>{library.rowName}</td>
+               <td>{library.clNo}</td>
                <td>{library.bookTitle}</td>
                <td>{library.author}</td>
                <td>{library.noOfCopies}</td>
                <td>{library.department.name}</td>
                 <td>
                     {
-                        <button className="btn btn-primary" onClick={e => this.showDetail(e, true)}>Edit</button>
+                        <button className="btn btn-primary" onClick={(e: any) => this.showDetails(library, e)}>Edit</button>
                     }
                 </td>
                 <td>
@@ -284,11 +269,11 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
   onChange = (e: any) => {
     const { search } = e.nativeEvent.target;
     const { name, value } = e.nativeEvent.target;
-    const { libraryData } = this.state;
+    const { libData } = this.state;
     if (name === "library") {
       this.setState({
-        libraryData: {
-          ...libraryData,
+        libData: {
+          ...libData,
           library: {
             id: value
           },
@@ -299,8 +284,8 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
       });
     } else if (name === "department") {
       this.setState({
-        libraryData: {
-          ...libraryData,
+        libData: {
+          ...libData,
           department: {
             id: value
           },
@@ -309,8 +294,8 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
     } 
     else {
       this.setState({
-        libraryData: {
-          ...libraryData,
+        libData: {
+          ...libData,
           [name]: value
         }
       });
@@ -321,11 +306,11 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
   onClick = (e: any) => {
     const { name, value } = e.nativeEvent.target;
     const { getLibraryList } = this.props;
-    const { libraryData } = this.state;
+    const { libData } = this.state;
     e.preventDefault();
     let libraryFilterInputObject = {
-      libraryId: libraryData.library.id,
-      departmentId: libraryData.department.id,
+      libraryId: libData.library.id,
+      departmentId: libData.department.id,
     };
     this.props.client
       .mutate({
@@ -336,12 +321,12 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
       })
       .then((data: any) => {
       const ldt = data;
-      libraryData.mutateResult = [];
-      libraryData.mutateResult.push(ldt);
+      libData.mutateResult = [];
+      libData.mutateResult.push(ldt);
       this.setState({
-        libraryData: libraryData
+        libData: libData
       });
-      console.log('Library filter mutation result ::::: ', libraryData.mutateResult);
+      console.log('Library filter mutation result ::::: ', libData.mutateResult);
     }).catch((error: any) => {
       console.log('there was an error sending the query result', error);
       return Promise.reject(`Could not retrieve library data: ${error}`);
@@ -349,7 +334,7 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
   }
 
   render() {
-    const { createLibraryFilterDataCache, libraryData, activeTab, user,  }= this.state;
+    const { createLibraryFilterDataCache, libData, activeTab, user,  }= this.state;
   
     return (
       <section className="customCss">
@@ -370,7 +355,7 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
                   name="library"
                   id="library"
                   onChange={this.onChange}
-                  value={libraryData.library.id}
+                  value={libData.library.id}
                   className="gf-form-input max-width-22"
                 >
                   {createLibraryFilterDataCache !== null &&
@@ -390,7 +375,7 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
                   name="department"
                   id="department"
                   onChange={this.onChange}
-                  value={libraryData.department.id}
+                  value={libData.department.id}
                   className="gf-form-input max-width-22"
                 >
                   {createLibraryFilterDataCache !== null &&
@@ -405,7 +390,7 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
               </div> */}
               <div className="margin-bott max-width-22">
                 <label htmlFor="">Book Title</label>
-                <input type="text" name="search" value={libraryData.search} onChange={this.onChange} />
+                <input type="text" name="search" value={libData.search} onChange={this.onChange} />
               </div>
             <div className="m-b-1 bg-heading-bg studentSearch">
               {/* <h4 className="ptl-06"></h4> */}
@@ -431,12 +416,12 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
               </thead>
               <tbody>
                 {
-                  this.createLibraryRows(this.state.libraryData.mutateResult)
+                  this.createLibraryRows(this.state.libData.mutateResult)
                 }
               </tbody>
             </table>
             {
-              this.createNoRecordMessage(this.state.libraryData.mutateResult)
+              this.createNoRecordMessage(this.state.libData.mutateResult)
             }
           </div>
         </div>
@@ -471,9 +456,44 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
               )}
             </div>
           </TabPane>
+          <TabPane tabId={1}>
+            <div className="container-fluid" style={{padding: '0px'}}>
+              <div className="m-b-1 bg-heading-bgStudent studentListFlex p-point5">
+                <div className="">
+                  <h4 className="ptl-06">Edit Book </h4>
+                </div>
+                <div className="">
+                  <a
+                    className="btn btn-primary m-l-1"
+                    onClick={() => {
+                      this.toggleTab(2);
+                    }}
+                  >
+                    Back
+                  </a>
+                  <a
+                    className="btn btn-primary m-l-1"
+                    onClick={(e: any) => {
+                      print();
+                    }}
+                  >
+                    Print
+                  </a>
+                </div>
+              </div>
+              {user !== null &&
+                this.state.lbObj !== null &&
+                this.state.lbObj !== undefined && (
+                  <EditLibrary
+                    user={user}
+                    data={this.state.lbObj}
+                    bObj={this.state.lbObj}
+                    departments={this.state.createLibraryFilterDataCache.departments}/>
+                )}
+            </div>
+          </TabPane>
         </TabContent>
       </section>
-
     );
   }
 }

@@ -10,6 +10,7 @@ import moment = require('moment');
 import BookDetails from './BookDetails';
 import AddBookPage from './AddBookPage';
 import EditBook from './EditBook';
+import UpdateBookPage from './UpdateBookPage';
 
 const w180 = {
     width: '180px',
@@ -265,14 +266,14 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
                 <td>{book.library.bookNo}</td>
                 <td>{book.strReceivedDate}</td>
                 <td>{book.bookStatus}</td>
-                {/* <td>
+                <td>
                     {
                       <button className="btn btn-primary" onClick={(e: any) => this.showDetails(book, e)}>Edit</button>                    }
                 </td>
                 <td>
                     {
                       <button className="btn btn-primary" onClick={(e: any) => this.showDetail(book, e)}>Details</button>                    }
-                </td> */}
+                </td>
               </tr>
             );
             console.log('print book obj:', book);
@@ -306,14 +307,14 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
                 <td>{book.library.bookNo}</td>
                 <td>{book.strReceivedDate}</td>
                 <td>{book.bookStatus}</td>
-                {/* <td>
+                <td>
                     {
                       <button className="btn btn-primary" onClick={(e: any) => this.showDetails(book, e)}>Edit</button>                    }
                 </td>
                 <td>
                     {
                       <button className="btn btn-primary" onClick={(e: any) => this.showDetail(book, e)}>Details</button>                    }
-                </td> */}
+                </td>
             </tr>
           );
           console.log('print book obj:', book);
@@ -406,7 +407,7 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
           </div>
           <div>
             <div className="student-flex">
-            <div>
+            {/* <div>
                 <label htmlFor="">Book</label>
                 <select
                   required
@@ -445,14 +446,14 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
                       )
                     : null}
                 </select>
-              </div>
+              </div> */}
               <div className="margin-bott max-width-22">
                 <label htmlFor="">Student Id</label>
                 <input type="text" name="search" value={bookData.search} onChange={this.onChange} />
               </div>
             <div className="m-b-1 bg-heading-bg studentSearch">
               {/* <h4 className="ptl-06"></h4> */}
-              <button className="btn btn-primary max-width-13" id="btnFind" name="btnFind" onClick={this.onClick} style={w180}>List</button>
+              <button className="btn btn-primary max-width-13" id="btnFind" name="btnFind" onClick={this.onClick} style={w180}>Search Student</button>
             </div>
             </div>
             <table id="Booklistpage" className="striped-table fwidth bg-white">
@@ -474,7 +475,8 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
                   <th>Book No</th>
                   <th>Received Date</th>
                   <th>Book Status</th>
-                  {/* <th>Details</th> */}
+                  <th>Edit</th> 
+                  <th>Details</th>
                 </tr>
               </thead>
               <tbody>
@@ -523,7 +525,7 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
             <div className="container-fluid" style={{padding: '0px'}}>
               <div className="m-b-1 bg-heading-bgStudent studentListFlex p-point5">
                 <div className="">
-                  <h4 className="ptl-06">Edit Issue Book </h4>
+                  <h4 className="ptl-06">Update Issue Book </h4>
                 </div>
                 <div className="">
                   <a
@@ -547,7 +549,7 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
               {user !== null &&
                 this.state.bObj !== null &&
                 this.state.bObj !== undefined && (
-                  <EditBook
+                  <UpdateBookPage
                     user={user}
                     data={this.state.bObj}
                     bObj={this.state.bObj}

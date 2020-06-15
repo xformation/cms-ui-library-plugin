@@ -4,7 +4,7 @@ export const LIBRARY_LIST = gql`
   query {
     getLibraryList {
       id
-      rowName
+      clNo
       bookTitle
       bookNo
       author

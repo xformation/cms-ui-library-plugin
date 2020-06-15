@@ -4,7 +4,7 @@ export const GET_LIBRARY_LIST = gql`
   mutation getLibraryList($filter: LibraryFilterInput!) {
     getLibraryList(filter: $filter) {
       id
-      rowName
+      clNo
       bookTitle
       bookNo
       author

@@ -16,20 +16,22 @@ export const CREATE_LIBRARY_FILTER_DATA_CACHE = gql`
       }
       libraries {
         id
-        rowName
+        clNo
         bookTitle
         bookNo
         author
+        noOfCopies
       }
       books {
         id
         issueDate
-        noOfCopiesAvailable
         dueDate
+        receivedDate
         noOfCopiesAvailable
         bookStatus
         strIssueDate
         strDueDate
+        strReceivedDate
       }
       students {
         id

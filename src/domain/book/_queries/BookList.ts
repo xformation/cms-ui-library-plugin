@@ -31,7 +31,7 @@ export const BOOK_LIST = gql`
       }
       library {
         id
-        rowName
+        clNo
         bookTitle
         bookNo
       }

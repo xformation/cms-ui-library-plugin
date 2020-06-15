@@ -679,7 +679,7 @@ class Book<T = {[data: string]: any}> extends React.Component<BookProps, any> {
      <thead >
       <tr>
        <th>Id</th>
-       <th>rowName</th>
+       <th>clNo</th>
        <th>bookTitle</th>
        <th>bookNo</th>
        <th>author</th>

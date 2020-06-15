@@ -8,7 +8,7 @@ export const ADD_LIBRARY = gql`
         exitDescription
         dataList {
           id
-          rowName
+          clNo
           bookTitle
           bookNo
           author
@@ -18,7 +18,6 @@ export const ADD_LIBRARY = gql`
           department {
             id
             name
-            deptHead
           }
         }
       }

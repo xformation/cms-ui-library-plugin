@@ -27,7 +27,7 @@ export const ADD_BOOK = gql`
           }
           library {
             id
-            rowName
+            clNo
             bookTitle
             bookNo
             author
@@ -38,9 +38,6 @@ export const ADD_BOOK = gql`
             name
             deptHead
             branch {
-              id
-            }
-            academicyear {
               id
             }
           }
