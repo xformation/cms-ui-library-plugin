@@ -16,8 +16,8 @@
     "version": "1.0",
     "updated": "2018-10-12",
     "logos": {
-      "small": "img/fee.png",
-      "large": "img/fee.png"
+      "small": "img/libraryimg.png",
+      "large": "img/libraryimg.png"
     }
   },
   "includes": [
