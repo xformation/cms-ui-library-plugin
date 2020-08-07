@@ -7,6 +7,7 @@ import {withApollo} from 'react-apollo';
 import AddLibraryPage from './AddIssueBookPage';
 import AddBookPage from './AddBookPage';
 import {CREATE_LIBRARY_FILTER_DATA_CACHE} from '../_queries';
+import AddIssueBookPage from './AddIssueBookPage';
 // import LibraryListPage from './LibraryListPage';
 // import BookListPage from './BookListPage';
 // import UpdateBookList from './UpdateBookList';
@@ -179,7 +180,7 @@ class Library extends React.Component<LibraryProps, any> {
         <TabPane tabId={0}>
         {
            user !== null && createLibraryFilterDataCache !== null?
-            <AddLibraryPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
+            <AddBookPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
               :
             null
         }
@@ -188,7 +189,7 @@ class Library extends React.Component<LibraryProps, any> {
           {/* <AddBookPage/> */}
           {
            user !== null && createLibraryFilterDataCache !== null?
-            <AddBookPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
+            <AddIssueBookPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
               :
             null
         }
