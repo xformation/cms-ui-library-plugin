@@ -7,9 +7,9 @@ import {withApollo} from 'react-apollo';
 import AddLibraryPage from './AddIssueBookPage';
 import AddBookPage from './AddBookPage';
 import {CREATE_LIBRARY_FILTER_DATA_CACHE} from '../_queries';
-import LibraryListPage from './LibraryListPage';
-import BookListPage from './BookListPage';
-import UpdateBookList from './UpdateBookList';
+// import LibraryListPage from './LibraryListPage';
+// import BookListPage from './BookListPage';
+// import UpdateBookList from './UpdateBookList';
 
 
 export interface LibraryProps extends React.HTMLAttributes<HTMLElement> {
@@ -110,12 +110,12 @@ class Library extends React.Component<LibraryProps, any> {
   if(tabNo===2){
     this.getcreateLibraryFilterDataCache();
   }
-  if(tabNo===3){
-    this.getcreateLibraryFilterDataCache();
-  }
-  if(tabNo===4){
-    this.getcreateLibraryFilterDataCache();
-  }
+  // if(tabNo===3){
+  //   this.getcreateLibraryFilterDataCache();
+  // }
+  // if(tabNo===4){
+  //   this.getcreateLibraryFilterDataCache();
+  // }
 }
 
   render() {
@@ -140,7 +140,7 @@ class Library extends React.Component<LibraryProps, any> {
                 this.toggleTab(1);
               }}
             >
-             Issue Book Page
+             Add Issue Book Page
             </NavLink>
           </NavItem>
           <NavItem className="cursor-pointer">
@@ -150,10 +150,11 @@ class Library extends React.Component<LibraryProps, any> {
                 this.toggleTab(2);
               }}
             >
-             Update Issue Book Page
+             {/* Update Issue Book Page */}
+             Book List Page
             </NavLink>
           </NavItem>
-          <NavItem className="cursor-pointer">
+          {/* <NavItem className="cursor-pointer">
             <NavLink
               className={`vertical-nav-link ${activeTab === 3 ? 'side-active' : ''}`}
               onClick={() => {
@@ -162,8 +163,8 @@ class Library extends React.Component<LibraryProps, any> {
             >
               Library List Page
             </NavLink>
-          </NavItem>
-          <NavItem className="cursor-pointer">
+          </NavItem> */}
+          {/* <NavItem className="cursor-pointer">
             <NavLink
               className={`vertical-nav-link ${activeTab === 4 ? 'side-active' : ''}`}
               onClick={() => {
@@ -172,7 +173,7 @@ class Library extends React.Component<LibraryProps, any> {
             >
               Book List Page
             </NavLink>
-          </NavItem>
+          </NavItem> */}
         </Nav>
         <TabContent activeTab={activeTab} className="col-sm-10 border-left p-t-1">
         <TabPane tabId={0}>
@@ -192,30 +193,30 @@ class Library extends React.Component<LibraryProps, any> {
             null
         }
           </TabPane>
-          <TabPane tabId={2}>
+          {/* <TabPane tabId={2}>
           {
            user !== null && createLibraryFilterDataCache !== null?
             <UpdateBookList user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
               :
             null
         }
-          </TabPane>
-          <TabPane tabId={3}>
+          </TabPane> */}
+          {/* <TabPane tabId={3}>
           {
            user !== null && createLibraryFilterDataCache !== null?
             <LibraryListPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
               :
             null
         }
-          </TabPane>
-          <TabPane tabId={4}>
+          </TabPane> */}
+          {/* <TabPane tabId={4}>
           {
            user !== null && createLibraryFilterDataCache !== null?
             <BookListPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
               :
             null
         }
-          </TabPane>
+          </TabPane> */}
         </TabContent>
       </section>
     );
