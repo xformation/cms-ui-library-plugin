@@ -4,7 +4,7 @@ import {TabContent, TabPane, Nav, NavItem, NavLink} from 'reactstrap';
 import wsCmsBackendServiceSingletonClient from '../../../wsCmsBackendServiceClient';
 import '../../../css/college-settings.css';
 import {withApollo} from 'react-apollo';
-import AddLibraryPage from './AddLibraryPage';
+import AddLibraryPage from './AddIssueBookPage';
 import AddBookPage from './AddBookPage';
 import {CREATE_LIBRARY_FILTER_DATA_CACHE} from '../_queries';
 import LibraryListPage from './LibraryListPage';

@@ -4,36 +4,18 @@ export const BOOK_LIST = gql`
   query {
     getBookList {
       id
-      issueDate
-      dueDate
-      noOfCopiesAvailable
-      bookStatus
-      receivedDate
-      strIssueDate
-      strDueDate
-      strReceivedDate
-      batchId
+      shelfNo
+      bookTitle
+      author
+      edition
+      publisher
+      author
+      noOfCopies
       departmentId
-      libraryId
-      studentId
       department {
         id
         name
-      }
-      batch {
-        id
-        batch
-      }
-      student {
-        id
-        studentName
-        rollNo
-      }
-      library {
-        id
-        clNo
-        bookTitle
-        bookNo
+        description
       }
     }
   }

@@ -6,7 +6,7 @@ import '../../../css/college-settings.css';
 import '../../../css/tabs.css'; 
 import {MessageBox} from '../../Message/MessageBox'
 import { withApollo } from 'react-apollo';
-import { ADD_LIBRARY,CREATE_LIBRARY_FILTER_DATA_CACHE } from '../_queries';
+import { ADD_BOOK, CREATE_LIBRARY_FILTER_DATA_CACHE } from '../_queries';
 import * as moment from 'moment';
 import wsCmsBackendServiceSingletonClient from '../../../wsCmsBackendServiceClient';
 
@@ -243,7 +243,7 @@ class Library<T = {[data: string]: any}> extends React.Component<LibProps, any> 
         let exitCode = 0;
         
         await this.props.client.mutate({
-            mutation: ADD_LIBRARY,
+            mutation: ADD_BOOK,
             variables: { 
                 input: lbInput
             },

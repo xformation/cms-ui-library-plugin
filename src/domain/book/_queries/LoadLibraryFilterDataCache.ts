@@ -14,15 +14,7 @@ export const CREATE_LIBRARY_FILTER_DATA_CACHE = gql`
           id
         }
       }
-      libraries {
-        id
-        clNo
-        bookTitle
-        bookNo
-        author
-        noOfCopies
-      }
-      books {
+      issueBooks {
         id
         issueDate
         dueDate
@@ -32,6 +24,17 @@ export const CREATE_LIBRARY_FILTER_DATA_CACHE = gql`
         strIssueDate
         strDueDate
         strReceivedDate
+      }
+      books {
+        id
+        bookTitle
+        shelfNo
+        author
+        publisher
+        edition
+        noOfCopies
+        isbNo
+        departmentId
       }
       students {
         id

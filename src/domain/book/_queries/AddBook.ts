@@ -8,46 +8,14 @@ export const ADD_BOOK = gql`
         exitDescription
         dataList {
           id
-          issueDate
-          dueDate
-          noOfCopiesAvailable
-          bookStatus
-          receivedDate
-          strIssueDate
-          strDueDate
-          strReceivedDate
-          batchId
+          shelfNo
+          bookTitle
+          author
+          publisher
+          edition
+          noOfCopies
+          isbNo
           departmentId
-          libraryId
-          studentId
-          student {
-            id
-            studentName
-            rollNo
-          }
-          library {
-            id
-            clNo
-            bookTitle
-            bookNo
-            author
-            noOfCopies
-          }
-          department {
-            id
-            name
-            deptHead
-            branch {
-              id
-            }
-          }
-          batch {
-            id
-            batch
-            department {
-              id
-            }
-          }
         }
       }
     }

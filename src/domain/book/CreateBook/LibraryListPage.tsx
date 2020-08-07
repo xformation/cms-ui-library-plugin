@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
 import {NavItem,NavLink, TabPane, TabContent} from 'reactstrap';
 import { graphql, QueryProps, MutationFunc, compose, withApollo } from "react-apollo";
-import {GET_LIBRARY_LIST} from '../_queries';
+import {GET_BOOK_LIST} from '../_queries';
 import withLoadingHandler from '../withLoadingHandler';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import wsCmsBackendServiceSingletonClient from '../../../wsCmsBackendServiceClient';
@@ -314,7 +314,7 @@ class LibraryTable<T = {[data: string]: any}> extends React.Component<LibraryLis
     };
     this.props.client
       .mutate({
-        mutation: GET_LIBRARY_LIST,
+        mutation: GET_BOOK_LIST,
         variables: {
           filter: libraryFilterInputObject,
         },

@@ -7,7 +7,7 @@ import withLoadingHandler from '../withLoadingHandler';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import wsCmsBackendServiceSingletonClient from '../../../wsCmsBackendServiceClient';
 import moment = require('moment');
-import BookDetails from './BookDetails';
+import BookDetails from './IssueBookDetails';
 import AddBookPage from './AddBookPage';
 import EditBook from './EditBook';
 import UpdateBookPage from './UpdateBookPage';

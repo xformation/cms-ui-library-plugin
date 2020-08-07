@@ -7,8 +7,8 @@ import withLoadingHandler from '../withLoadingHandler';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import wsCmsBackendServiceSingletonClient from '../../../wsCmsBackendServiceClient';
 import moment = require('moment');
-import BookDetails from './BookDetails';
-import AddBookPage from './AddBookPage';
+import BookDetails from './IssueBookDetails';
+import AddBookPage from './AddIssueBookPage';
 import EditBook from './EditBook';
 
 const w180 = {
