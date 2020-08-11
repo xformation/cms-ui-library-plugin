@@ -11,8 +11,6 @@ export const GET_BOOK_LIST = gql`
       edition
       isbNo
       noOfCopies
-
-      departmentId
       department {
         id
         name

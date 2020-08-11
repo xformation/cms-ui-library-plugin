@@ -9,7 +9,7 @@ import AddBookPage from './AddBookPage';
 import {CREATE_LIBRARY_FILTER_DATA_CACHE} from '../_queries';
 import AddIssueBookPage from './AddIssueBookPage';
 // import LibraryListPage from './LibraryListPage';
-// import BookListPage from './BookListPage';
+import BookListPage from './BookListPage';
 // import UpdateBookList from './UpdateBookList';
 
 
@@ -194,15 +194,15 @@ class Library extends React.Component<LibraryProps, any> {
             null
         }
           </TabPane>
-          {/* <TabPane tabId={2}>
+          <TabPane tabId={2}>
           {
            user !== null && createLibraryFilterDataCache !== null?
-            <UpdateBookList user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
+            <BookListPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
               :
             null
         }
-          </TabPane> */}
-          {/* <TabPane tabId={3}>
+          </TabPane> 
+          {/* {/* <TabPane tabId={3}>
           {
            user !== null && createLibraryFilterDataCache !== null?
             <LibraryListPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>

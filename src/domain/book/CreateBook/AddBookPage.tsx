@@ -7,43 +7,46 @@ import '../../../css/tabs.css';
 import {MessageBox} from '../../Message/MessageBox'
 import { withApollo } from 'react-apollo';
 import * as moment from 'moment';
-import { ADD_BOOK } from "../_queries";
+import { ADD_BOOK, CREATE_LIBRARY_FILTER_DATA_CACHE } from "../_queries";
 import wsCmsBackendServiceSingletonClient from '../../../wsCmsBackendServiceClient';
 
 
-export interface LibraryProps extends React.HTMLAttributes<HTMLElement>{
+export interface BookProps extends React.HTMLAttributes<HTMLElement>{
     [data: string]: any;
-    lbList?: any;
-    libData?:any;
-    user?:any;
-    createLibraryFilterDataCache: null,
-    departments: any;
+    bookList?: any;
+    bookData?: any;
+    user?: any;
+    createLibraryFilterDataCache: any;
+    departmentList: any;
 }
 
 const ERROR_MESSAGE_MANDATORY_FIELD_MISSING = "Mandatory fields missing";
-const ERROR_MESSAGE_SERVER_SIDE_ERROR = "Due to some error in library service, library could not be saved. Please check vehicle service logs";
-const SUCCESS_MESSAGE_LIBRARY_ADDED = "New library saved successfully";
-const SUCCESS_MESSAGE_LIBRARY_UPDATED = "library  updated successfully";
+const ERROR_MESSAGE_SERVER_SIDE_ERROR = "Due to some error in book service, book could not be saved. Please check library service logs";
+const SUCCESS_MESSAGE_BOOK_ADDED = "New book saved successfully";
+const SUCCESS_MESSAGE_BOOK_UPDATED = "book  updated successfully";
 
-class LibraryGrid<T = {[data: string]: any}> extends React.Component<LibraryProps, any> {
-    constructor(props: LibraryProps) {
+class BookGrid<T = {[data: string]: any}> extends React.Component<BookProps, any> {
+    constructor(props: BookProps) {
          super(props);
         this.state = {
-            lbList: this.props.lbList,
+            bookList: this.props.bookList,
+            departmentList: this.props.departmentList,
             user:this.props.user,
             createLibraryFilterDataCache: this.props.createLibraryFilterDataCache,
             errorMessage: "",
             successMessage: "",
-            lbObj: {
-              clNo:"",
+            bookObj: {
+              shelfNo:"",
               bookTitle:"",
-              bookNo:"",
               author:"",
+              publisher:"",
+              edition:"",
               noOfCopies:"",
-              uniqueNo:"",
+              isbNo:"",
               departmentId:""
+
             },
-            libData:{
+            bookData:{
                 department:{
                     id:''
                 }
@@ -158,12 +161,12 @@ class LibraryGrid<T = {[data: string]: any}> extends React.Component<LibraryProp
     onChange = (e: any) => {
         e.preventDefault();
         const { name, value } = e.nativeEvent.target;
-        const { lbObj,libData } = this.state;
+        const { bookObj,bookData } = this.state;
         
     if (name === 'department') {
         this.setState({
-          libData: {
-            ...libData,
+          bookData: {
+            ...bookData,
             department: {
               id: value,
             },
@@ -172,12 +175,12 @@ class LibraryGrid<T = {[data: string]: any}> extends React.Component<LibraryProp
       } 
       else{
         this.setState({
-            lbObj: {
-                ...lbObj,
+            bookObj: {
+                ...bookObj,
                 [name]: value
             },
-            libData: {
-                ...libData,
+            bookData: {
+                ...bookData,
                 [name]: value,
               },
             errorMessage: "",
@@ -187,45 +190,55 @@ class LibraryGrid<T = {[data: string]: any}> extends React.Component<LibraryProp
         commonFunctions.restoreTextBoxBorderToNormal(name);
     }
 
-    getAddLibraryInput(lbObj: any){
-        const{libData}=this.state;
+    getAddBookInput(bookObj: any){
+        const{bookData}=this.state;
         let id = null;
         // if(modelHeader === "Edit Library"){
-        //     id = lbObj.id;
+        //     id = bookObj.id;
         // }
-        let lbInput = {
+        let bookInput = {
             id: id,
-            clNo: lbObj.clNo,
-            bookTitle: lbObj.bookTitle,
-            bookNo: lbObj.bookNo,
-            author: lbObj.author,
-            noOfCopies: lbObj.noOfCopies,
-            uniqueNo: lbObj.uniqueNo,
-            departmentId: libData.department.id,
+            shelfNo: bookObj.shelfNo,
+            bookTitle: bookObj.bookTitle,
+            author: bookObj.author,
+            publisher: bookObj.publisher,
+            edition: bookObj.edition,
+            noOfCopies: bookObj.noOfCopies,
+            isbNo: bookObj.isbNo,
+            departmentId: bookData.department.id,
         };
-        return lbInput;
+        return bookInput;
     }
-
-    validateFields(lbObj: any,libData: any){
+    
+    isMandatoryField(objValue: any, obj: any){
+      let errorMessage = "";
+      if(objValue === undefined || objValue === null || objValue.trim() === ""){
+        let tempVal = "";
+        commonFunctions.changeTextBoxBorderToError(tempVal, obj);
+        errorMessage = ERROR_MESSAGE_MANDATORY_FIELD_MISSING;
+      }
+      return errorMessage;
+    }
+    validateFields(bookObj: any,bookData: any){
       let isValid = true;
       let errorMessage = ""
-      if(lbObj.clNo === undefined || lbObj.clNo === null || lbObj.clNo === ""){
-          commonFunctions.changeTextBoxBorderToError((lbObj.clNo === undefined || lbObj.clNo === null) ? "" : lbObj.clNo, "clNo");
+      if(bookObj.shelfNo === undefined || bookObj.shelfNo === null || bookObj.shelfNo === ""){
+          commonFunctions.changeTextBoxBorderToError((bookObj.shelfNo === undefined || bookObj.shelfNo === null) ? "" : bookObj.shelfNo, "shelfNo");
           errorMessage = ERROR_MESSAGE_MANDATORY_FIELD_MISSING;
           isValid = false;
       }
-      if(lbObj.bookTitle === undefined || lbObj.bookTitle === null || lbObj.bookTitle === ""){
-          commonFunctions.changeTextBoxBorderToError((lbObj.bookTitle === undefined || lbObj.bookTitle === null) ? "" : lbObj.bookTitle , "bookTitle");
+      if(bookObj.bookTitle === undefined || bookObj.bookTitle === null || bookObj.bookTitle === ""){
+          commonFunctions.changeTextBoxBorderToError((bookObj.bookTitle === undefined || bookObj.bookTitle === null) ? "" : bookObj.bookTitle , "bookTitle");
           errorMessage = ERROR_MESSAGE_MANDATORY_FIELD_MISSING;
           isValid = false;
       }
-      if(lbObj.noOfCopies === undefined || lbObj.noOfCopies === null || lbObj.noOfCopies === ""){
-          commonFunctions.changeTextBoxBorderToError((lbObj.noOfCopies === undefined || lbObj.noOfCopies === null) ? "" : lbObj.noOfCopies, "noOfCopies");
+      if(bookObj.noOfCopies === undefined || bookObj.noOfCopies === null || bookObj.noOfCopies === ""){
+          commonFunctions.changeTextBoxBorderToError((bookObj.noOfCopies === undefined || bookObj.noOfCopies === null) ? "" : bookObj.noOfCopies, "noOfCopies");
           errorMessage = ERROR_MESSAGE_MANDATORY_FIELD_MISSING;
           isValid = false;
       }
-      if(libData.department.id === undefined || libData.department.id === null || libData.department.id === ""){
-        commonFunctions.changeTextBoxBorderToError((libData.department.id === undefined || libData.department.id === null) ? "" : libData.department.id, "department");
+      if(bookData.department.id === undefined || bookData.department.id === null || bookData.department.id === ""){
+        commonFunctions.changeTextBoxBorderToError((bookData.department.id === undefined || bookData.department.id === null) ? "" : bookData.department.id, "department");
         errorMessage = ERROR_MESSAGE_MANDATORY_FIELD_MISSING;
         isValid = false;
     }
@@ -234,8 +247,19 @@ class LibraryGrid<T = {[data: string]: any}> extends React.Component<LibraryProp
     });
     return isValid; 
     }
-
-    async doSave(lbInput: any, id: any){
+  async getcreateLibraryFilterDataCache() {
+      const {data} = await this.props.client.query({
+        query: CREATE_LIBRARY_FILTER_DATA_CACHE,
+        variables: {
+        },
+  
+        fetchPolicy: 'no-cache',
+      });
+      this.setState({
+        createLibraryFilterDataCache: data,
+      });
+    }
+  async doSave(bookInput: any, id: any){
       let btn = document.querySelector("#"+id);
       btn && btn.setAttribute("disabled", "true");
       let exitCode = 0;
@@ -243,27 +267,27 @@ class LibraryGrid<T = {[data: string]: any}> extends React.Component<LibraryProp
       await this.props.client.mutate({
           mutation: ADD_BOOK,
           variables: { 
-              input: lbInput
+              input: bookInput
           },
       }).then((resp: any) => {
-          console.log("Success in addLibrary Mutation. Exit code : ",resp.data.addLibrary.cmsLibraryVo.exitCode);
-          exitCode = resp.data.addLibrary.cmsLibraryVo.exitCode;
-          let temp = resp.data.addLibrary.cmsLibraryVo.dataList; 
-          console.log("New Library list : ", temp);
+          console.log("Success in addBook Mutation. Exit code : ",resp.data.addBook.cmsBookVo.exitCode);
+          exitCode = resp.data.addBook.cmsBookVo.exitCode;
+          let temp = resp.data.addBook.cmsBookVo.dataList; 
+          console.log("New Book list : ", temp);
           this.setState({
-              lbList: temp
+              bookList: temp
           });
       }).catch((error: any) => {
           exitCode = 1;
-          console.log('Error in addLibrary : ', error);
+          console.log('Error in addBook : ', error);
       });
       btn && btn.removeAttribute("disabled"); 
       let errorMessage = "";
       let successMessage = "";
       if(exitCode === 0 ){
-          successMessage = SUCCESS_MESSAGE_LIBRARY_ADDED;
-          if(lbInput.id !==null){
-              successMessage = SUCCESS_MESSAGE_LIBRARY_UPDATED;
+          successMessage = SUCCESS_MESSAGE_BOOK_ADDED;
+          if(bookInput.id !==null){
+              successMessage = SUCCESS_MESSAGE_BOOK_UPDATED;
           }
       }else {
           errorMessage = ERROR_MESSAGE_SERVER_SIDE_ERROR;
@@ -273,21 +297,21 @@ class LibraryGrid<T = {[data: string]: any}> extends React.Component<LibraryProp
           errorMessage: errorMessage
       });
   }
-  addLibrary = (e: any) => {
+  addBook = (e: any) => {
         const { id } = e.nativeEvent.target;
-        const {lbObj,libData} = this.state;
+        const {bookObj,bookData} = this.state;
         // if (!this.validateFields()) {
         //     return;
         //   }
-        let isValid = this.validateFields(lbObj,libData);
+        let isValid = this.validateFields(bookObj,bookData);
         if(isValid === false){
             return;
         }
-        const lbInput = this.getAddLibraryInput(lbObj);
-        this.doSave(lbInput, id);
+        const bookInput = this.getAddBookInput(bookObj);
+        this.doSave(bookInput, id);
 }
 render(){
-const {libData, isModalOpen,createLibraryFilterDataCache, lbObj, modelHeader, errorMessage, successMessage} = this.state;
+const {bookData, isModalOpen,createLibraryFilterDataCache, bookObj, modelHeader, errorMessage, successMessage} = this.state;
 return (
             // <main>
             //     <Modal isOpen={isModalOpen} className="react-strap-modal-container" style={{height:"500px", overflow:"auto"}}>
@@ -388,44 +412,110 @@ return (
               : null
       }
         <div className="bg-heading px-1 dfinline m-b-1">
-          <h5 className="mtf-8 dark-gray">Library Managementt</h5>
+          <h5 className="mtf-8 dark-gray">Library Management</h5>
         </div>
         <div id="headerRowDiv" className="b-1 h5-fee-bg j-between">
           <div className="m-1 fwidth">Add Book Data</div>
           <div id="saveLibraryCatDiv" className="fee-flex">
-            <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.addLibrary} style={{ width: '140px' }}>Add Book</button>
-            {/* <button className="btn btn-primary mr-1" id="btnUpdateFeeCategory" name="btnUpdateFeeCategory" onClick={this.addLibrary} style={{ width: '170px' }}>Update Book</button> */}
+            <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.addBook} style={{ width: '140px' }}>Add Book</button>
+            {/* <button className="btn btn-primary mr-1" id="btnUpdateFeeCategory" name="btnUpdateFeeCategory" onClick={this.addBook} style={{ width: '170px' }}>Update Book</button> */}
           </div>
         </div>
         <div id="feeCategoryDiv" className="b-1">
-         <div className="b1 row m-1 j-between">
+        <div className="form-grid">
            <div>
-            <label className="gf-form-label b-0 bg-transparent">Row Name <span style={{ color: 'red' }}> * </span></label>
-            <input type="text" required className="fwidth" style={{ width: '250px' }} onChange={this.onChange}  value={lbObj.clNo} placeholder="clNo" name="clNo" id="clNo"/>
+           <label htmlFor="">
+              Shelf Number <span style={{ color: 'red' }}> * </span></label>
+            <input type="text" 
+           required className="gf-form-input fwidth" 
+           maxLength={255} 
+            onChange={this.onChange}  
+            value={bookObj.shelfNo} 
+            placeholder="shelfNo" 
+            name="shelfNo" 
+            id="shelfNo"/>
+           </div>
+             <div>
+             <label htmlFor="">
+             Book Title<span style={{ color: 'red' }}> * </span></label>
+             <input type="text" 
+             required className="gf-form-input fwidth" 
+             maxLength={255}  
+             onChange={this.onChange}  
+             value={bookObj.bookTitle} 
+               placeholder="bookTitle" 
+               name="bookTitle" 
+               id="bookTitle"/>
+           </div>
+          <div>
+             <label htmlFor="">
+             Author<span style={{ color: 'red' }}> * </span></label>
+             <input type="text" 
+             required className="gf-form-input fwidth" 
+             maxLength={255}  
+             onChange={this.onChange}  
+             value={bookObj.author} 
+              placeholder="author" 
+              name="author" 
+              id="author"/>
            </div>
            <div>
-             <label className="gf-form-label b-0 bg-transparent">Book Title<span style={{ color: 'red' }}> * </span></label>
-             <input type="text" required className="fwidth" style={{ width: '250px' }} onChange={this.onChange}  value={lbObj.bookTitle} placeholder="bookTitle" name="bookTitle" id="bookTitle"/>
+             <label htmlFor="">
+             Publisher<span style={{ color: 'red' }}> * </span></label>
+             <input type="text" 
+             required className="gf-form-input fwidth" 
+             maxLength={255}  
+             onChange={this.onChange}  
+             value={bookObj.publisher} 
+             placeholder="publisher" 
+             name="publisher" 
+             id="publisher"/>
+           </div>
+          <div>
+             <label htmlFor="">
+             Edition<span style={{ color: 'red' }}> * </span></label>
+             <input type="text" 
+             required className="gf-form-input fwidth" 
+             maxLength={255}  
+             onChange={this.onChange}  
+             value={bookObj.edition} 
+             placeholder="edition" 
+             name="edition" 
+             id="edition"/>
            </div>
            <div>
-             <label className="gf-form-label b-0 bg-transparent">Book No</label>
-             <input type="text"  className="fwidth" style={{ width: '250px' }} onChange={this.onChange}  value={lbObj.bookNo} placeholder="bookNo" name="bookNo" id="bookNo"/>
+             <label htmlFor="">
+             No Of Copies<span style={{ color: 'red' }}> * </span></label>
+             <input type="text" 
+             required className="gf-form-input fwidth" 
+             maxLength={255}  
+             onChange={this.onChange}  
+             value={bookObj.noOfCopies} 
+              placeholder="noOfCopies" 
+              name="noOfCopies" 
+             id="noOfCopies"/>
            </div>
            <div>
-             <label className="gf-form-label b-0 bg-transparent">Author</label>
-             <input type="text"  className="fwidth" style={{ width: '250px' }} onChange={this.onChange}  value={lbObj.author} placeholder="author" name="author" id="author"/>
+             <label htmlFor="">
+             ISB Number<span style={{ color: 'red' }}> * </span></label>
+             <input type="text" 
+             required className="gf-form-input fwidth" 
+             maxLength={255}  
+             onChange={this.onChange}  
+             value={bookObj.isbNo} 
+             placeholder="isbNo" 
+             name="isbNo" 
+             id="isbNo"/>
            </div>
            <div>
-             <label className="gf-form-label b-0 bg-transparent">No Of Copies<span style={{ color: 'red' }}> * </span></label>
-             <input type="text" required className="fwidth" style={{ width: '250px' }} onChange={this.onChange}  value={lbObj.noOfCopies} placeholder="noOfCopies" name="noOfCopies" id="noOfCopies"/>
-           </div>
-           <div>
-             <label className="gf-form-label b-0 bg-transparent">Unique No</label>
-             <input type="text"  className="fwidth" style={{ width: '250px' }} onChange={this.onChange}  value={lbObj.uniqueNo} placeholder="uniqueNo" name="uniqueNo" id="uniqueNo"/>
-           </div>
-           <div>
-             <label className="gf-form-label b-0 bg-transparent">Department<span style={{ color: 'red' }}> * </span></label>
-              <select name="department" id="department" onChange={this.onChange}  value={libData.department.id} className="fwidth" style={{ width: '250px' }}>
+           <label htmlFor="">
+               Department<span style={{ color: 'red' }}> * </span></label>
+              <select required name="department" 
+              id="department" 
+              onChange={this.onChange}  
+              value={bookData.department.id} 
+              className="gf-form-input fwidth"
+              style={{ width: '255px' }}>
                 {/* {this.createDepartment(createLibraryFilterDataCache.departments)} */}
                 {createLibraryFilterDataCache !== null &&
                   createLibraryFilterDataCache !== undefined &&
@@ -439,27 +529,10 @@ return (
             </div>
           </div>
         </div>
-        {/* <div id="LibraryGrid" className="b-1">
-          <table className="fwidth" id="Librarytable">
-            <thead >
-             <tr>
-              <th>Id</th>
-              <th>clNo</th>
-              <th>bookTitle</th>
-              <th>bookNo</th>
-              <th>author</th>
-              <th>noOfCopies</th>
-              <th>Edit</th>
-             </tr>
-            </thead>
-            <tbody>
-               { this.createRows(lbList) }
-            </tbody>
-          </table>
-        </div> */}
+
       </section>
         );
     }
 }
 
-export default withApollo(LibraryGrid);
+export default withApollo(BookGrid);

@@ -1,0 +1,495 @@
+import * as React from 'react';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
+import { commonFunctions } from '../../_utilites/common.functions';
+import  "../../../css/custom.css";
+import '../../../css/college-settings.css';
+import '../../../css/tabs.css'; 
+import {MessageBox} from '../../Message/MessageBox'
+import { withApollo } from 'react-apollo';
+import { ADD_BOOK, CREATE_LIBRARY_FILTER_DATA_CACHE } from '../_queries';
+import * as moment from 'moment';
+import wsCmsBackendServiceSingletonClient from '../../../wsCmsBackendServiceClient';
+
+
+export interface BookProps extends React.HTMLAttributes<HTMLElement>{
+    [data: string]: any; 
+    bookList?:any;
+    bookData?:any;
+    departments?:any;
+    bookobj?:any;
+    bkObj?:any;
+    user?:any;
+    createLibraryFilterDataCache?: any;
+}
+const ERROR_MESSAGE_MANDATORY_FIELD_MISSING = 'Mandatory fields missing';
+const ERROR_MESSAGE_SERVER_ERROR = "Due to some error in book service, book could not be saved. Please check book service logs";
+const SUCCESS_MESSAGE_BOOK_ADDED = "New book saved successfully";
+const SUCCESS_MESSAGE_BOOK_UPDATED = "book updated successfully";
+const ERROR_MESSAGE_DATES_OVERLAP = "Due Date cannot be prior or same as Issue date";
+
+
+class BookGrid  extends React.Component<BookProps, any> {
+    constructor(props: any) {
+        super(props);
+        this.state = {     
+            booklist: this.props.booklist,
+            createLibraryFilterDataCache: this.props.createLibraryFilterDataCache,
+            // isModalOpen: false,
+            user: this.props.user,
+            bookobj: this.props.bookobj,
+            bkObj: this.props.data,
+            departments: this.props.departments,
+            errorMessage: '',
+            successMessage: '',
+            activeTab: 0,
+            booklistObj:{
+                shelfNo:'',
+                bookTitle:'',
+                author:'',
+                publisher:'',
+                edition:'',
+                noOfCopies:'',
+                isbNo:'',
+                departmentId:'',
+            },
+            bookData:{
+             department:{
+               id:'',
+             },  
+         },
+             department:[],
+        };  
+        this.createDepartment = this.createDepartment.bind(this);
+        this.getInput = this.getInput.bind(this); 
+        this.addBook = this.addBook.bind(this);
+        this.editInputValue = this.editInputValue.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.validateField = this.validateField.bind(this);
+        // this.save = this.save.bind(this);
+        this.toggleTab = this.toggleTab.bind(this);
+        this.doSave = this.doSave.bind(this);
+        this.getcreateLibraryFilterDataCache = this.getcreateLibraryFilterDataCache.bind(this);
+        }
+    
+  async componentDidMount(){
+    this.setState({
+      bkObj: this.props.data,
+    });
+  await this.registerSocket();
+    // console.log('check batches:', this.props.batches);
+    console.log('1.test bkObj data:', this.state.bkObj);
+    console.log('30. test bookobj data state:', this.state.bookobj);
+    console.log('40. test bookobj data props:', this.props.bookobj);
+    this.editInputValue();
+  }
+    async registerSocket() {
+        const socket = wsCmsBackendServiceSingletonClient.getInstance();
+    }
+
+ componentWillReceiveProps() {
+      this.setState({
+        bkObj: this.props.data,
+      });
+    //   console.log('check batches:', this.props.batches);
+      console.log('2. test bkObj data:', this.state.bkObj);
+      console.log('30. test bookobj data state:', this.state.bookobj);
+      console.log('40. test bookobj data props:', this.props.bookobj);
+      this.editInputValue();
+    }
+  
+    async getcreateLibraryFilterDataCache() {
+        const {data} = await this.props.client.query({
+          query: CREATE_LIBRARY_FILTER_DATA_CACHE,
+          variables: {
+          },
+    
+          fetchPolicy: 'no-cache',
+        });
+        this.setState({
+          createLibraryFilterDataCache: data,
+        });
+      }
+    createDepartment(departments: any) {
+        let departmentsOptions = [
+          <option key={0} value="">
+            Select department
+          </option>,
+        ];
+        for (let i = 0; i < departments.length; i++) {
+          let id = departments[i].id;
+            departmentsOptions.push(
+            <option key={id} value={id}>
+              {departments[i].name}
+            </option>
+          );
+        }
+        return departmentsOptions;
+      }
+      onChange = (e: any) => {
+        e.preventDefault();
+        const { name, value } = e.nativeEvent.target;
+        const { booklistObj, bookData } = this.state  
+        if (name === 'department') {
+          this.setState({
+            bookData: {
+              ...bookData,
+              department: {
+                id: value,
+              },
+            },
+          });
+        } else {
+          this.setState({
+            booklistObj: {
+              ...booklistObj,
+              [name]: value,
+            },
+            bookData: {
+              ...bookData,
+              [name]: value,
+            },
+            errorMessage: '',
+            successMessage: '',
+          });
+        }
+        commonFunctions.restoreTextBoxBorderToNormal(name);
+    }
+    toggleTab(tabNo: any) {
+        this.setState({
+          activeTab: tabNo,
+        });
+      }
+    async doSave(bookInput: any, id: any){
+        let btn = document.querySelector('#' +id);
+        btn && btn.setAttribute('disabled', 'true');
+        let exitCode = 0;
+        
+        await this.props.client.mutate({
+            mutation: ADD_BOOK,
+            variables: { 
+                input: bookInput,
+            },
+        }).then((resp: any) => {
+            console.log(
+                'Success in addBook Mutation. Exit code : '
+            // ,resp.data.addBook.cmsBookVo.exitCode
+            );
+            // exitCode = resp.data.addBook.cmsBookVo.exitCode;
+            // let temp = resp.data.addBook.cmsBookVo.dataList; 
+            // console.log("New Book list : ", temp);
+            // this.setState({
+                // bookList: temp  
+            // });
+        })
+        .catch((error: any) => {
+            exitCode = 1;
+            console.log('Error in addBook : ', error);
+        });
+        btn && btn.removeAttribute('disabled');
+
+        let errorMessage = '';
+        let successMessage = '';
+        if(exitCode === 0){
+            successMessage = SUCCESS_MESSAGE_BOOK_ADDED;
+            if(bookInput.id !== null) {
+                successMessage = SUCCESS_MESSAGE_BOOK_UPDATED;
+            }
+        }else {
+            errorMessage = ERROR_MESSAGE_SERVER_ERROR;
+        }
+        this.setState({
+            successMessage: successMessage,
+            errorMessage: errorMessage,
+        });
+    }
+    addBook = (e: any) => {
+        const { id } = e.nativeEvent.target;
+        const {booklistObj, bookData} = this.state;
+        // let isValid = this.validateField();
+        // if(isValid === false){
+        //     return;
+        // }
+        if(!this.validateField()){
+            return;
+        }
+        const bookInput = this.getInput(booklistObj);
+        this.doSave(bookInput, id);
+    }
+//     save = (e: any) => {
+//         const { id } = e.nativeEvent.target;
+//         const {booklistObj, bookData} = this.state;
+//         if (!this.validateField()) {
+//             this.toggleTab(0);
+//             return;
+//     }
+//     const bookInput = this.getInput(booklistObj);
+//       this.doSave(bookInput, id);
+// };
+
+
+ 
+// const bookInput = this.getInput(booklistObj);
+// this.doSave(bookInput, id);
+// }
+
+    
+    isMandatoryField(objValue: any, obj: any) {
+        let errorMessage = '';
+        if (objValue === undefined || objValue === null || objValue.trim() === '') {
+          let tempVal = '';
+          commonFunctions.changeTextBoxBorderToError(tempVal, obj);
+          errorMessage = ERROR_MESSAGE_MANDATORY_FIELD_MISSING;
+        }
+        return errorMessage;
+      }
+     
+    validateField() {
+        const {booklistObj, bookData} = this.state;
+         let errorMessage = this.isMandatoryField(booklistObj.shelfNo, 'shelfNo');
+         errorMessage = this.isMandatoryField(booklistObj.bookTitle, 'bookTitle');
+         errorMessage = this.isMandatoryField(booklistObj.noOfCopies, 'noOfCopies');
+         errorMessage = this.isMandatoryField(booklistObj.isbNo, 'isbNo');
+            errorMessage = this.isMandatoryField(
+                booklistObj.author,
+                'author'
+            );
+            errorMessage = this.isMandatoryField(
+                booklistObj.publisher,
+                'publisher'
+            );
+            errorMessage = this.isMandatoryField(
+                booklistObj.edition,
+                'edition'
+            );
+            this.setState({
+                errorMessage: errorMessage,
+              });
+              if (errorMessage !== '') {
+                return false;
+              }
+            //   this.toggleTab(0);
+              return true;
+            }
+        
+
+editInputValue() {
+    // e && e.preventDefault();
+    const {booklistObj,bookData } = this.state;
+    let bkValue: any = '';
+    bkValue = this.props.bookobj;
+    console.log('100. test bookobj data:', bkValue);
+    booklistObj.id = booklistObj.id;
+    booklistObj.shelfNo = booklistObj.shelfNo;
+    booklistObj.bookTitle = booklistObj.bookTitle;
+    booklistObj.author = booklistObj.author;
+    booklistObj.publisher = booklistObj.publisher;
+    booklistObj.edition = booklistObj.edition;
+    booklistObj.noOfCopies = booklistObj.noOfCopies;
+    booklistObj.isbNo = booklistObj.isbNo;
+    booklistObj.department = bookData.department.id;
+    this.setState(() => ({
+        booklistObj: booklistObj,
+       
+    }));
+}
+
+// editInputValue() {
+//     // e && e.preventDefault();
+//     const { departmentId, booklistObj, bkObj, bookData } = this.state;
+//     let bkValue: any = '';
+//     bkValue = this.props.bookobj;
+//     console.log('100. test bookobj data:', bkValue);
+//     this.setState({
+//         booklistObj: {
+//             ...booklistObj,
+//             id: bkValue.id,
+//             shelfNo: bkValue.shelfNo,
+//             bookTitle: bkValue.bookTitle,
+//             author: bkValue.author,
+//             publisher: bkValue.publisher,
+//             edition: bkValue.edition,
+//             noOfCopies: bkValue.noOfCopies,
+//             isbNo: bkValue.isbNo,
+//             departmentId: departmentId,
+//         },
+//     });
+//     return;
+// }
+
+ 
+  getInput(booklistObj: any){
+      const{bookData, bkObj} = this.state;
+        let bookInput = {
+            id:
+            booklistObj.id !== null || booklistObj.id !== undefined ||
+            booklistObj.id !== ''
+            ? booklistObj.id
+            : null,
+            shelfNo: booklistObj.shelfNo,
+            bookTitle: booklistObj.bookTitle,
+            author: booklistObj.author,
+            publisher: booklistObj.publisher,
+            edition: booklistObj.edition,
+            noOfCopies: booklistObj.noOfCopies,
+            isbNo: booklistObj.isbNo,
+            departmentId: bookData.department.id,   
+        };
+        return bookInput;
+    }
+
+    
+render() {
+const {isModalOpen, bList, activeTab,bookData, booklistObj,createLibraryFilterDataCache, errorMessage, successMessage,departmentId} = this.state;
+return (
+    <section className="plugin-bg-white p-1">
+       {
+          errorMessage !== ""  ? 
+              <MessageBox id="mbox" message={errorMessage} activeTab={2}/>        
+              : null}
+      { successMessage !== ""  ? 
+              <MessageBox id="mbox" message={successMessage} activeTab={1}/>        
+              : null
+      }<div className="bg-heading px-1 dfinline m-b-1">
+          <h5 className="mtf-8 dark-gray">Library Management</h5>
+        </div>
+        <div id="headerRowDiv" className="b-1 h5-fee-bg j-between">
+          <div className="m-1 fwidth">
+              Edit Book Data</div>
+          <div id="saveLibraryCatDiv" className="fee-flex">
+            <button className="btn btn-primary mr-1" id="btnSaveFeeCategory" name="btnSaveFeeCategory" onClick={this.addBook} style={{ width: '140px' }}>Update Book</button>
+            {/* <button className="btn btn-primary mr-1" id="btnUpdateFeeCategory" name="btnUpdateFeeCategory" onClick={this.addLibrary} style={{ width: '170px' }}>Update Book</button> */}
+          </div>
+        </div>
+        <div id="feeCategoryDiv" className="b-1">
+        <div className="form-grid">
+           <div>
+           <label htmlFor="">
+              Shelf Number <span style={{ color: 'red' }}> * </span></label>
+            <input type="text" 
+           required className="gf-form-input fwidth" 
+           maxLength={255} 
+            onChange={this.onChange}  
+            value={booklistObj.shelfNo} 
+            placeholder="shelfNo" 
+            name="shelfNo" 
+            id="shelfNo"/>
+           </div>
+             <div>
+             <label htmlFor="">
+             Book Title<span style={{ color: 'red' }}> * </span></label>
+             <input type="text" 
+             required className="gf-form-input fwidth" 
+             maxLength={255}  
+             onChange={this.onChange}  
+             value={booklistObj.bookTitle} 
+               placeholder="bookTitle" 
+               name="bookTitle" 
+               id="bookTitle"/>
+           </div>
+          <div>
+             <label htmlFor="">
+             Author<span style={{ color: 'red' }}> * </span></label>
+             <input type="text" 
+             required className="gf-form-input fwidth" 
+             maxLength={255}  
+             onChange={this.onChange}  
+             value={booklistObj.author} 
+              placeholder="author" 
+              name="author" 
+              id="author"/>
+           </div>
+           <div>
+             <label htmlFor="">
+             Publisher<span style={{ color: 'red' }}> * </span></label>
+             <input type="text" 
+             required className="gf-form-input fwidth" 
+             maxLength={255}  
+             onChange={this.onChange}  
+             value={booklistObj.publisher} 
+             placeholder="publisher" 
+             name="publisher" 
+             id="publisher"/>
+           </div>
+          <div>
+             <label htmlFor="">
+             Edition<span style={{ color: 'red' }}> * </span></label>
+             <input type="text" 
+             required className="gf-form-input fwidth" 
+             maxLength={255}  
+             onChange={this.onChange}  
+             value={booklistObj.edition} 
+             placeholder="edition" 
+             name="edition" 
+             id="edition"/>
+           </div>
+           <div>
+             <label htmlFor="">
+             No Of Copies<span style={{ color: 'red' }}> * </span></label>
+             <input type="text" 
+             required className="gf-form-input fwidth" 
+             maxLength={255}  
+             onChange={this.onChange}  
+             value={booklistObj.noOfCopies} 
+              placeholder="noOfCopies" 
+              name="noOfCopies" 
+             id="noOfCopies"/>
+           </div>
+           <div>
+             <label htmlFor="">
+             ISB Number<span style={{ color: 'red' }}> * </span></label>
+             <input type="text" 
+             required className="gf-form-input fwidth" 
+             maxLength={255}  
+             onChange={this.onChange}  
+             value={booklistObj.isbNo} 
+             placeholder="isbNo" 
+             name="isbNo" 
+             id="isbNo"/>
+           </div>
+           {/* <div>
+           <label htmlFor="">
+               Department<span style={{ color: 'red' }}> * </span></label>
+              <select required name="department" 
+              id="department" 
+              onChange={this.onChange}  
+              value={bookData.department.id} 
+              className="gf-form-input fwidth"
+              style={{ width: '255px' }}>
+                {createLibraryFilterDataCache !== null &&
+                  createLibraryFilterDataCache !== undefined &&
+                  createLibraryFilterDataCache.departments !== null &&
+                  createLibraryFilterDataCache.departments !== undefined
+                    ? this.createDepartment(
+                        createLibraryFilterDataCache.departments
+                      )
+                    : null}
+              </select>
+            </div> */}
+            <div>
+             <label className="gf-form-label b-0 bg-transparent">
+                 Department<span style={{ color: 'red' }}> * </span></label>
+              <select name="department" 
+              id="department" 
+              onChange={this.onChange}  
+              value={bookData.department.id} 
+              className="fwidth" 
+              style={{ width: '250px' }}>
+                {/* {this.createDepartment(createLibraryFilterDataCache.departments)} */}
+                {/* {createLibraryFilterDataCache !== null &&
+                  createLibraryFilterDataCache !== undefined &&
+                  createLibraryFilterDataCache.departments !== null &&
+                  createLibraryFilterDataCache.departments !== undefined
+                    ? this.createDepartment(
+                        createLibraryFilterDataCache.departments
+                      )
+                    : null} */}
+                    {this.createDepartment(this.state.departments)}
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+  );
+}
+}
+export default withApollo(BookGrid);
