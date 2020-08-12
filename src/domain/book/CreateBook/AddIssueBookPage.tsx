@@ -166,6 +166,8 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
                 <td>{obj.bookStatus}</td>
                 <td>{obj.book.bookTitle}</td>
                 <td>{(obj.strReceivedDate !== null && obj.strReceivedDate !== undefined) ? obj.strReceivedDate : ""}</td>
+                <td>{obj.student.rollNo}</td>
+                <td>{obj.student.studentName}</td>
                 <td>
                     {
                         <button className="btn btn-primary" onClick={e => this.showDetail(e, true, obj, "Edit IssueBook")}>Edit</button>
@@ -488,6 +490,8 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
                   <th>Book Status</th>
                   <th>Book Title</th>
                   <th>Received Date</th>
+                  <th>Student RollNo</th>
+                  <th>Student Name</th>
                   <th>Edit</th>
                   </tr>
               </thead>
