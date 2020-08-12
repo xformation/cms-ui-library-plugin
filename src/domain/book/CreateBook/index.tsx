@@ -6,7 +6,7 @@ import '../../../css/college-settings.css';
 import {withApollo} from 'react-apollo';
 import AddLibraryPage from './AddIssueBookPage';
 import AddBookPage from './AddBookPage';
-import {CREATE_LIBRARY_FILTER_DATA_CACHE} from '../_queries';
+import {CREATE_LIBRARY_FILTER_DATA_CACHE, ISSUE_BOOK_LIST, BOOK_LIST} from '../_queries';
 import AddIssueBookPage from './AddIssueBookPage';
 // import LibraryListPage from './LibraryListPage';
 import BookListPage from './BookListPage';
@@ -25,12 +25,16 @@ class Library extends React.Component<LibraryProps, any> {
       activeTab: 0,
       user: this.props.user,
       createLibraryFilterDataCache: null,
+      bookList: null,
+      issueBookList: null,
       branchId: null,
       academicYearId: null,
       departmentId: null,
     };
     this.toggleTab = this.toggleTab.bind(this);
     this.registerSocket = this.registerSocket.bind(this);
+    this.getBookList = this.getBookList.bind(this);
+    this.getIssueBookList = this.getIssueBookList.bind(this);
     this.getcreateLibraryFilterDataCache = this.getcreateLibraryFilterDataCache.bind(
       this
     );
@@ -43,6 +47,8 @@ class Library extends React.Component<LibraryProps, any> {
   // }
   async componentDidMount(){
     await this.registerSocket();
+    await this.getBookList();
+    await this.getIssueBookList();
   }
   async registerSocket() {
     const socket = wsCmsBackendServiceSingletonClient.getInstance();
@@ -98,6 +104,29 @@ class Library extends React.Component<LibraryProps, any> {
     });
   }
 
+  async getBookList(){
+    const { data } = await this.props.client.query({
+        query: BOOK_LIST,
+         fetchPolicy: 'no-cache'
+    })
+    this.setState({
+        bookList: data.getBookList
+    });
+    console.log("getBookList() : ", this.state.bookList);
+}
+
+  async getIssueBookList(){
+  const { data } = await this.props.client.query({
+      query: ISSUE_BOOK_LIST,
+       fetchPolicy: 'no-cache'
+  })
+  this.setState({
+      issueBookList: data.getIssueBookList
+  });
+  console.log("getIssueBookList() : ", this.state.issueBookList);
+}
+
+
   toggleTab(tabNo: any) {
     this.setState({
       activeTab: tabNo,
@@ -107,6 +136,7 @@ class Library extends React.Component<LibraryProps, any> {
     }
     if(tabNo===1){
       this.getcreateLibraryFilterDataCache();
+      this.getIssueBookList();
   }
   if(tabNo===2){
     this.getcreateLibraryFilterDataCache();
@@ -120,7 +150,7 @@ class Library extends React.Component<LibraryProps, any> {
 }
 
   render() {
-    const {activeTab, user, createLibraryFilterDataCache} = this.state;
+    const {activeTab, user, createLibraryFilterDataCache,issueBookList,bookList} = this.state;
     return (
       <section className="tab-container row vertical-tab-container">
         <Nav tabs className="pl-3 pl-3 mb-4 mt-4 col-sm-2">
@@ -188,8 +218,8 @@ class Library extends React.Component<LibraryProps, any> {
           <TabPane tabId={1}>
           {/* <AddBookPage/> */}
           {
-           user !== null && createLibraryFilterDataCache !== null?
-            <AddIssueBookPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
+           user !== null && createLibraryFilterDataCache !== null &&  bookList !== null && issueBookList !== null?
+            <AddIssueBookPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache} bookList={bookList} issueBookList={issueBookList}/>
               :
             null
         }
