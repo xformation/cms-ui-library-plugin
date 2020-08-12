@@ -20,6 +20,7 @@ export const ADD_ISSUE_BOOK = gql`
           departmentId
           bookId
           studentId
+          branchId
           student {
             id
             studentName
