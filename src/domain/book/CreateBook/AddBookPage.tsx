@@ -206,7 +206,7 @@ editBook(obj: any){
   getAddBookInput(bookObj: any, modelHeader: any){
     const{bookData}=this.state;
     let id = null;
-    if(modelHeader === "Edit Library"){
+    if(modelHeader === "Edit Book"){
         id = bookObj.id;
     }
     let bookInput = {
@@ -593,8 +593,8 @@ return (
   <th>Author</th>
   <th>Publisher</th>
   <th>Edition</th>
-  <th>No of Copies</th>
   <th>isbNo</th>
+  <th>No of Copies</th>
   <th>Edit</th>
 </tr>
 </thead>

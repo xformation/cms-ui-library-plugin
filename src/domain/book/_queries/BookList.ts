@@ -11,6 +11,7 @@ export const BOOK_LIST = gql`
       publisher
       author
       noOfCopies
+      isbNo
       departmentId
       department {
         id
