@@ -209,10 +209,11 @@ class Library extends React.Component<LibraryProps, any> {
         <TabContent activeTab={activeTab} className="col-sm-10 border-left p-t-1">
         <TabPane tabId={0}>
         {
-           user !== null && createLibraryFilterDataCache !== null?
-            <AddBookPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
-              :
-            null
+           user !== null && createLibraryFilterDataCache && bookList !== null &&(
+            <AddBookPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache} bookList={bookList}/>
+            //   :
+            // null
+           )
         }
         </TabPane>
           <TabPane tabId={1}>
