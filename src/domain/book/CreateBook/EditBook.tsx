@@ -360,12 +360,15 @@ editInputValue() {
   //   }
   getInput(booklistObj: any, modelHeader: any){
     const{bookData}=this.state;
-    let id = null;
-    if(modelHeader === "EditBook"){
-        id = booklistObj.id;
-    }
+    // let id = null;
+    // if(modelHeader === "EditBook"){
+    //     id = booklistObj.id;
+    // }
     let bookInput = {
-        id: id,
+      id:
+      booklistObj.id !== null || booklistObj.id !== undefined || booklistObj.id !== ''
+        ? booklistObj.id
+        : null,
         shelfNo: booklistObj.shelfNo,
         bookTitle: booklistObj.bookTitle,
         author: booklistObj.author,
