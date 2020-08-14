@@ -16,7 +16,7 @@ export interface IssueBookProps extends React.HTMLAttributes<HTMLElement>{
     student?:any;
     branchId: any;
     departmentId: any;
-    createLibraryFilterDataCache?: any;
+    createLibraryDataCache?: any;
 }
 
 const ERROR_MESSAGE_MANDATORY_FIELD_MISSING = "Mandatory fields missing";
@@ -31,7 +31,7 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
         super(props);
         this.state = {
           issueBookList: this.props.issueBookList,
-          createLibraryFilterDataCache: this.props.createLibraryFilterDataCache,
+          createLibraryDataCache: this.props.createLibraryDataCache,
           bookList: this.props.bookList,
           branchId: null,
           departmentId: null,
@@ -387,7 +387,7 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
     }
 
     render() {
-        const {issueBookList, isModalOpen,issueBookObj,bookList,createLibraryFilterDataCache, modelHeader, errorMessage, successMessage} = this.state;
+        const {issueBookList, isModalOpen,issueBookObj,bookList,createLibraryDataCache, modelHeader, errorMessage, successMessage} = this.state;
           return (
               <main>
                   <Modal isOpen={isModalOpen} className="react-strap-modal-container">
@@ -409,13 +409,13 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
                               <div className="fwidth-modal-text m-r-1">
                              <label htmlFor="">Student<span style={{ color: 'red' }}> * </span></label>
                                <select required name="studentId" id="studentId" onChange={this.onChange}  value={issueBookObj.studentId} className="gf-form-label b-0 bg-transparent">
-                                   {this.createStudent(createLibraryFilterDataCache.students)}
+                                   {this.createStudent(createLibraryDataCache.students)}
                                  </select>
                                </div>
                                <div className="fwidth-modal-text m-r-1">
                                  <label htmlFor="">Year<span style={{ color: 'red' }}> * </span></label>
                                   <select required name="batchId" id="batchId" onChange={this.onChange}  value={issueBookObj.batchId} className="gf-form-label b-0 bg-transparent">
-                                     {this.createBatch(createLibraryFilterDataCache.batches)}
+                                     {this.createBatch(createLibraryDataCache.batches)}
                                 </select>
                                </div>
                              </div>

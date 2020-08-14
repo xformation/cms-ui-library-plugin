@@ -19,7 +19,10 @@ export interface BookProps extends React.HTMLAttributes<HTMLElement>{
     bookobj?:any;
     bkObj?:any;
     user?:any;
-    createLibraryFilterDataCache?: any;
+    onSaveUpdate?: any;
+    createLibraryDataCache?: any;
+    departmentList: any;
+
 }
 const ERROR_MESSAGE_MANDATORY_FIELD_MISSING = 'Mandatory fields missing';
 const ERROR_MESSAGE_SERVER_ERROR = "Due to some error in book service, book could not be saved. Please check book service logs";
@@ -28,21 +31,25 @@ const SUCCESS_MESSAGE_BOOK_UPDATED = "book updated successfully";
 const ERROR_MESSAGE_DATES_OVERLAP = "Due Date cannot be prior or same as Issue date";
 
 
-class BookGrid  extends React.Component<BookProps, any> {
-    constructor(props: any) {
+class BookGrid<T = {[data: string]: any}> extends React.Component<BookProps, any> {
+    constructor(props: BookProps) {
         super(props);
         this.state = {     
-            booklist: this.props.booklist,
-            createLibraryFilterDataCache: this.props.createLibraryFilterDataCache,
-            // isModalOpen: false,
+            bookList: this.props.bookList,
+            createLibraryDataCache: this.props.createLibraryDataCache,
+            isModalOpen: false,
             user: this.props.user,
             bookobj: this.props.bookobj,
             bkObj: this.props.data,
+            departmentList: this.props.departmentList,
             departments: this.props.departments,
             errorMessage: '',
             successMessage: '',
             activeTab: 0,
             booklistObj:{
+              // department:{
+              //   id:""
+              // },
                 shelfNo:'',
                 bookTitle:'',
                 author:'',
@@ -54,10 +61,10 @@ class BookGrid  extends React.Component<BookProps, any> {
             },
             bookData:{
              department:{
-               id:'',
+               id:''
              },  
          },
-             department:[],
+            //  departments:[],
         };  
         this.createDepartment = this.createDepartment.bind(this);
         this.getInput = this.getInput.bind(this); 
@@ -106,7 +113,7 @@ class BookGrid  extends React.Component<BookProps, any> {
           fetchPolicy: 'no-cache',
         });
         this.setState({
-          createLibraryFilterDataCache: data,
+          createLibraryDataCache: data,
         });
       }
     createDepartment(departments: any) {
@@ -128,7 +135,7 @@ class BookGrid  extends React.Component<BookProps, any> {
       onChange = (e: any) => {
         e.preventDefault();
         const { name, value } = e.nativeEvent.target;
-        const { booklistObj, bookData } = this.state  
+        const { booklistObj, bookData } = this.state;
         if (name === 'department') {
           this.setState({
             bookData: {
@@ -172,21 +179,20 @@ class BookGrid  extends React.Component<BookProps, any> {
         }).then((resp: any) => {
             console.log(
                 'Success in addBook Mutation. Exit code : '
-            // ,resp.data.addBook.cmsBookVo.exitCode
+            ,resp.data.addBook.cmsBookVo.exitCode
             );
-            // exitCode = resp.data.addBook.cmsBookVo.exitCode;
-            // let temp = resp.data.addBook.cmsBookVo.dataList; 
-            // console.log("New Book list : ", temp);
-            // this.setState({
-                // bookList: temp  
-            // });
+            exitCode = resp.data.addBook.cmsBookVo.exitCode;
+            let temp = resp.data.addBook.cmsBookVo.dataList; 
+            console.log("New Book list : ", temp);
+            this.setState({
+                bookList: temp  
+            });
         })
         .catch((error: any) => {
             exitCode = 1;
             console.log('Error in addBook : ', error);
         });
         btn && btn.removeAttribute('disabled');
-
         let errorMessage = '';
         let successMessage = '';
         if(exitCode === 0){
@@ -204,15 +210,19 @@ class BookGrid  extends React.Component<BookProps, any> {
     }
     addBook = (e: any) => {
         const { id } = e.nativeEvent.target;
-        const {booklistObj, bookData} = this.state;
+        const {booklistObj, bookData,modelHeader} = this.state;
         // let isValid = this.validateField();
         // if(isValid === false){
         //     return;
         // }
-        if(!this.validateField()){
+        // if(!this.validateField()){
+        //     return;
+        // }
+        let isValid = this.validateField(booklistObj,bookData);
+        if(isValid === false){
             return;
         }
-        const bookInput = this.getInput(booklistObj);
+        const bookInput = this.getInput(booklistObj, modelHeader);
         this.doSave(bookInput, id);
     }
 //     save = (e: any) => {
@@ -243,103 +253,133 @@ class BookGrid  extends React.Component<BookProps, any> {
         return errorMessage;
       }
      
-    validateField() {
-        const {booklistObj, bookData} = this.state;
-         let errorMessage = this.isMandatoryField(booklistObj.shelfNo, 'shelfNo');
-         errorMessage = this.isMandatoryField(booklistObj.bookTitle, 'bookTitle');
-         errorMessage = this.isMandatoryField(booklistObj.noOfCopies, 'noOfCopies');
-         errorMessage = this.isMandatoryField(booklistObj.isbNo, 'isbNo');
-            errorMessage = this.isMandatoryField(
-                booklistObj.author,
-                'author'
-            );
-            errorMessage = this.isMandatoryField(
-                booklistObj.publisher,
-                'publisher'
-            );
-            errorMessage = this.isMandatoryField(
-                booklistObj.edition,
-                'edition'
-            );
-            this.setState({
-                errorMessage: errorMessage,
-              });
-              if (errorMessage !== '') {
-                return false;
-              }
-            //   this.toggleTab(0);
-              return true;
+    validateField(booklistObj: any, bookData: any) {
+        let isValid = true;
+        let errorMessage = ""
+        if(booklistObj.shelfNo === undefined || booklistObj.shelfNo === null || booklistObj.shelfNo === ""){
+            commonFunctions.changeTextBoxBorderToError((booklistObj.shelfNo === undefined || booklistObj.shelfNo === null) ? "" : booklistObj.shelfNo, "shelfNo");
+            errorMessage = ERROR_MESSAGE_MANDATORY_FIELD_MISSING;
+            isValid = false;
+        }
+        if(booklistObj.bookTitle === undefined || booklistObj.bookTitle === null || booklistObj.bookTitle === ""){
+            commonFunctions.changeTextBoxBorderToError((booklistObj.bookTitle === undefined || booklistObj.bookTitle === null) ? "" : booklistObj.bookTitle , "bookTitle");
+            errorMessage = ERROR_MESSAGE_MANDATORY_FIELD_MISSING;
+            isValid = false;
+        }
+        if(booklistObj.noOfCopies === undefined || booklistObj.noOfCopies === null || booklistObj.noOfCopies === ""){
+            commonFunctions.changeTextBoxBorderToError((booklistObj.noOfCopies === undefined || booklistObj.noOfCopies === null) ? "" : booklistObj.noOfCopies, "noOfCopies");
+            errorMessage = ERROR_MESSAGE_MANDATORY_FIELD_MISSING;
+            isValid = false;
             }
-        
+            if(bookData.department.id === undefined || bookData.department.id === null || bookData.department.id === ""){
+              commonFunctions.changeTextBoxBorderToError((bookData.department.id === undefined || bookData.department.id === null) ? "" : bookData.department.id, "department");
+              errorMessage = ERROR_MESSAGE_MANDATORY_FIELD_MISSING;
+              isValid = false;
+          }
+            this.setState({
+              errorMessage: errorMessage
+          });
+          return isValid; 
+          }   
+
+// editInputValue(obj: any) {
+//   const { booklistObj } = this.state;
+//   let txtSn: any = document.querySelector("#shelfNo");
+//   let txtBt: any = document.querySelector("#bookTitle");
+//   let txtAu: any = document.querySelector("#author");
+//   let txtPb: any = document.querySelector("#publisher");
+//   let txtEd: any = document.querySelector("#edition");
+//   let txtNc: any = document.querySelector("#noOfCopies");
+//   let txtIn: any = document.querySelector("#isbNo");
+  
+//   txtSn.value = obj.shelfNumber;
+//   txtBt.value = obj.bookTitle;
+//   txtAu.value = obj.author;
+//   txtPb.value = obj.publisher;
+//   txtEd.value = obj.edition;
+//   txtNc.value = obj.noOfCopies;
+//   txtIn.value = obj.isbNo;
+
+//   booklistObj.book.id = obj.id;
+//   booklistObj.shelfNo = obj.shelfNo;
+//   booklistObj.bookTitle = obj.bookTitle;
+//   booklistObj.author = obj.author;
+//   booklistObj.publisher = obj.publisher;
+//   booklistObj.edition = obj.edition;
+//   booklistObj.noOfCopies = obj.noOfCopies;
+//   booklistObj.isbNo = obj.isbNo;
+
+//   this.setState({
+    
+//     booklistObj: booklistObj
+//   });
+// }
 
 editInputValue() {
     // e && e.preventDefault();
-    const {booklistObj,bookData } = this.state;
+    const { booklistObj, bkObj, bookData } = this.state;
     let bkValue: any = '';
     bkValue = this.props.bookobj;
     console.log('100. test bookobj data:', bkValue);
-    booklistObj.id = booklistObj.id;
-    booklistObj.shelfNo = booklistObj.shelfNo;
-    booklistObj.bookTitle = booklistObj.bookTitle;
-    booklistObj.author = booklistObj.author;
-    booklistObj.publisher = booklistObj.publisher;
-    booklistObj.edition = booklistObj.edition;
-    booklistObj.noOfCopies = booklistObj.noOfCopies;
-    booklistObj.isbNo = booklistObj.isbNo;
-    booklistObj.department = bookData.department.id;
-    this.setState(() => ({
-        booklistObj: booklistObj,
-       
-    }));
+    this.setState({
+        booklistObj: {
+            ...booklistObj,
+            id: bkValue.id,
+            shelfNo: bkValue.shelfNo,
+            bookTitle: bkValue.bookTitle,
+            author: bkValue.author,
+            publisher: bkValue.publisher,
+            edition: bkValue.edition,
+            noOfCopies: bkValue.noOfCopies,
+            isbNo: bkValue.isbNo,
+            departmentId: bkValue.departmentId,
+        },
+    });
+    return;
 }
 
-// editInputValue() {
-//     // e && e.preventDefault();
-//     const { departmentId, booklistObj, bkObj, bookData } = this.state;
-//     let bkValue: any = '';
-//     bkValue = this.props.bookobj;
-//     console.log('100. test bookobj data:', bkValue);
-//     this.setState({
-//         booklistObj: {
-//             ...booklistObj,
-//             id: bkValue.id,
-//             shelfNo: bkValue.shelfNo,
-//             bookTitle: bkValue.bookTitle,
-//             author: bkValue.author,
-//             publisher: bkValue.publisher,
-//             edition: bkValue.edition,
-//             noOfCopies: bkValue.noOfCopies,
-//             isbNo: bkValue.isbNo,
-//             departmentId: departmentId,
-//         },
-//     });
-//     return;
-// }
-
  
-  getInput(booklistObj: any){
-      const{bookData, bkObj} = this.state;
-        let bookInput = {
-            id:
-            booklistObj.id !== null || booklistObj.id !== undefined ||
-            booklistObj.id !== ''
-            ? booklistObj.id
-            : null,
-            shelfNo: booklistObj.shelfNo,
-            bookTitle: booklistObj.bookTitle,
-            author: booklistObj.author,
-            publisher: booklistObj.publisher,
-            edition: booklistObj.edition,
-            noOfCopies: booklistObj.noOfCopies,
-            isbNo: booklistObj.isbNo,
-            departmentId: bookData.department.id,   
-        };
-        return bookInput;
+  // getInput(booklistObj: any){
+  //     const{bookData, departmentId, bkObj} = this.state;
+  //       let bookInput = {
+  //           id:
+  //           booklistObj.id !== null || booklistObj.id !== undefined ||
+  //           booklistObj.id !== ''
+  //           ? booklistObj.id
+  //           : null,
+  //           shelfNo: booklistObj.shelfNo,
+  //           bookTitle: booklistObj.bookTitle,
+  //           author: booklistObj.author,
+  //           publisher: booklistObj.publisher,
+  //           edition: booklistObj.edition,
+  //           noOfCopies: booklistObj.noOfCopies,
+  //           isbNo: booklistObj.isbNo,
+  //           departmentId: bookData.department.id,   
+  //       };
+  //       return bookInput;
+  //   }
+  getInput(booklistObj: any, modelHeader: any){
+    const{bookData}=this.state;
+    let id = null;
+    if(modelHeader === "EditBook"){
+        id = booklistObj.id;
     }
-
+    let bookInput = {
+        id: id,
+        shelfNo: booklistObj.shelfNo,
+        bookTitle: booklistObj.bookTitle,
+        author: booklistObj.author,
+        publisher: booklistObj.publisher,
+        edition: booklistObj.edition,
+        noOfCopies: booklistObj.noOfCopies,
+        isbNo: booklistObj.isbNo,
+        departmentId: bookData.department.id,
+    };
+    return bookInput;
+}
     
 render() {
-const {isModalOpen, bList, activeTab,bookData, booklistObj,createLibraryFilterDataCache, errorMessage, successMessage,departmentId} = this.state;
+const {isModalOpen, bList, activeTab,bookData, booklistObj,createLibraryDataCache, errorMessage, successMessage,departmentId} = this.state;
 return (
     <section className="plugin-bg-white p-1">
        {
@@ -455,24 +495,24 @@ return (
               value={bookData.department.id} 
               className="gf-form-input fwidth"
               style={{ width: '255px' }}>
-                {createLibraryFilterDataCache !== null &&
-                  createLibraryFilterDataCache !== undefined &&
-                  createLibraryFilterDataCache.departments !== null &&
-                  createLibraryFilterDataCache.departments !== undefined
+                {createLibraryDataCache !== null &&
+                  createLibraryDataCache !== undefined &&
+                  createLibraryDataCache.departments !== null &&
+                  createLibraryDataCache.departments !== undefined
                     ? this.createDepartment(
-                        createLibraryFilterDataCache.departments
+                        createLibraryDataCache.departments
                       )
                     : null}
               </select>
             </div> */}
-            <div>
+           <div>
              <label className="gf-form-label b-0 bg-transparent">
                  Department<span style={{ color: 'red' }}> * </span></label>
-              <select name="department" 
-              id="department" 
-              onChange={this.onChange}  
-              value={bookData.department.id} 
-              className="fwidth" 
+              <select name="department"
+              id="department"
+              onChange={this.onChange}
+              value={bookData.department.id}
+              className="fwidth"
               style={{ width: '250px' }}>
                 {/* {this.createDepartment(createLibraryFilterDataCache.departments)} */}
                 {/* {createLibraryFilterDataCache !== null &&

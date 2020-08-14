@@ -24,7 +24,7 @@ class Library extends React.Component<LibraryProps, any> {
     this.state = {
       activeTab: 0,
       user: this.props.user,
-      createLibraryFilterDataCache: null,
+      createLibraryDataCache: null,
       bookList: null,
       issueBookList: null,
       branchId: null,
@@ -81,7 +81,7 @@ class Library extends React.Component<LibraryProps, any> {
     //   fetchPolicy: 'no-cache',
     // });
     // this.setState({
-    //   createLibraryFilterDataCache: data,
+    //   createLibraryDataCache: data,
     // });
   }
 
@@ -100,7 +100,7 @@ class Library extends React.Component<LibraryProps, any> {
       fetchPolicy: 'no-cache',
     });
     this.setState({
-      createLibraryFilterDataCache: data,
+      createLibraryDataCache: data,
     });
   }
 
@@ -150,7 +150,7 @@ class Library extends React.Component<LibraryProps, any> {
 }
 
   render() {
-    const {activeTab, user, createLibraryFilterDataCache,issueBookList,bookList} = this.state;
+    const {activeTab, user, createLibraryDataCache,issueBookList,bookList} = this.state;
     return (
       <section className="tab-container row vertical-tab-container">
         <Nav tabs className="pl-3 pl-3 mb-4 mt-4 col-sm-2">
@@ -209,8 +209,8 @@ class Library extends React.Component<LibraryProps, any> {
         <TabContent activeTab={activeTab} className="col-sm-10 border-left p-t-1">
         <TabPane tabId={0}>
         {
-           user !== null && createLibraryFilterDataCache && bookList !== null &&(
-            <AddBookPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache} bookList={bookList}/>
+           user !== null && createLibraryDataCache && (
+            <AddBookPage user={user} createLibraryDataCache={createLibraryDataCache.createLibraryDataCache}/>
             //   :
             // null
            )
@@ -219,24 +219,25 @@ class Library extends React.Component<LibraryProps, any> {
           <TabPane tabId={1}>
           {/* <AddBookPage/> */}
           {
-           user !== null && createLibraryFilterDataCache !== null &&  bookList !== null && issueBookList !== null?
-            <AddIssueBookPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache} bookList={bookList} issueBookList={issueBookList}/>
+           user !== null && createLibraryDataCache !== null &&  bookList !== null && issueBookList !== null?
+            <AddIssueBookPage user={user} createLibraryDataCache={createLibraryDataCache.createLibraryDataCache} bookList={bookList} issueBookList={issueBookList}/>
               :
             null
         }
           </TabPane>
           <TabPane tabId={2}>
           {
-           user !== null && createLibraryFilterDataCache !== null?
-            <BookListPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
-              :
-            null
+           user !== null && createLibraryDataCache  &&  bookList !== null &&(
+            <BookListPage user={user} createLibraryDataCache={createLibraryDataCache.createLibraryDataCache} bookList={bookList} />
+              // :
+            // null
+           )
         }
           </TabPane> 
           {/* {/* <TabPane tabId={3}>
           {
-           user !== null && createLibraryFilterDataCache !== null?
-            <LibraryListPage user={user} createLibraryFilterDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
+           user !== null && createLibraryDataCache !== null?
+            <LibraryListPage user={user} createLibraryDataCache={createLibraryFilterDataCache.createLibraryDataCache}/>
               :
             null
         }

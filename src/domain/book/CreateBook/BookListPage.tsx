@@ -22,8 +22,8 @@ type BookTableStates = {
   pageSize: any,
   search: any,
   activeTab: any,
-  bookObj: any,
-  createLibraryFilterDataCache: any,
+  bookobj: any,
+  createLibraryDataCache: any,
   branchId: any,
   academicYearId: any,
   departmentId: any,
@@ -33,18 +33,18 @@ type BookTableStates = {
 export interface BookListProps extends React.HTMLAttributes<HTMLElement> {
     [data: string]: any;
     user?: any;
-    createLibraryFilterDataCache?: any;
+    createLibraryDataCache?: any;
   }
 
 class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps, BookTableStates> {
-  constructor(props: BookListProps) {
+  constructor(props: any) {
     super(props);
     const params = new URLSearchParams(location.search);
     this.state = {
       activeTab: 2,
-      bookObj: {},
+      bookobj: {},
       user: this.props.user,
-      createLibraryFilterDataCache: this.props.createLibraryFilterDataCache,
+      createLibraryDataCache: this.props.createLibraryDataCache,
       branchId: null,
       academicYearId: null,
       departmentId: null,
@@ -83,6 +83,10 @@ class BookTable<T = {[data: string]: any}> extends React.Component<BookListProps
   } 
   async componentDidMount(){
     await this.registerSocket();
+    console.log(
+      '5. check create catch departments:',
+      this.state.createLibraryDataCache.departments
+    );
   }
   
 
@@ -98,7 +102,7 @@ async getcreateLibraryFilterDataCache() {
       fetchPolicy: 'no-cache',
     });
     this.setState({
-      createLibraryFilterDataCache: data,
+      createLibraryDataCache: data,
     });
   }
 
@@ -214,7 +218,7 @@ async getcreateLibraryFilterDataCache() {
                         <button className="btn btn-primary" 
                         onClick={(e: any) => this.showDetails(book, e)}>
                             {' '}
-                            Edit{' '}
+                            Edit Book{' '}
                         </button>
                     
                 </td>
@@ -261,7 +265,7 @@ async getcreateLibraryFilterDataCache() {
                         <button className="btn btn-primary" 
                         onClick={(e: any) => this.showDetails(book, e)}>
                             {' '}
-                            Edit{' '}
+                            Edit Book{' '}
                             </button>
                     
                 </td>
@@ -322,20 +326,20 @@ async getcreateLibraryFilterDataCache() {
  
   async showDetails(obj: any, e: any) {
     await this.SetObject(obj);
-    console.log('3. data in bookObj:', this.state.bookObj);
+    console.log('3. data in bookobj:', this.state.bookobj);
     await this.toggleTab(1);
   }
 
   async showDetail(obj: any, e: any) {
     await this.SetObject(obj);
-    console.log('3. data in bookObj:', this.state.bookObj);
+    console.log('3. data in bookobj:', this.state.bookobj);
     await this.toggleTab(0);
   }
 
   async SetObject(obj: any) {
     console.log('1. setting object :', obj);
     await this.setState({
-      bookObj: obj,
+      bookobj: obj,
     });
     console.log('2. data in obj:', obj);
   }
@@ -406,7 +410,7 @@ async getcreateLibraryFilterDataCache() {
 
 
   render() {
-    const { createLibraryFilterDataCache, departmentId, bookData, activeTab, user,  } = this.state;
+    const { createLibraryDataCache, departmentId, bookData, activeTab, user,  } = this.state;
   
     return (
       <section className="customCss">
@@ -430,12 +434,12 @@ async getcreateLibraryFilterDataCache() {
                   value={bookData.book.id}
                   className="gf-form-input max-width-22"
                 >
-                  {createLibraryFilterDataCache !== null &&
-                  createLibraryFilterDataCache !== undefined &&
-                  createLibraryFilterDataCache.books !== null &&
-                  createLibraryFilterDataCache.books !== undefined
+                  {createLibraryDataCache !== null &&
+                  createLibraryDataCache !== undefined &&
+                  createLibraryDataCache.books !== null &&
+                  createLibraryDataCache.books !== undefined
                     ? this.createBook(
-                        createLibraryFilterDataCache.books
+                        createLibraryDataCache.books
                       )
                     : null}
                 </select>
@@ -546,8 +550,9 @@ async getcreateLibraryFilterDataCache() {
                   </a>
                 </div>
               </div>
-              {this.state.bookObj !== null && this.state.bookObj !== undefined && (
-                <BookDetails data={this.state.bookObj} />
+              {this.state.bookobj !== null && 
+              this.state.bookobj !== undefined && (
+                <BookDetails data={this.state.bookobj} />
               )}
             </div>
           </TabPane>
@@ -577,13 +582,13 @@ async getcreateLibraryFilterDataCache() {
                 </div>
               </div>
               {user !== null &&
-                this.state.bookObj !== null &&
-                this.state.bookObj !== undefined && (
+                this.state.bookobj !== null &&
+                this.state.bookobj !== undefined && (
                   <EditBook
                     user={user}
-                    data={this.state.bookObj}
-                    bObj={this.state.bookObj}
-                    departments={this.state.createLibraryFilterDataCache.departments}/>
+                    data={this.state.bookobj}
+                    bookobj={this.state.bookobj}
+                    departments={this.state.createLibraryDataCache.departments}/>
                 )}
             </div>
           </TabPane>
