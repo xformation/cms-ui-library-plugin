@@ -131,7 +131,7 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
         e && e.preventDefault();
         const { issueBookObj } = this.state;
         issueBookObj.id = editObj.id;
-        issueBookObj.noOfCopies = editObj.noOfCopies;
+        // issueBookObj.noOfCopies = editObj.noOfCopies;
         issueBookObj.bookStatus = editObj.bookStatus;
         issueBookObj.bookId = editObj.bookId;
         issueBookObj.studentId = editObj.studentId;
@@ -450,16 +450,7 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
                                         }
                                         </select>
                                  </div> 
-                               </div>
-                               <div className="fwidth-modal-text m-r-1">
-                                 <label className="gf-form-label b-0 bg-transparent">IssueDate <span style={{ color: 'red' }}> * </span></label>
-                              <input type="Date" required className="gf-form-input" onChange={this.onChange}  value={issueBookObj.issueDate} placeholder="issueDate" name="issueDate" id="issueDate" maxLength={255} />
-                               </div>
-                              <div className="fwidth-modal-text m-r-1">
-                                <label className="gf-form-label b-0 bg-transparent">DueDate <span style={{ color: 'red' }}> * </span></label>
-                                 <input type="Date" required className="gf-form-input" onChange={this.onChange}  value={issueBookObj.dueDate} placeholder="dueDate" name="dueDate" id="dueDate" maxLength={255} />
-                               </div>
-                               <div className="fwidth-modal-text m-r-1">
+                                 <div className="fwidth-modal-text m-r-1">
                                         <label className="gf-form-label b-0 bg-transparent">No Of Copies<span style={{ color: 'red' }}> * </span></label>
                                         <select name="bookId" id="bookId" onChange={this.onChange} value={issueBookObj.bookId} className="gf-form-label b-0 bg-transparent">
                                         <option value="">Select No Of Copies</option>
@@ -468,18 +459,22 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
                                         }
                                         </select>
                                  </div>
+                               </div>
+                               <div className="mdflex modal-fwidth">
+                               <div className="fwidth-modal-text m-r-1">
+                                 <label className="gf-form-label b-0 bg-transparent">IssueDate <span style={{ color: 'red' }}> * </span></label>
+                              <input type="Date" required className="gf-form-input" onChange={this.onChange}  value={issueBookObj.issueDate} placeholder="issueDate" name="issueDate" id="issueDate" maxLength={255} />
+                               </div>
+                              <div className="fwidth-modal-text m-r-1">
+                                <label className="gf-form-label b-0 bg-transparent">DueDate <span style={{ color: 'red' }}> * </span></label>
+                                 <input type="Date" required className="gf-form-input" onChange={this.onChange}  value={issueBookObj.dueDate} placeholder="dueDate" name="dueDate" id="dueDate" maxLength={255} />
+                               </div>
+                               </div>
                                {/* <div className="fwidth-modal-text m-r-1 ">
                                   <label className="gf-form-label b-0 bg-transparent">No Of Copies<span style={{ color: 'red' }}> * </span></label>
                                   <input type="text"  className="gf-form-input" onChange={this.onChange}  value={issueBookObj.noOfCopies} placeholder="noOfCopies" name="noOfCopies" id="noOfCopies" maxLength={250}/>
                                 </div>  */}
-                               {
-                                        modelHeader === "Edit IssueBook" ? 
-                               <div className="fwidth-modal-text">
-                              <label className="gf-form-label b-0 bg-transparent">No Of Copies Available <span style={{ color: 'red' }}> * </span></label>
-                              <input type="text"  className="gf-form-input" onChange={this.onChange}  value={issueBookObj.noOfCopiesAvailable} placeholder="noOfCopiesAvailable" name="noOfCopiesAvailable" id="noOfCopiesAvailable" maxLength={250}/>
-                              </div>
-                              : <div className="fwidth-modal-text">&nbsp;</div>
-                            } 
+                              
                                {
                                         modelHeader === "Edit IssueBook" ? 
                               <div className="fwidth-modal-text">
@@ -498,6 +493,14 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
                                        <option key={"NOTRECEIVED"} value={"NOTRECEIVED"}>NOTRECEIVED</option>
                                    </select>
                               </div>
+                              {
+                                        modelHeader === "Edit IssueBook" ? 
+                               <div className="fwidth-modal-text">
+                              <label className="gf-form-label b-0 bg-transparent">No Of Copies Available <span style={{ color: 'red' }}> * </span></label>
+                              <input type="text"  className="gf-form-input" onChange={this.onChange}  value={issueBookObj.noOfCopiesAvailable} placeholder="noOfCopiesAvailable" name="noOfCopiesAvailable" id="noOfCopiesAvailable" maxLength={250}/>
+                              </div>
+                              : <div className="fwidth-modal-text">&nbsp;</div>
+                            } 
                                <div className="m-t-1 text-center">
                                        {
                                           modelHeader === "Add IssueBook" ?

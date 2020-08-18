@@ -33,6 +33,7 @@ export const ISSUE_BOOK_LIST = gql`
         id
         shelfNo
         bookTitle
+        noOfCopies
       }
     }
   }
