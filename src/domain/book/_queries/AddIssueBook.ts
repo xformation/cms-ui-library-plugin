@@ -11,6 +11,7 @@ export const ADD_ISSUE_BOOK = gql`
           issueDate
           dueDate
           noOfCopiesAvailable
+
           bookStatus
           receivedDate
           strIssueDate
@@ -29,6 +30,7 @@ export const ADD_ISSUE_BOOK = gql`
           book {
             id
             bookTitle
+            noOfCopies
           }
           department {
             id

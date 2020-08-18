@@ -41,6 +41,7 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
               dueDate:"",
               receivedDate: "",
               noOfCopiesAvailable:"",
+              // noOfCopies:"",
               bookStatus:"",
               bookId:"",
               batchId:"",
@@ -59,6 +60,8 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
         this.createBatch = this.createBatch.bind(this); 
         this.createStudent = this.createStudent.bind(this); 
         this.registerSocket = this.registerSocket.bind(this);
+            this.isDatesOverlap = this.isDatesOverlap.bind(this);
+
     }
 
     async componentDidMount(){
@@ -128,16 +131,20 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
         e && e.preventDefault();
         const { issueBookObj } = this.state;
         issueBookObj.id = editObj.id;
-        issueBookObj.noOfCopiesAvailable = editObj.noOfCopiesAvailable;
+        issueBookObj.noOfCopies = editObj.noOfCopies;
         issueBookObj.bookStatus = editObj.bookStatus;
         issueBookObj.bookId = editObj.bookId;
         issueBookObj.studentId = editObj.studentId;
         issueBookObj.batchId = editObj.batchId;
         issueBookObj.issueDate = moment(editObj.strIssueDate,"DD-MM-YYYY").format("YYYY-MM-DD");
         issueBookObj.dueDate =moment(editObj.strDueDate,"DD-MM-YYYY").format("YYYY-MM-DD");
+        if(editObj.noOfCopiesAvailable !== null && editObj.noOfCopiesAvailable !== undefined){
+          issueBookObj.noOfCopiesAvailable = editObj.noOfCopiesAvailable;
+          } 
         if(editObj.strReceivedDate !== null && editObj.strReceivedDate !== undefined){
             issueBookObj.receivedDate =moment(editObj.strReceivedDate,"DD-MM-YYYY").format("YYYY-MM-DD");
         }
+    
         this.setState(() => ({
             isModalOpen: bShow,
             issueBookObj: issueBookObj,
@@ -146,7 +153,13 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
             successMessage: "",
         }));
     }
-
+    isDatesOverlap(dueDate: any, receivedDate: any) {
+      if (receivedDate.isBefore(dueDate)) {
+        alert('ReceivedDate should not be prior to DueDate.');
+        return true;
+      }
+      return false;
+    }
     createRows(objAry: any) {
         const { source } = this.state;
         console.log("createRows() - issuebook list on issuebook page:  ", objAry);
@@ -162,7 +175,9 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
                 <td>{obj.id}</td>
                 <td>{obj.strIssueDate}</td>
                 <td>{obj.strDueDate}</td>
-                <td>{obj.noOfCopiesAvailable}</td>
+                <td>{obj.book.noOfCopies}</td>
+                <td>{(obj.noOfCopiesAvailable !== null && obj.noOfCopiesAvailable !== undefined) ? obj.noOfCopiesAvailable : ""}</td>
+                {/* <td>{obj.noOfCopiesAvailable}</td> */}
                 <td>{obj.bookStatus}</td>
                 <td>{obj.book.bookTitle}</td>
                 <td>{(obj.strReceivedDate !== null && obj.strReceivedDate !== undefined) ? obj.strReceivedDate : ""}</td>
@@ -314,9 +329,11 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
     getInput(issueBookObj: any, modelHeader: any){
         const {branchId, departmentId} = this.state;
         let id = null;
+        let noOfCopiesAvailable = null;
         let strReceivedDate = null;
         if(modelHeader === "Edit IssueBook"){
             id = issueBookObj.id;
+            noOfCopiesAvailable = issueBookObj.noOfCopiesAvailable;
             strReceivedDate = moment(issueBookObj.receivedDate).format("DD-MM-YYYY")
         }
         let ayInput = {
@@ -327,6 +344,7 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
             departmentId: departmentId,
             branchId: branchId,
             noOfCopiesAvailable: issueBookObj.noOfCopiesAvailable,
+            // noOfCopies: issueBookObj.noOfCopies,
             bookStatus: issueBookObj.bookStatus,
             strIssueDate: moment(issueBookObj.issueDate).format("DD-MM-YYYY"),
             strDueDate: moment(issueBookObj.dueDate).format("DD-MM-YYYY"), 
@@ -378,6 +396,9 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
     saveIssueBook = (e: any) => {
         const { id } = e.nativeEvent.target;
         const {issueBookObj, modelHeader} = this.state;
+        e.preventDefault();
+        issueBookObj.errorMessage = "";
+
         let isValid = this.validateFields(issueBookObj);
         if(isValid === false){
             return;
@@ -429,23 +450,40 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
                                         }
                                         </select>
                                  </div> 
-                                 <div className="fwidth-modal-text m-r-1 ">
-                                  <label className="gf-form-label b-0 bg-transparent">No Of Copies Available</label>
-                                  <input type="text"  className="gf-form-input" onChange={this.onChange}  value={issueBookObj.noOfCopiesAvailable} placeholder="noOfCopiesAvailable" name="noOfCopiesAvailable" id="noOfCopiesAvailable" maxLength={250}/>
-                                </div> 
                                </div>
                                <div className="fwidth-modal-text m-r-1">
-                                 <label className="gf-form-label b-0 bg-transparent">issueDate <span style={{ color: 'red' }}> * </span></label>
+                                 <label className="gf-form-label b-0 bg-transparent">IssueDate <span style={{ color: 'red' }}> * </span></label>
                               <input type="Date" required className="gf-form-input" onChange={this.onChange}  value={issueBookObj.issueDate} placeholder="issueDate" name="issueDate" id="issueDate" maxLength={255} />
                                </div>
                               <div className="fwidth-modal-text m-r-1">
-                                <label className="gf-form-label b-0 bg-transparent">dueDate <span style={{ color: 'red' }}> * </span></label>
+                                <label className="gf-form-label b-0 bg-transparent">DueDate <span style={{ color: 'red' }}> * </span></label>
                                  <input type="Date" required className="gf-form-input" onChange={this.onChange}  value={issueBookObj.dueDate} placeholder="dueDate" name="dueDate" id="dueDate" maxLength={255} />
                                </div>
+                               <div className="fwidth-modal-text m-r-1">
+                                        <label className="gf-form-label b-0 bg-transparent">No Of Copies<span style={{ color: 'red' }}> * </span></label>
+                                        <select name="bookId" id="bookId" onChange={this.onChange} value={issueBookObj.bookId} className="gf-form-label b-0 bg-transparent">
+                                        <option value="">Select No Of Copies</option>
+                                        {
+                                            commonFunctions.createSelectbox(bookList, "id", "id", "noOfCopies")
+                                        }
+                                        </select>
+                                 </div>
+                               {/* <div className="fwidth-modal-text m-r-1 ">
+                                  <label className="gf-form-label b-0 bg-transparent">No Of Copies<span style={{ color: 'red' }}> * </span></label>
+                                  <input type="text"  className="gf-form-input" onChange={this.onChange}  value={issueBookObj.noOfCopies} placeholder="noOfCopies" name="noOfCopies" id="noOfCopies" maxLength={250}/>
+                                </div>  */}
                                {
                                         modelHeader === "Edit IssueBook" ? 
-                                        <div className="fwidth-modal-text">
-                                             <label className="gf-form-label b-0 bg-transparent">Received Date <span style={{ color: 'red' }}> * </span></label>
+                               <div className="fwidth-modal-text">
+                              <label className="gf-form-label b-0 bg-transparent">No Of Copies Available <span style={{ color: 'red' }}> * </span></label>
+                              <input type="text"  className="gf-form-input" onChange={this.onChange}  value={issueBookObj.noOfCopiesAvailable} placeholder="noOfCopiesAvailable" name="noOfCopiesAvailable" id="noOfCopiesAvailable" maxLength={250}/>
+                              </div>
+                              : <div className="fwidth-modal-text">&nbsp;</div>
+                            } 
+                               {
+                                        modelHeader === "Edit IssueBook" ? 
+                              <div className="fwidth-modal-text">
+                                <label className="gf-form-label b-0 bg-transparent">Received Date <span style={{ color: 'red' }}> * </span></label>
                                    <input type="Date" required className="gf-form-input" onChange={this.onChange}  value={issueBookObj.receivedDate} placeholder="receivedDate" name="receivedDate" id="receivedDate" maxLength={255} />
                                         </div>
                                         : <div className="fwidth-modal-text">&nbsp;</div>
@@ -486,6 +524,7 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
                   <th>id</th>
                   <th>Issue Date</th>
                   <th>Due Date</th>
+                  <th>NoOfCopies</th>
                   <th>NoOfCopiesAvailable</th>
                   <th>Book Status</th>
                   <th>Book Title</th>
