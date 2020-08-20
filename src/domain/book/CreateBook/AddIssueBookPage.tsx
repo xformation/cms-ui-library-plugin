@@ -24,6 +24,7 @@ const ERROR_MESSAGE_SERVER_SIDE_ERROR = "Due to some error in library service, i
 const SUCCESS_MESSAGE_ISSUEBOOK_ADDED = "New issuebook saved successfully";
 const SUCCESS_MESSAGE_ISSUEBOOK_UPDATED = "IssueBook updated successfully";
 const ERROR_MESSAGE_DATES_OVERLAP = "Due Date cannot be prior or same as Issue date";
+const ERROR_MESSAGE_DATE_OVERLAP = "Received Date cannot be prior to Issue date";
 
 
 class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProps, any> {
@@ -302,29 +303,31 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
               isValid = false;
           }
        
-        if(isValid){
-          isValid = this.validateDates(issueBookObj.issueDate, issueBookObj.dueDate);
-          if(isValid === false){
-              errorMessage = ERROR_MESSAGE_DATES_OVERLAP;
-          }
-       }
-        
-
-        this.setState({
-            errorMessage: errorMessage
-        });
-        return isValid; 
-
-    }
-
-    validateDates(issueDate: any, dueDate: any){
-      let id = moment(issueDate, "YYYY-MM-DD");
-      let dd = moment(dueDate, "YYYY-MM-DD");
-      if (dd.isSameOrBefore(id) || id.isSameOrAfter(dd)) {
-        return false;
+          if(isValid){
+            isValid = this.validateDates(issueBookObj.issueDate, issueBookObj.dueDate, issueBookObj.receivedDate);
+            if(isValid === false){
+                errorMessage = ERROR_MESSAGE_DATES_OVERLAP;
+                errorMessage = ERROR_MESSAGE_DATE_OVERLAP;
+            }
+         }
+          
+  
+          this.setState({
+              errorMessage: errorMessage
+          });
+          return isValid; 
+  
       }
-       return true;
-      }
+  
+      validateDates(issueDate: any, dueDate: any, receivedDate:any){
+        let id = moment(issueDate, "YYYY-MM-DD");
+        let dd = moment(dueDate, "YYYY-MM-DD");
+        let rd = moment(receivedDate, "YYYY-MM-DD");
+        if (dd.isSameOrBefore(id) || id.isSameOrAfter(dd) || rd.isBefore(id)) {
+          return false;
+        }
+         return true;
+        }
 
     getInput(issueBookObj: any, modelHeader: any){
         const {branchId, departmentId} = this.state;
