@@ -6,7 +6,6 @@ export const ISSUE_BOOK_LIST = gql`
       id
       issueDate
       dueDate
-      noOfCopiesAvailable
       bookStatus
       receivedDate
       strIssueDate
@@ -34,6 +33,7 @@ export const ISSUE_BOOK_LIST = gql`
         shelfNo
         bookTitle
         noOfCopies
+        noOfCopiesAvailable
       }
     }
   }

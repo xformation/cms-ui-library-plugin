@@ -14,6 +14,7 @@ export const ADD_BOOK = gql`
           publisher
           edition
           noOfCopies
+          noOfCopiesAvailable
           isbNo
           departmentId
         }

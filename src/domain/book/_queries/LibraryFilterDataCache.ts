@@ -19,7 +19,6 @@ export const CREATE_LIBRARY_FILTER_DATA_CACHE = gql`
         issueDate
         dueDate
         receivedDate
-        noOfCopiesAvailable
         bookStatus
         strIssueDate
         strDueDate
@@ -33,6 +32,7 @@ export const CREATE_LIBRARY_FILTER_DATA_CACHE = gql`
         publisher
         edition
         noOfCopies
+        noOfCopiesAvailable
         isbNo
         departmentId
       }

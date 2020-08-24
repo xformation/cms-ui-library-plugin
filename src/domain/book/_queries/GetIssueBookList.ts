@@ -6,7 +6,6 @@ export const GET_ISSUE_BOOK_LIST = gql`
       id
       issueDate
       dueDate
-      noOfCopiesAvailable
       bookStatus
       receivedDate
       strIssueDate
@@ -25,6 +24,7 @@ export const GET_ISSUE_BOOK_LIST = gql`
         id
         bookTitle
         noOfCopies
+        noOfCopiesAvailable
       }
       batch {
         id

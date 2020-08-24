@@ -42,6 +42,7 @@ class BookGrid<T = {[data: string]: any}> extends React.Component<BookProps, any
               publisher:"",
               edition:"",
               noOfCopies:"",
+              noOfCopiesAvailable: "",
               isbNo:"",
               departmentId:""
 
@@ -204,6 +205,7 @@ class BookGrid<T = {[data: string]: any}> extends React.Component<BookProps, any
             publisher: bookObj.publisher,
             edition: bookObj.edition,
             noOfCopies: bookObj.noOfCopies,
+            noOfCopiesAvailable: bookObj.noOfCopiesAvailable,
             isbNo: bookObj.isbNo,
             departmentId: bookData.department.id,
         };
@@ -237,6 +239,11 @@ class BookGrid<T = {[data: string]: any}> extends React.Component<BookProps, any
           errorMessage = ERROR_MESSAGE_MANDATORY_FIELD_MISSING;
           isValid = false;
       }
+      if(bookObj.noOfCopiesAvailable === undefined || bookObj.noOfCopiesAvailable === null || bookObj.noOfCopiesAvailable === ""){
+        commonFunctions.changeTextBoxBorderToError((bookObj.noOfCopiesAvailable === undefined || bookObj.noOfCopiesAvailable === null) ? "" : bookObj.noOfCopiesAvailable, "noOfCopiesAvailable");
+        errorMessage = ERROR_MESSAGE_MANDATORY_FIELD_MISSING;
+        isValid = false;
+    }
       if(bookData.department.id === undefined || bookData.department.id === null || bookData.department.id === ""){
         commonFunctions.changeTextBoxBorderToError((bookData.department.id === undefined || bookData.department.id === null) ? "" : bookData.department.id, "department");
         errorMessage = ERROR_MESSAGE_MANDATORY_FIELD_MISSING;
@@ -494,6 +501,18 @@ return (
               placeholder="noOfCopies" 
               name="noOfCopies" 
              id="noOfCopies"/>
+           </div>
+           <div>
+             <label htmlFor="">
+             No Of Copies Available<span style={{ color: 'red' }}> * </span></label>
+             <input type="text" 
+             required className="gf-form-input fwidth" 
+             maxLength={255}  
+             onChange={this.onChange}  
+             value={bookObj.noOfCopiesAvailable} 
+              placeholder="noOfCopiesAvailable" 
+              name="noOfCopiesAvailable" 
+             id="noOfCopiesAvailable"/>
            </div>
            <div>
              <label htmlFor="">

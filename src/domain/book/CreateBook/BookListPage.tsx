@@ -212,6 +212,7 @@ async getcreateLibraryFilterDataCache() {
                 <td>{book.publisher}</td>
                 <td>{book.isbNo}</td>
                 <td>{book.noOfCopies}</td>
+                <td>{book.noOfCopiesAvailable}</td>
                 <td>{book.department.name}</td>
                 <td>
                     
@@ -259,6 +260,7 @@ async getcreateLibraryFilterDataCache() {
                 <td>{book.publisher}</td>
                 <td>{book.isbNo}</td>
                 <td>{book.noOfCopies}</td>
+                <td>{book.noOfCopiesAvailable}</td>
                 <td>{book.department.name}</td>
                 <td>
                     
@@ -508,6 +510,7 @@ async getcreateLibraryFilterDataCache() {
                   <th>Publisher</th>
                   <th>ISB NUMBER</th>
                   <th>NoOfCopies</th>
+                  <th>NoOfCopiesAvailable</th>
                   <th>Department</th>
                   <th>Edit</th> 
                   <th>Details</th>

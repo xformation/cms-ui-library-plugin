@@ -41,8 +41,6 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
               issueDate:"",
               dueDate:"",
               receivedDate: "",
-              noOfCopiesAvailable:"",
-              // noOfCopies:"",
               bookStatus:"",
               bookId:"",
               batchId:"",
@@ -139,9 +137,6 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
         issueBookObj.batchId = editObj.batchId;
         issueBookObj.issueDate = moment(editObj.strIssueDate,"DD-MM-YYYY").format("YYYY-MM-DD");
         issueBookObj.dueDate =moment(editObj.strDueDate,"DD-MM-YYYY").format("YYYY-MM-DD");
-        if(editObj.noOfCopiesAvailable !== null && editObj.noOfCopiesAvailable !== undefined){
-          issueBookObj.noOfCopiesAvailable = editObj.noOfCopiesAvailable;
-          } 
         if(editObj.strReceivedDate !== null && editObj.strReceivedDate !== undefined){
             issueBookObj.receivedDate =moment(editObj.strReceivedDate,"DD-MM-YYYY").format("YYYY-MM-DD");
         }
@@ -177,8 +172,7 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
                 <td>{obj.strIssueDate}</td>
                 <td>{obj.strDueDate}</td>
                 <td>{obj.book.noOfCopies}</td>
-                <td>{(obj.noOfCopiesAvailable !== null && obj.noOfCopiesAvailable !== undefined) ? obj.noOfCopiesAvailable : ""}</td>
-                {/* <td>{obj.noOfCopiesAvailable}</td> */}
+                <td>{obj.book.noOfCopiesAvailable}</td>
                 <td>{obj.bookStatus}</td>
                 <td>{obj.book.bookTitle}</td>
                 <td>{(obj.strReceivedDate !== null && obj.strReceivedDate !== undefined) ? obj.strReceivedDate : ""}</td>
@@ -336,7 +330,6 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
         let strReceivedDate = null;
         if(modelHeader === "Edit IssueBook"){
             id = issueBookObj.id;
-            noOfCopiesAvailable = issueBookObj.noOfCopiesAvailable;
             strReceivedDate = moment(issueBookObj.receivedDate).format("DD-MM-YYYY")
         }
         let ayInput = {
@@ -346,8 +339,6 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
             bookId:issueBookObj.bookId,
             departmentId: departmentId,
             branchId: branchId,
-            noOfCopiesAvailable: issueBookObj.noOfCopiesAvailable,
-            // noOfCopies: issueBookObj.noOfCopies,
             bookStatus: issueBookObj.bookStatus,
             strIssueDate: moment(issueBookObj.issueDate).format("DD-MM-YYYY"),
             strDueDate: moment(issueBookObj.dueDate).format("DD-MM-YYYY"), 
@@ -453,7 +444,7 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
                                         }
                                         </select>
                                  </div> 
-                                 <div className="fwidth-modal-text m-r-1">
+                                 {/* <div className="fwidth-modal-text m-r-1">
                                         <label className="gf-form-label b-0 bg-transparent">No Of Copies<span style={{ color: 'red' }}> * </span></label>
                                         <select name="bookId" id="bookId" onChange={this.onChange} value={issueBookObj.bookId} className="gf-form-label b-0 bg-transparent">
                                         <option value="">Select No Of Copies</option>
@@ -461,7 +452,7 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
                                             commonFunctions.createSelectbox(bookList, "id", "id", "noOfCopies")
                                         }
                                         </select>
-                                 </div>
+                                 </div> */}
                                </div>
                                <div className="mdflex modal-fwidth">
                                <div className="fwidth-modal-text m-r-1">
@@ -496,14 +487,7 @@ class IssueBook<T = {[data: string]: any}> extends React.Component<IssueBookProp
                                        <option key={"NOTRECEIVED"} value={"NOTRECEIVED"}>NOTRECEIVED</option>
                                    </select>
                               </div>
-                              {
-                                        modelHeader === "Edit IssueBook" ? 
-                               <div className="fwidth-modal-text">
-                              <label className="gf-form-label b-0 bg-transparent">No Of Copies Available <span style={{ color: 'red' }}> * </span></label>
-                              <input type="text"  className="gf-form-input" onChange={this.onChange}  value={issueBookObj.noOfCopiesAvailable} placeholder="noOfCopiesAvailable" name="noOfCopiesAvailable" id="noOfCopiesAvailable" maxLength={250}/>
-                              </div>
-                              : <div className="fwidth-modal-text">&nbsp;</div>
-                            } 
+                            
                                <div className="m-t-1 text-center">
                                        {
                                           modelHeader === "Add IssueBook" ?
